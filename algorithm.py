@@ -3,22 +3,125 @@ An implementation of an linearisation algorithm as described here: https://aclwe
 """
 
 
+class DependencyTree:
+    """
+    a class that holds the whole dependency tree
+    """
+
+    def __init__(self):
+        """
+        initialises the whole dependency tree and creates the conversion table for fields from the input
+        """
+        self.tree = [] # list of nodes
+
+        self.no2field = {
+            "0": "id", #id
+            "1": "form", #form
+            "2": "lemma", #lemma
+            "3": "upostag", #universal part-of-speech tag
+            "4": "xpostag", #language specific part-of-speech tag
+            "5": "feats", #list of morphological features
+            "6": "head", #head of the current word (val of ID or 0)
+            "7": "deprel", #universal dependency relation to the HEAD (root iff HEAD = 0)
+            "8": "deps", #enchanced dependency graph (list of head-deprel pairs)
+            "9": "misc" #any other annotation
+        }
+
+    def add_node(self, list):
+        """
+        adds a node of type DependencyTreeNode to the class
+        :param list: val of fields got from input
+        :return: None
+        """
+        temp = DependencyTreeNode()
+
+        for no in range(0, 9):
+            temp.update_field(self.no2field[str(no)], list[no])
+
+        self.tree.append(temp)
+
+    def print_tree(self):
+        """
+        prints the val of fields for every node
+        :return: None
+        """
+        for node in self.tree:
+            print node.fields
+
 class DependencyTreeNode:
     """
     class which is a node of the dependency tree
     """
 
     def __init__(self):
+        """
+        initialises the variables and fields of the node
+        """
+
+        self.fields = {
+            "id": None, #id
+            "form": None, #form
+            "lemma": None, #lemma
+            "upostag": None, #universal part-of-speech tag
+            "xpostag": None, #language specific part-of-speech tag
+            "feats": None, #list of morphological features
+            "head": None, #head of the current word (val of ID or 0)
+            "deprel": None, #universal dependency relation to the HEAD (root iff HEAD = 0)
+            "deps": None, #enchanced dependency graph (list of head-deprel pairs)
+            "misc": None #any other annotation
+        }
+
         self.domain = None
         self.agenda = None  # word order beam
         self.beam = None  # beam for a node
+
+    def update_field(self, id, val):
+        """
+        changes the value of a certain field
+        :param id: id of a field
+        :param val: value to which it's changed
+        :return: None
+        """
+        self.fields[id] = val
 
 
 class Convert2dependencytree:
     """
     reads a dependency tree in CoNLL-U format and converts it to a tree of clasess Dependency_tree
     """
-    pass
+
+    def __init__(self):
+        """
+        creates a dependency tree and reads it from a file
+        """
+        self.tree = DependencyTree()
+
+        self.read_open_file()
+
+
+    def read_open_file(self):
+        """
+        reads a file in conllu, splits fields and invokes adding a node
+        :return:
+        """
+        fhand = open("test.conllu")
+
+        for line in fhand:
+
+            if line[0] == '#': # if that's a comment
+                continue
+
+            words = line.split('\t')
+
+            self.tree.add_node(words)
+
+    def ref_tree(self):
+        """
+        used to copy a dependency tree
+        :return: the tree
+        """
+
+        return self.tree
 
 class Lifting_decoding:
     """
@@ -107,7 +210,8 @@ class Dependecy_tree_linearisation:
         :param l: the list
         :return: the score
         """
-    pass
 
-if __name__ == "main":
-    pass
+if __name__ == "__main__":
+    test = Convert2dependencytree()
+    tree = test.ref_tree()
+    tree.print_tree()
