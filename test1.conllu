@@ -1,0 +1,17 @@
+# sent_id es-test-001-s5
+1	Oferta	oferta	NOUN	_	Gender=Fem|Number=Sing	0	root	_	_
+2	típica	típico	ADJ	_	Gender=Fem|Number=Sing	1	amod	_	_
+3	de	de	ADP	_	_	4	case	_	_
+4	empleo	empleo	NOUN	_	Gender=Masc|Number=Sing	1	nmod	_	_
+5	en	en	ADP	_	_	6	case	_	_
+6	Españistán	españistán	PROPN	_	_	4	nmod	_	_
+7-8	del	_	_	_	_	_	_	_	_
+7	de	de	ADP	_	_	9	case	_	_
+8	el	el	DET	_	Definite=Def|Gender=Masc|Number=Sing|PronType=Art	9	det	_	_
+9	2012	2012	NUM	_	NumType=Card	6	nmod	_	_
+10	:	:	PUNCT	_	_	1	punct	_	_
+11	"	"	PUNCT	_	_	13	punct	_	_
+12	Se	él	PRON	_	Case=Acc,Dat|Person=3|PrepCase=Npr|PronType=Prs|Reflex=Yes	13	iobj	_	_
+13	necesita	necesitar	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin	1	parataxis	_	_
+14	camarero	camarero	NOUN	_	Gender=Masc|Number=Sing	13	nsubj	_	_
+15	.	.	PUNCT	_	_	1	punct	_	_

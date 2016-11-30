@@ -46,7 +46,7 @@ class DependencyTree:
         :return: None
         """
         for node in self.tree:
-            print node.fields
+            print (node.fields, "\n")
 
 class DependencyTreeNode:
     """
@@ -104,7 +104,7 @@ class Convert2dependencytree:
         reads a file in conllu, splits fields and invokes adding a node
         :return:
         """
-        fhand = open("test.conllu")
+        fhand = open("test1.conllu")
 
         for line in fhand:
 
