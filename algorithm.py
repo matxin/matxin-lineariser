@@ -223,6 +223,7 @@ class Dependecy_tree_linearisation:
         :return: the score
         """
 
+
 if __name__ == "__main__":
     test = Convert2dependencytree()
     tree = test.ref_tree()
