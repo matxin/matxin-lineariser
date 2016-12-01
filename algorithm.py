@@ -12,7 +12,7 @@ class DependencyTree:
         """
         initialises the whole dependency tree and creates the conversion table for fields from the input
         """
-        self.tree = [] # list of nodes
+        self.tree = {} # dictionary of nodes -> id
 
         self.no2field = {
             "0": "id", #id
@@ -38,20 +38,44 @@ class DependencyTree:
         for no in range(0, 9):
             temp.update_field(self.no2field[str(no)], list[no])
 
-        self.tree.append(temp)
+        self.tree[temp.fields["id"]] = temp
 
     def print_tree(self):
         """
         prints the val of fields for every node
         :return: None
         """
-        for node in self.tree:
-            print (node.fields, "\n")
+        for id in self.tree:
+            print (self.tree[id].fields, "\n")
 
     def add_children(self):
-        for node in self.tree:
-            if node.fields["head"] != "0" and node.fields["head"] != "_":
-                self.tree[int(node.fields["head"])-1].fields["children"].append(node.fields["id"])
+        """
+        fills out the children field for every node
+        :return: None
+        """
+        for id in self.tree:
+            if self.tree[id].fields["head"] != "0" and self.tree[id].fields["head"] != "_":
+                #print (int(self.tree[id].fields["head"])-1, self.tree[self.tree[id].fields["head"]].fields["id"])
+                self.tree[self.tree[id].fields["head"]].fields["children"].append(id)
+
+       # for node in self.tree:
+        #    print (node.fields["id"], node.fields["children"])
+
+    def calculate_domains(self):
+        """
+        fills out the domain fields for every node
+        :return: None
+        """
+
+        for id in self.tree:
+            self.tree[id].domain = [self.tree[id].fields["form"]]
+
+            #print (node.domain)
+
+            for child in self.tree[id].fields["children"]:
+                #print (int(child))
+                self.tree[id].domain.append(self.tree[child].fields["form"])
+            #print(node.domain)
 
 class DependencyTreeNode:
     """
@@ -77,7 +101,7 @@ class DependencyTreeNode:
             "children": [] #points to the children
         }
 
-        self.domain = None
+        self.domain = []
         self.agenda = None  # word order beam
         self.beam = None  # beam for a node
 
@@ -90,6 +114,12 @@ class DependencyTreeNode:
         """
         self.fields[id] = val
 
+    def give_domain(self):
+        """
+        returns a domain for a given node
+        :return: self.domain
+        """
+        return self.domain
 
 class Convert2dependencytree:
     """
@@ -105,6 +135,8 @@ class Convert2dependencytree:
         self.read_open_file()
 
         self.tree.add_children()
+
+        self.tree.calculate_domains()
 
 
     def read_open_file(self):
@@ -181,13 +213,6 @@ class Dependecy_tree_linearisation:
         self.T = None  # The dependency tree with lifted nodes
         self.beam_size = None  # maximum beam size
 
-    def get_domain(self, h):
-        """
-        Gets the domain of h and returns it
-        :param h: a node
-        :return: domain of h
-        """
-
     def append(self, l, w):
         """
         appends a word to a list
@@ -227,4 +252,9 @@ class Dependecy_tree_linearisation:
 if __name__ == "__main__":
     test = Convert2dependencytree()
     tree = test.ref_tree()
-    tree.print_tree()
+   # tree.print_tree()
+
+
+    for id in tree.tree:
+        print (id)
+        print (tree.tree[id].give_domain())
