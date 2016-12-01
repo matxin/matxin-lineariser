@@ -111,6 +111,9 @@ class Convert2dependencytree:
             if line[0] == '#': # if that's a comment
                 continue
 
+            if len(line) < 2: # if that's a blank line
+                continue
+
             words = line.split('\t')
 
             self.tree.add_node(words)
