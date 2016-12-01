@@ -48,6 +48,11 @@ class DependencyTree:
         for node in self.tree:
             print (node.fields, "\n")
 
+    def add_children(self):
+        for node in self.tree:
+            if node.fields["head"] != "0" and node.fields["head"] != "_":
+                self.tree[int(node.fields["head"])-1].fields["children"].append(node.fields["id"])
+
 class DependencyTreeNode:
     """
     class which is a node of the dependency tree
@@ -68,7 +73,8 @@ class DependencyTreeNode:
             "head": None, #head of the current word (val of ID or 0)
             "deprel": None, #universal dependency relation to the HEAD (root iff HEAD = 0)
             "deps": None, #enchanced dependency graph (list of head-deprel pairs)
-            "misc": None #any other annotation
+            "misc": None, #any other annotation
+            "children": [] #points to the children
         }
 
         self.domain = None
@@ -98,6 +104,8 @@ class Convert2dependencytree:
 
         self.read_open_file()
 
+        self.tree.add_children()
+
 
     def read_open_file(self):
         """
@@ -117,6 +125,7 @@ class Convert2dependencytree:
             words = line.split('\t')
 
             self.tree.add_node(words)
+
 
     def ref_tree(self):
         """
