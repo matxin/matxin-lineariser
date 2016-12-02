@@ -77,6 +77,52 @@ class DependencyTree:
                 self.tree[id].domain.append(self.tree[child].fields["form"])
             #print(node.domain)
 
+    def ufeat(self, node, position, feature):
+        """
+        returns a feature or a vector of features
+        :param node:
+        :param position:
+        :param feature:
+        :return: value of a feature for nodes of given relation
+        """
+        pass
+
+    def lemma(self, node, position):
+        """
+        returns the lemma of a nparent of the node (for position <0) or a nchildren
+        :param node: the relative node
+        :param position: the relative position to this node
+        :return: lemma
+        """
+        return self.ufeat(node, position, 'lemma')
+
+    def count(self, node, position):
+        """
+        count the number of nchildren
+        :param node: the relative node
+        :param position: the relative position to this node
+        :return: the number of nchildren
+        """
+        return self.ufeat(node, position, 'count')
+
+    def upos(self, node, position):
+        """
+        returns the part of speech
+        :param node: the relative node
+        :param position: the relative position
+        :return: upostag
+        """
+        return self.ufeat(node, position, 'upostag')
+
+    def deprel(self, node, position):
+        """
+        returns the relation to the HEAD
+        :param node: the relative node
+        :param position: the relative position to this node
+        :return: the deprel tag
+        """
+        return self.ufeat(node, position, 'deprel')
+
 class DependencyTreeNode:
     """
     class which is a node of the dependency tree
@@ -101,7 +147,15 @@ class DependencyTreeNode:
             "children": [] #points to the children
         }
 
-        self.domain = []
+        self.neighbouring_nodes = { # indices of nodes that are +n -> nchildren, -n -> nparents
+            "-2": None,
+            "-1": None,
+            "0": None,
+            "1": None,
+            "2": None
+        }
+
+        self.domain = [] # words that are direct children and the node itself
         self.agenda = None  # word order beam
         self.beam = None  # beam for a node
 
