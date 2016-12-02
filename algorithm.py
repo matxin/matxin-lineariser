@@ -27,6 +27,8 @@ class DependencyTree:
             "9": "misc" #any other annotation
         }
 
+        self.head = None
+
     def add_node(self, list):
         """
         adds a node of type DependencyTreeNode to the class
@@ -39,6 +41,10 @@ class DependencyTree:
             temp.update_field(self.no2field[str(no)], list[no])
 
         self.tree[temp.fields["id"]] = temp
+
+        if temp.fields["head"] == "0":
+            self.head = temp.fields["id"]
+
 
     def print_tree(self):
         """
@@ -77,6 +83,31 @@ class DependencyTree:
                 self.tree[id].domain.append(self.tree[child].fields["form"])
             #print(node.domain)
 
+    def set_neigbouring_nodes(self):
+        """
+        Calculates the gparents, parents, children and gchildren of every node in a tree
+        :return: None
+        """
+        for node in self.tree:
+            self.tree[node].neighbouring_nodes["0"] = node
+
+            #print (node, self.tree[node].fields["head"])
+
+            if self.tree[node].fields["head"] != "0" and self.tree[node].fields["head"] != "_":
+                self.tree[node].neighbouring_nodes["-1"] = self.tree[node].fields["head"] # parent
+
+                if self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] != "0" and self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] != "_":
+                    self.tree[node].neighbouring_nodes["-2"] = self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] # grandparent
+
+            self.tree[node].neighbouring_nodes["1"] = self.tree[node].fields["children"] #children
+
+            self.tree[node].neighbouring_nodes["2"] = []
+
+            for child in self.tree[node].fields["children"]:
+                self.tree[node].neighbouring_nodes["2"] += self.tree[child].fields["children"] #gchildren
+
+
+
     def ufeat(self, node, position, feature):
         """
         returns a feature or a vector of features
@@ -85,7 +116,11 @@ class DependencyTree:
         :param feature:
         :return: value of a feature for nodes of given relation
         """
-        pass
+        res = []
+        for node_1 in self.tree[node].neigbouring_nodes[position]:
+            res.append(self.tree[node_1].fields[feature])
+
+        return res
 
     def lemma(self, node, position):
         """
@@ -96,6 +131,7 @@ class DependencyTree:
         """
         return self.ufeat(node, position, 'lemma')
 
+ ##############  TO DOOOOO!!! ################
     def count(self, node, position):
         """
         count the number of nchildren
@@ -103,7 +139,7 @@ class DependencyTree:
         :param position: the relative position to this node
         :return: the number of nchildren
         """
-        return self.ufeat(node, position, 'count')
+        return len(self.tree[node].neighbouring_nodes[position])
 
     def upos(self, node, position):
         """
@@ -302,13 +338,15 @@ class Dependecy_tree_linearisation:
         :return: the score
         """
 
-
 if __name__ == "__main__":
     test = Convert2dependencytree()
     tree = test.ref_tree()
    # tree.print_tree()
 
+    tree.set_neigbouring_nodes()
+
+   # print (tree.head)
 
     for id in tree.tree:
         print (id)
-        print (tree.tree[id].give_domain())
+        print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
