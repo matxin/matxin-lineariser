@@ -89,15 +89,15 @@ class DependencyTree:
         :return: None
         """
         for node in self.tree:
-            self.tree[node].neighbouring_nodes["0"] = node
+            self.tree[node].neighbouring_nodes["0"] = [node]
 
             #print (node, self.tree[node].fields["head"])
 
             if self.tree[node].fields["head"] != "0" and self.tree[node].fields["head"] != "_":
-                self.tree[node].neighbouring_nodes["-1"] = self.tree[node].fields["head"] # parent
+                self.tree[node].neighbouring_nodes["-1"] = [self.tree[node].fields["head"]] # parent
 
-                if self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] != "0" and self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] != "_":
-                    self.tree[node].neighbouring_nodes["-2"] = self.tree[self.tree[node].neighbouring_nodes["-1"]].fields["head"] # grandparent
+                if self.tree[self.tree[node].fields["head"]].fields["head"] != "0" and self.tree[self.tree[node].fields["head"]].fields["head"] != "_":
+                    self.tree[node].neighbouring_nodes["-2"] = [self.tree[self.tree[node].fields["head"]].fields["head"]] # grandparent
 
             self.tree[node].neighbouring_nodes["1"] = self.tree[node].fields["children"] #children
 
@@ -117,7 +117,7 @@ class DependencyTree:
         :return: value of a feature for nodes of given relation
         """
         res = []
-        for node_1 in self.tree[node].neigbouring_nodes[position]:
+        for node_1 in self.tree[node].neighbouring_nodes[position]:
             res.append(self.tree[node_1].fields[feature])
 
         return res
@@ -184,11 +184,11 @@ class DependencyTreeNode:
         }
 
         self.neighbouring_nodes = { # indices of nodes that are +n -> nchildren, -n -> nparents
-            "-2": None,
-            "-1": None,
-            "0": None,
-            "1": None,
-            "2": None
+            "-2": [],
+            "-1": [],
+            "0": [],
+            "1": [],
+            "2": []
         }
 
         self.domain = [] # words that are direct children and the node itself
@@ -269,14 +269,6 @@ class Lifting_decoding:
         :return: None
         """
 
-    def extract_features(self, node, T):
-        """
-        extracts all the features from a node
-        :param node: a node
-        :param T: the tree
-        :return: list of features
-        """
-
     def classify(self, feats):
         """
         classifies features
@@ -350,3 +342,4 @@ if __name__ == "__main__":
     for id in tree.tree:
         print (id)
         print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
+        print (tree.ufeat(id, "-2", "form"), tree.ufeat(id, "-1", "form"), tree.ufeat(id, "0", "form"), tree.ufeat(id, "1", "form"), tree.deprel(id, "2"))
