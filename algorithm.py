@@ -20,7 +20,7 @@ class DependencyTree:
             "2": "lemma", #lemma
             "3": "upostag", #universal part-of-speech tag
             "4": "xpostag", #language specific part-of-speech tag
-            "5": "feats", #list of morphological features
+            "5": "feats", #list o-f morphological features
             "6": "head", #head of the current word (val of ID or 0)
             "7": "deprel", #universal dependency relation to the HEAD (root iff HEAD = 0)
             "8": "deps", #enchanced dependency graph (list of head-deprel pairs)
@@ -330,7 +330,7 @@ class Dependecy_tree_linearisation:
     def __init__(self):
         self.T = None  # The dependency tree with lifted nodes
         self.beam_size = None  # maximum beam size
-        self.score = [] #lists of the best scores
+        self.score = {} #dict of the best scores for different combinations of words
 
     def execute_algorithm(self, tree):
         """
@@ -372,7 +372,11 @@ class Dependecy_tree_linearisation:
         """
 
     def sort_lists_descending_to_score(self, beam):
-        pass
+        """
+        sorts
+        :param beam:
+        :return:
+        """
 
 
     def sublist(self, beam_size, beam):
