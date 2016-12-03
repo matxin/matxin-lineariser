@@ -41,9 +41,12 @@ class DependencyTree:
             temp.update_field(self.no2field[str(no)], list[no])
 
         self.tree[temp.fields["id"]] = temp
+        self.tree[temp.fields["id"]].extract_features()
 
         if temp.fields["head"] == "0":
             self.head = temp.fields["id"]
+
+
 
 
     def print_tree(self):
@@ -118,7 +121,9 @@ class DependencyTree:
         """
         res = []
         for node_1 in self.tree[node].neighbouring_nodes[position]:
-            res.append(self.tree[node_1].fields[feature])
+            tmp = self.tree[node_1].features.get(feature, None)
+            if tmp != None:
+                res.append(tmp)
 
         return res
 
@@ -129,9 +134,13 @@ class DependencyTree:
         :param position: the relative position to this node
         :return: lemma
         """
-        return self.ufeat(node, position, 'lemma')
+        res = []
 
- ##############  TO DOOOOO!!! ################
+        for node_1 in self.tree[node].neighbouring_nodes[position]:
+            res.append(self.tree[node_1].fields["lemma"])
+
+        return res
+
     def count(self, node, position):
         """
         count the number of nchildren
@@ -148,7 +157,11 @@ class DependencyTree:
         :param position: the relative position
         :return: upostag
         """
-        return self.ufeat(node, position, 'upostag')
+        res = []
+        for node_1 in self.tree[node].neighbouring_nodes[position]:
+            res.append(self.tree[node_1].fields["upostag"])
+
+        return res
 
     def deprel(self, node, position):
         """
@@ -157,7 +170,12 @@ class DependencyTree:
         :param position: the relative position to this node
         :return: the deprel tag
         """
-        return self.ufeat(node, position, 'deprel')
+        res = []
+
+        for node_1 in self.tree[node].neighbouring_nodes[position]:
+            res.append(self.tree[node_1].fields["deprel"])
+
+        return res
 
 class DependencyTreeNode:
     """
@@ -182,6 +200,8 @@ class DependencyTreeNode:
             "misc": None, #any other annotation
             "children": [] #points to the children
         }
+
+        self.features = {}
 
         self.neighbouring_nodes = { # indices of nodes that are +n -> nchildren, -n -> nparents
             "-2": [],
@@ -211,6 +231,20 @@ class DependencyTreeNode:
         """
         return self.domain
 
+    def extract_features(self):
+        """
+        extracts all the features from the feats field
+        :return: None
+        """
+        if self.fields["feats"] == "_":
+            return
+
+        temp = self.fields["feats"].split('|') #split features
+
+        for feat in temp:
+            temp1 = feat.split('=') # splits into a feature and value
+            self.features[temp1[0]] = temp1[1]
+
 class Convert2dependencytree:
     """
     reads a dependency tree in CoNLL-U format and converts it to a tree of clasess Dependency_tree
@@ -227,6 +261,8 @@ class Convert2dependencytree:
         self.tree.add_children()
 
         self.tree.calculate_domains()
+
+        self.tree.set_neigbouring_nodes()
 
 
     def read_open_file(self):
@@ -294,14 +330,39 @@ class Dependecy_tree_linearisation:
     def __init__(self):
         self.T = None  # The dependency tree with lifted nodes
         self.beam_size = None  # maximum beam size
+        self.score = [] #lists of the best scores
 
-    def append(self, l, w):
+    def execute_algorithm(self, tree):
         """
-        appends a word to a list
-        :param l: list to which we append
-        :param w: a word that we append
-        :return: a new list
+        executes the linearisation algorithm (algorithm 3 in the paper)
+        :return:
         """
+        self.T = tree
+        self.beam_size = 1000
+
+        for node in self.T.tree:
+            domain = self.T.tree[node].give_domain()
+
+            agenda = [None]
+
+            for w in domain:
+                beam = []
+
+                for l in agenda:
+                    tmp = l
+
+                    if w not in l:
+                        tmp1 = tmp.append(w)
+                        beam  = beam + tmp1
+                        self.score[tmp1] = self.compute_score(tmp1)
+
+                if len(beam) > self.beam_size:
+                    self.sort_lists_descending_to_score(beam)
+                    agenda = beam[0:self.beam_size]
+                else:
+                    agenda = beam
+
+            #### TO FINISH!!! ####
 
     def compute_score(self, l):
         """
@@ -310,11 +371,10 @@ class Dependecy_tree_linearisation:
         :return: score
         """
 
-    def sort_lists_descending_to_score(self):
-        """
-        sorts the list, puts the best score up
-        :return: the best beam
-        """
+    def sort_lists_descending_to_score(self, beam):
+        pass
+
+
     def sublist(self, beam_size, beam):
         """
         sublists the longest possible beam to the word order beam
@@ -335,11 +395,10 @@ if __name__ == "__main__":
     tree = test.ref_tree()
    # tree.print_tree()
 
-    tree.set_neigbouring_nodes()
-
    # print (tree.head)
 
     for id in tree.tree:
         print (id)
         print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
-        print (tree.ufeat(id, "-2", "form"), tree.ufeat(id, "-1", "form"), tree.ufeat(id, "0", "form"), tree.ufeat(id, "1", "form"), tree.deprel(id, "2"))
+        #print (tree.ufeat(id, "-2", "Gender"), tree.ufeat(id, "-1", "Gender"), tree.ufeat(id, "0", "Gender"), tree.ufeat(id, "1", "Gender"), tree.ufeat(id, "2", "Gender"))
+        print (tree.deprel(id, "-2"), tree.deprel(id, "-1"), tree.deprel(id, "0"), tree.deprel(id, "1"), tree.deprel(id, "2"))
