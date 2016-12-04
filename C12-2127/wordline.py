@@ -52,3 +52,11 @@ class WordLine:
 
     def add_edge(self, sentence):
         sentence[self.get_head()].dependents.append(self)
+
+    def get_local_configuration(self):
+        """Return a set of the dependents' deprel-s."""
+        raise NotImplementedError
+
+    def get_local_linearization(self):
+        """Return a list of dependents' PoS-s ordered by their id-s."""
+        raise NotImplementedError
