@@ -6,6 +6,7 @@ class Sentence:
         sentence = {}
 
         for line in conllu:
+            line = line[:-1] # strip the trailing newline
             if line == '':
                 yield Sentence(sentence)
             else:
