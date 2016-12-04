@@ -39,3 +39,6 @@ class WordLine:
                                      # e.g. 1-2 or 3-5
                                      # to-do: also support empty nodes
                                      # e.g. 5.1
+
+    def get_id(self):
+        return self.id_
