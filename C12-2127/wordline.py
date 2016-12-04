@@ -36,4 +36,6 @@ class WordLine:
         self.lemma = fields.pop()
         self.form = fields.pop()
         self.id_ = int(fields.pop()) # to-do: support multiword integer ranges
-                                     # e.g. 1-2 or 3.5
+                                     # e.g. 1-2 or 3-5
+                                     # to-do: also support empty nodes
+                                     # e.g. 5.1
