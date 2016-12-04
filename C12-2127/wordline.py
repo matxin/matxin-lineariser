@@ -1,7 +1,9 @@
 class WordLine:
     def __init__(self, line):
         fields = line.split('\t')
-        # parse the fields in reverse order by popping them off the end
+
+        # parse fields in reverse by popping
+
         misc = fields.pop()
 
         if misc == '_':
@@ -40,5 +42,13 @@ class WordLine:
                                      # to-do: also support empty nodes
                                      # e.g. 5.1
 
+        self.dependents = []
+
     def get_id(self):
         return self.id_
+
+    def get_head(self):
+        return self.head
+
+    def add_edge(self, sentence):
+        sentence[self.get_head()].dependents.append(self)

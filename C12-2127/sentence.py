@@ -14,4 +14,7 @@ class Sentence:
                 sentence[wordline.get_id()] = wordline
 
     def __init__(self, sentence):
-        pass
+        self.sentence = sentence
+
+        for (id_, wordline in sentence.items()):
+            wordline.add_edge(sentence)
