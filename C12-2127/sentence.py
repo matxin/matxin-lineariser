@@ -16,5 +16,5 @@ class Sentence:
     def __init__(self, sentence):
         self.sentence = sentence
 
-        for (id_, wordline in sentence.items()):
+        for id_, wordline in sentence.items():
             wordline.add_edge(sentence)
