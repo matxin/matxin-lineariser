@@ -2,6 +2,7 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
+import operator, random, copy
 
 class DependencyTree:
     """
@@ -327,40 +328,54 @@ class Dependecy_tree_linearisation:
     """
 
 
-    def __init__(self):
-        self.T = None  # The dependency tree with lifted nodes
+    def __init__(self, tree):
+        self.T = tree  # The dependency tree with lifted nodes
         self.beam_size = None  # maximum beam size
-        self.score = {} #dict of the best scores for different combinations of words
+        self.score = [] #list of tuples( the best scores for different combinations of words)
+        self.beam = []
 
-    def execute_algorithm(self, tree):
+    def execute_algorithm(self):
         """
         executes the linearisation algorithm (algorithm 3 in the paper)
         :return:
         """
-        self.T = tree
         self.beam_size = 1000
 
         for node in self.T.tree:
             domain = self.T.tree[node].give_domain()
-
-            agenda = [None]
+            agenda = [[]]
+            #print ("d", node, domain)
 
             for w in domain:
-                beam = []
+                self.beam = []
+               # print (agenda)
 
                 for l in agenda:
-                    tmp = l
+                    tmp = copy.copy(l)
+                   # print ("l", tmp)
 
                     if w not in l:
-                        tmp1 = tmp.append(w)
-                        beam  = beam + tmp1
-                        self.score[tmp1] = self.compute_score(tmp1)
+                        tmp.append(w)
+                        self.beam.append(tmp)
+                        self.score.append((tmp, self.compute_score(tmp)))
 
-                if len(beam) > self.beam_size:
-                    self.sort_lists_descending_to_score(beam)
-                    agenda = beam[0:self.beam_size]
+
+                if len(self.beam) > self.beam_size:
+                    tmp1 = self.sort_lists_descending_to_score() #returns lists of tuples where 2nd is the score
+                    iter = 0
+                    agenda = []
+
+                    for (a,b) in tmp1:
+                        if iter > self.beam_size:
+                            break
+
+                        iter += 1
+                        agenda.append(a)
+
                 else:
-                    agenda = beam
+                    agenda = self.beam
+
+                print (node, agenda)
 
             #### TO FINISH!!! ####
 
@@ -370,22 +385,16 @@ class Dependecy_tree_linearisation:
         :param l: the list
         :return: score
         """
+        return random.random()
 
-    def sort_lists_descending_to_score(self, beam):
+    def sort_lists_descending_to_score(self):
         """
-        sorts
-        :param beam:
-        :return:
-        """
-
-
-    def sublist(self, beam_size, beam):
-        """
-        sublists the longest possible beam to the word order beam
-        :param beam_size: size
+        sorts the score and beam lists
         :param beam: the current beam
-        :return: the longest possible beam
+        :return: None
         """
+        res = sorted(self.score, key=operator.itemgetter(1), reverse=True)
+        return res
 
     def global_score(self, l):
         """
@@ -401,8 +410,12 @@ if __name__ == "__main__":
 
    # print (tree.head)
 
-    for id in tree.tree:
-        print (id)
-        print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
+    linear = Dependecy_tree_linearisation(tree)
+
+    linear.execute_algorithm()
+
+    #for id in tree.tree:
+     #   print (id)
+      #  print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
         #print (tree.ufeat(id, "-2", "Gender"), tree.ufeat(id, "-1", "Gender"), tree.ufeat(id, "0", "Gender"), tree.ufeat(id, "1", "Gender"), tree.ufeat(id, "2", "Gender"))
-        print (tree.deprel(id, "-2"), tree.deprel(id, "-1"), tree.deprel(id, "0"), tree.deprel(id, "1"), tree.deprel(id, "2"))
+       # print (tree.deprel(id, "-2"), tree.deprel(id, "-1"), tree.deprel(id, "0"), tree.deprel(id, "1"), tree.deprel(id, "2"))
