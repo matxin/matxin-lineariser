@@ -44,6 +44,9 @@ class WordLine:
 
         self.dependents = []
 
+        self.hypotheses = []
+        self.agenda = {}
+
     def get_id(self):
         return self.id_
 
