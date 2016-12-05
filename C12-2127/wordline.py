@@ -65,3 +65,8 @@ class WordLine:
     def get_local_linearization(self):
         """Return a list of dependents' PoS-s ordered by their id-s."""
         raise NotImplementedError
+
+    def apply_rule(self, rule):
+        """Return a list of self and dependents ordered according to
+        rule."""
+        raise NotImplementedError
