@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<root>
+    <linearization-rule probability="0.5" id="2" form="VERB">
+        <dependent id="1" deprel="subj" form="NOUN"/>
+        <dependent id="3" deprel="dobj" form="NOUN"/>
+    </linearization-rule>
+</root>

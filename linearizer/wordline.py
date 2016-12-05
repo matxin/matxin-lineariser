@@ -75,3 +75,10 @@ class WordLine:
         """Increment the rule corresponding to the local configuration
         in the likewise-corresponding Grammar in grammars."""
         raise NotImplementedError
+
+    def get_dependents(self):
+        """Return a deep copy of dependens."""
+        return self.dependents[:]
+
+    def get_edge(self):
+        return (self.deprel, self.form)
