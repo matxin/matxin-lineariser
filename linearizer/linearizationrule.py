@@ -3,7 +3,7 @@ from xml.etree import ElementTree
 class LinearizationRule:
     @classmethod
     def deserialize(cls, grammars, element_tree):
-        probability = float(element_tree.get('probability'))
+        probability = float(element_tree.get('p'))
         linearization_rule = {int(element_tree.get('id')): \
                 ('root', element_tree.get('form'))}
 

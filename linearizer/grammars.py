@@ -1,4 +1,4 @@
-from linearizationrule import LinearizationRule
+from lrule import LinearisationRule
 
 from xml.etree import ElementTree
 
@@ -6,12 +6,13 @@ class Grammars:
     def __init__(self):
         self.grammars = {}
 
-    def __init__(self, xml):
+    def __init__(self, linearisation_rules_etree):
         self.grammars = {}
-        root = ElementTree.parse(xml).getroot()
+        for def_rule_etree in linearisation_rules_etree.findall('def-rule'):
+            LinearisationRule.deserialise(self, def_rule_etree)
 
-        for linearization_rule in root.findall('linearization-rule'):
-            LinearizationRule.deserialize(self, linearization_rule)
+    def get_grammars(self):
+        return grammars
 
     def get_grammar(self, local_configuration):
         """Return local_configuration's Grammar.
