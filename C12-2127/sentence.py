@@ -18,3 +18,7 @@ class Sentence:
 
         for id_, wordline in sentence.items():
             wordline.add_edge(sentence)
+
+    def train(self, grammars):
+        """Train grammars on all the nodes."""
+        raise NotImplementedError

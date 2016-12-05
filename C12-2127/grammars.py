@@ -12,3 +12,7 @@ class Grammars:
         This roughly corresponds to sorted-rules in the paper.
         """
         raise NotImplementedError
+
+    def serialize(self, linearizer_data):
+        """Serialize self to the file linearizer_data."""
+        raise NotImplementedError

@@ -70,3 +70,8 @@ class WordLine:
         """Return a list of self and dependents ordered according to
         rule."""
         raise NotImplementedError
+
+    def train(self, grammars):
+        """Increment the rule corresponding to the local configuration
+        in the likewise-corresponding Grammar in grammars."""
+        raise NotImplementedError
