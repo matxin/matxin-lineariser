@@ -10,3 +10,7 @@ class Grammar:
     def get_probability(self, rule):
         """Return rule's probability."""
         raise NotImplementedError
+
+    def get_rule(self, n):
+        """Return the n-best rule."""
+        raise NotImplementedError

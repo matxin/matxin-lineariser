@@ -1,3 +1,5 @@
+from agenda import Agenda
+
 class WordLine:
     def __init__(self, line):
         fields = line.split('\t')
@@ -45,7 +47,7 @@ class WordLine:
         self.dependents = []
 
         self.hypotheses = []
-        self.agenda = {}
+        self.agenda = Agenda()
 
     def get_id(self):
         return self.id_
