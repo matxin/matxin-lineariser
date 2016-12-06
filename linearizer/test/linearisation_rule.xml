@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<linearisation-rules>
+    <def-rule p="0.5">
+        <NODE ord="2" si="root" pos="VERB">
+            <NODE ord="1" si="subj" pos="NOUN"/>
+            <NODE ord="3" si="nobj" pos="NOUN"/>
+        </NODE>
+    </def-rule>
+</linearisation-rules>

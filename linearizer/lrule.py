@@ -2,7 +2,7 @@ from xml.etree import ElementTree
 
 class LinearisationRule:
     @classmethod
-    def deserialize(cls, grammars, def_rule_etree):
+    def deserialise(cls, grammars, def_rule_etree):
         probability = float(def_rule_etree.get('p'))
         node_etree = def_rule_etree.find('NODE')
         linearisation_rule = {int(node_etree.get('ord')): \
@@ -21,6 +21,6 @@ class LinearisationRule:
             grammars.get_grammars()[local_configuration][probability] = \
                     linearisation_rule
         except(KeyError):
-            grammars.get_grammars()[local_configuration][probability] = {}
+            grammars.get_grammars()[local_configuration] = {}
             grammars.get_grammars()[local_configuration][probability] = \
                     linearisation_rule
