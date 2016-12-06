@@ -1,21 +1,24 @@
 from xml.etree import ElementTree
 
+from word import Word
+
 class LinearisationRule:
     @classmethod
     def deserialise(cls, grammars, def_rule_etree):
         probability = float(def_rule_etree.get('p'))
-        node_etree = def_rule_etree.find('NODE')
-        linearisation_rule = {int(node_etree.get('ord')): \
-                (node_etree.get('si'), node_etree.get('pos'))}
+        head_node_etree = def_rule_etree.find('NODE')
+        linearisation_rule = {}
 
-        for node_etree in node_etree.findall('NODE'):
+        for node_etree in head_node_etree.findall('NODE'):
             linearisation_rule[int(node_etree.get('ord'))] = \
-                    (node_etree.get('si'), node_etree.get('pos'))
+                    (node_etree.get('si'), Word(node_etree))
 
         local_configuration = \
-                frozenset(value for key, value in linearisation_rule.items())
-        linearisation_rule = \
-                [value for key, value in linearisation_rule.items()]
+                ((head_node_etree.get('si'), Word(head_node_etree)), \
+                frozenset([value for value in linearisation_rule.values()]))
+        linearisation_rule[int(head_node_etree.get('ord'))] = \
+                (head_node_etree.get('si'), Word(head_node_etree))
+        linearisation_rule = [value for value in linearisation_rule.values()]
 
         try:
             grammars.get_grammars()[local_configuration][probability] = \
