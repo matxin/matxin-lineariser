@@ -11,4 +11,4 @@ with open('linearisation_rule.xml') as xml:
 
 grammars = Grammars()
 grammars.deserialise(linearisation_rules_etree)
-print(grammars.grammars)
+print(grammars.get_grammars())
