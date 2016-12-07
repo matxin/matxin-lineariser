@@ -41,6 +41,8 @@ class DependencyTree:
         for no in range(0, 9):
             temp.update_field(self.no2field[str(no)], list[no])
 
+        temp.beam = [[temp.fields["form"]]]
+
         self.tree[temp.fields["id"]] = temp
         self.tree[temp.fields["id"]].extract_features()
 
@@ -78,13 +80,13 @@ class DependencyTree:
         """
 
         for id in self.tree:
-            self.tree[id].domain = [self.tree[id].fields["form"]]
+            self.tree[id].domain = [id]
 
             #print (node.domain)
 
             for child in self.tree[id].fields["children"]:
                 #print (int(child))
-                self.tree[id].domain.append(self.tree[child].fields["form"])
+                self.tree[id].domain.append(child)
             #print(node.domain)
 
     def set_neigbouring_nodes(self):
@@ -214,7 +216,7 @@ class DependencyTreeNode:
 
         self.domain = [] # words that are direct children and the node itself
         self.agenda = None  # word order beam
-        self.beam = None  # beam for a node
+        self.beam = []  # beam for a node
 
     def update_field(self, id, val):
         """
@@ -271,7 +273,7 @@ class Convert2dependencytree:
         reads a file in conllu, splits fields and invokes adding a node
         :return:
         """
-        fhand = open("test1.conllu")
+        fhand = open("test.conllu")
 
         for line in fhand:
 
@@ -332,7 +334,57 @@ class Dependecy_tree_linearisation:
         self.T = tree  # The dependency tree with lifted nodes
         self.beam_size = None  # maximum beam size
         self.score = [] #list of tuples( the best scores for different combinations of words)
-        self.beam = []
+
+    def DFS(self, node):
+        """
+        depth-first search - transverses recursively the tree bottom-up and generates all posible word orders,
+        keeps the best 1000
+        :param node: the current node
+        :return: None
+        """
+        for child in self.T.tree[node].fields["children"]:
+            self.DFS(child)
+
+        domain = self.T.tree[node].give_domain()
+
+        #print (domain)
+        if len(domain) > 1:
+            self.T.tree[node].beam = self.generate_permutations(domain, [], [])
+        print (node, self.T.tree[node].beam)
+
+    def generate_permutations(self, domain, permutation, d_used):
+        """
+        generates all possible word orders for a given domain in a recursive fashion
+        :param domain:
+        :param permutation:
+        :param d_used:
+        :return:
+        """
+        #print (permutation, domain)
+        #print (d_used)
+        if len(d_used) == len(domain):
+            #print (permutation)
+            return [permutation]
+
+        res = []
+
+        for id in domain:
+            if id in d_used:
+                continue
+
+            used = copy.copy(d_used)
+            used.append(id)
+            #print (d_used)
+            for beam in self.T.tree[id].beam:
+                #print (beam)
+                #permutation.append(beam)
+                #print (permutation, beam)
+                tmp = copy.copy(permutation)
+                tmp += beam
+               # print (tmp)
+                res += self.generate_permutations(domain, tmp, copy.copy(used))
+
+        return res
 
     def execute_algorithm(self):
         """
@@ -341,7 +393,9 @@ class Dependecy_tree_linearisation:
         """
         self.beam_size = 1000
 
-        for node in self.T.tree:
+        self.DFS(self.T.head)
+
+        """ for node in self.T.tree:
             domain = self.T.tree[node].give_domain()
             agenda = [[]]
             #print ("d", node, domain)
@@ -377,7 +431,7 @@ class Dependecy_tree_linearisation:
 
                 print (node, agenda)
 
-            #### TO FINISH!!! ####
+            #### TO FINISH!!! ####"""
 
     def compute_score(self, l):
         """
