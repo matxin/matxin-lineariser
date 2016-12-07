@@ -23,6 +23,8 @@ class DependencyTreeNode:
 
         self.features = {}
 
+        self.score = []
+
         self.neighbouring_nodes = { # indices of nodes that are +n -> nchildren, -n -> nparents
             "-2": [],
             "-1": [],
