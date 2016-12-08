@@ -29,10 +29,10 @@ class Word:
         if type(other) is not type(self):
             return False
 
-        if self.upostag != other.upostag:
+        if self.get_upostag() != other.get_upostag():
             return False
 
-        if self.feats == {} or other.feats == {}:
+        if len(self.get_feats()) == 0 or len(other.get_feats()) == 0:
             return True
 
-        return self.feats == other.feats
+        return self.get_feats() == other.get_feats()
