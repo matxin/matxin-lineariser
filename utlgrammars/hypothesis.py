@@ -5,7 +5,14 @@ class Hypothesis:
         Indexes the new hypothesis in by its probability in the node's
         agenda.
         """
-        raise NotImplementedError
+
+        self.node = node
+        self.daughters = daughters
+        self.indices = indices
+        self.get_node().get_agend().insert_hypothesis(self.score(), self)
+
+    def get_node(self):
+        return self.node
 
     def score(self):
         """Roughly corresponds to score-hypothesis in the paper."""

@@ -90,3 +90,6 @@ class WordLine:
 
     def get_word(self):
         return self.word
+
+    def get_agend(self):
+        return self.agenda
