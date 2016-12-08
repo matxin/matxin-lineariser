@@ -2,6 +2,7 @@ from lrule import LinearisationRule
 
 from xml.etree import ElementTree
 
+
 class Grammars:
     def __init__(self):
         self.grammars = {}

@@ -1,22 +1,21 @@
 class Hypothesis:
-    def __init__(self, node, daughters, indices):
+    @classmethod
+    def new_hypothesis(cls, node, daughters, indices):
         """Roughly corresponds to new-hypothesis in the paper.
         
-        Indexes the new hypothesis in by its probability in the node's
+        Indexes the new hypothesis by its probability in the node's
         agenda.
         """
+        hypothesis = Hypothesis(node, daughters, indices)
+        node.get_agenda().insert_hypothesis(hypothesis.score(), hypothesis)
 
+    def __init__(self, node, daughters, indices):
         self.node = node
         self.daughters = daughters
         self.indices = indices
-        self.get_node().get_agend().insert_hypothesis(self.score(), self)
-
-    def get_node(self):
-        return self.node
 
     def score(self):
         """Roughly corresponds to score-hypothesis in the paper."""
-
         score = self.get_node().get_sorted_rules()[self.get_indices()[0]][0]
 
         if len(self.get_daughters()) == 0:
@@ -26,6 +25,9 @@ class Hypothesis:
             score *= daughter.score()
 
         return score
+
+    def get_node(self):
+        return self.node
 
     def get_indices(self):
         return self.indices

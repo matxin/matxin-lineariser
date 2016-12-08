@@ -2,6 +2,7 @@ from xml.etree import ElementTree
 
 from word import Word
 
+
 class LinearisationRule:
     @classmethod
     def deserialise(cls, grammars, def_rule_etree):
@@ -23,7 +24,7 @@ class LinearisationRule:
         try:
             grammars.get_grammars()[local_configuration][probability] = \
                     linearisation_rule
-        except(KeyError):
+        except (KeyError):
             grammars.get_grammars()[local_configuration] = {}
             grammars.get_grammars()[local_configuration][probability] = \
                     linearisation_rule

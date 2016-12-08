@@ -1,10 +1,10 @@
 from agenda import Agenda
 from word import Word
 
+
 class WordLine:
     def __init__(self, line):
         fields = line.split('\t')
-
         # parse fields in reverse by popping
 
         misc = fields.pop()
@@ -39,13 +39,14 @@ class WordLine:
         self.word = Word(upostag, feats)
         self.lemma = fields.pop()
         self.form = fields.pop()
-        self.id_ = int(fields.pop()) # to-do: support multiword integer ranges
-                                     # e.g. 1-2 or 3-5
-                                     # to-do: also support empty nodes
-                                     # e.g. 5.1
+
+        # to-do
+        # =====
+        # - support multiword integer ranges (e.g. 1-2 or 3-5)
+        # - also support empty nodes (e.g. 5.1)
+        self.id_ = int(fields.pop())
 
         self.dependents = []
-
         self.hypotheses = []
         self.agenda = Agenda()
 
@@ -54,19 +55,36 @@ class WordLine:
 
     def add_edge(self, sentence):
         try:
-            sentence.get_sentence()[self.get_head()].dependents.append(self) 
-        except(KeyError):
+            sentence.get_sentence()[self.get_head()].dependents.append(self)
+        except (KeyError):
             sentence.root = self
+
+    def get_hypotheses(self):
+        return self.hypotheses
 
     def get_local_configuration(self):
         """Return a set of the dependents' deprel-s."""
-        return ((self.get_deprel(), self.get_word()), \
-                frozenset((dependent.get_deprel(), dependent.get_word()) \
-                for dependent in self.get_dependents()))
+        return ((self.get_deprel(), self.get_word()), frozenset(
+            (dependent.get_deprel(), dependent.get_word())
+            for dependent in self.get_dependents()))
 
-    def get_local_linearization(self):
-        """Return a list of dependents' PoS-s ordered by their id-s."""
-        raise NotImplementedError
+    def get_deprel(self):
+        return self.deprel
+
+    def get_word(self):
+        return self.word
+
+    def get_dependents(self):
+        return self.dependents
+
+    def get_rules(self):
+        return self.rules
+
+    def get_agenda(self):
+        return self.agenda
+
+    def get_sorted_rules(self):
+        return self.sorted_rules
 
     def apply_rule(self, rule):
         """Return a list of self and dependents ordered according to
@@ -78,23 +96,6 @@ class WordLine:
         in the likewise-corresponding Grammar in grammars."""
         raise NotImplementedError
 
-    def get_dependents(self):
-        """Return a deep copy of dependens."""
-        return self.dependents[:]
-
-    def get_deprel(self):
-        return self.deprel
-
-    def get_word(self):
-        return self.word
-
-    def get_agenda(self):
-        return self.agenda
-
-    def get_rules(self):
-        return self.rules
-
-    def get_sorted_rules(self):
-        sorted_rules = list(self.get_rules())
-        sorted_rules.sort(reverse=True)
-        return sorted_rules
+    def get_local_linearisation(self):
+        """Return a list of dependents' PoS-s ordered by their id-s."""
+        raise NotImplementedError
