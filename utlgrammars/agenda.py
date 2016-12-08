@@ -12,8 +12,7 @@ class Agenda:
         try:
             self.get_agenda()[probability].append(hypothesis)
         except(KeyError):
-            self.get_agenda()[probability] = []
-            self.get_agenda()[probability].append(hypothesis)
+            self.get_agenda()[probability] = [hypothesis]
 
     def get_agenda(self):
         return self.agenda
@@ -23,5 +22,10 @@ class Agenda:
         probability."""
 
         agenda = list(self.get_agenda.items())
-        agenda.sort(reverse=True)
-        return agenda[0][1].pop()
+        agenda.sort()
+        hypothesis = agenda[-1][1].pop()
+
+        if len(agenda.[-1][1] == 0):
+            del self.get_agenda()[agenda[-1][0]]
+
+        return hypothesis

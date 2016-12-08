@@ -14,4 +14,4 @@ class Grammars:
         return self.grammars
 
     def get_grammar(self, local_configuration):
-        return self.getgrammars()[local_configuration]
+        return self.get_grammars()[local_configuration]
