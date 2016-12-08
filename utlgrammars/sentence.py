@@ -14,6 +14,8 @@ class Sentence:
                 wordline = WordLine(line)
                 sentence[wordline.get_id()] = wordline
 
+        yield Sentence(sentence)
+
     def __init__(self, sentence):
         self.sentence = sentence
 

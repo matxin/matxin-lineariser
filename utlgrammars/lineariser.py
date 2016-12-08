@@ -1,3 +1,4 @@
+from grammars import Grammars
 from hypothesis import Hypothesis
 
 from xml.etree import ElementTree

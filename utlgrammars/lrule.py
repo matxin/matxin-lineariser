@@ -11,20 +11,20 @@ class LinearisationRule:
         linearisation_rule = {}
 
         for node_etree in head_node_etree.findall('NODE'):
-            linearisation_rule[int(node_etree.get('ord'))] = \
-                    (node_etree.get('si'), Word(node_etree))
+            linearisation_rule[int(node_etree.get('ord'))] = (
+                node_etree.get('si'), Word.deserialise(node_etree))
 
-        local_configuration = \
-                ((head_node_etree.get('si'), Word(head_node_etree)), \
-                frozenset([value for value in linearisation_rule.values()]))
-        linearisation_rule[int(head_node_etree.get('ord'))] = \
-                (head_node_etree.get('si'), Word(head_node_etree))
+        local_configuration = (
+            (head_node_etree.get('si'), Word.deserialise(head_node_etree)),
+            frozenset([value for value in linearisation_rule.values()]))
+        linearisation_rule[int(head_node_etree.get('ord'))] = (
+            head_node_etree.get('si'), Word.deserialise(head_node_etree))
         linearisation_rule = [value for value in linearisation_rule.values()]
 
         try:
-            grammars.get_grammars()[local_configuration][probability] = \
-                    linearisation_rule
+            grammars.get_grammars()[local_configuration][
+                probability] = linearisation_rule
         except (KeyError):
             grammars.get_grammars()[local_configuration] = {}
-            grammars.get_grammars()[local_configuration][probability] = \
-                    linearisation_rule
+            grammars.get_grammars()[local_configuration][
+                probability] = linearisation_rule

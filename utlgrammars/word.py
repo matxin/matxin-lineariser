@@ -13,6 +13,12 @@ class Word:
         else:
             self.feats = dict(feat.split('=') for feat in feats.split('|'))
 
+    def __hash__(self):
+        return hash(self.get_upostag())
+
+    def get_upostag(self):
+        return self.upostag
+
     def __eq__(self, other):
         if type(other) is not type(self):
             return False
@@ -24,9 +30,6 @@ class Word:
             return True
 
         return self.get_feats() == other.get_feats()
-
-    def get_upostag(self):
-        return self.upostag
 
     def get_feats(self):
         return self.feats
