@@ -16,10 +16,7 @@ class Hypothesis:
 
     def score(self):
         """Roughly corresponds to score-hypothesis in the paper."""
-        score = self.get_node().get_sorted_rules()[self.get_indices()[0]][0]
-
-        if len(self.get_daughters()) == 0:
-            return score
+        score = self.get_node().get_sorted_rules()[self.get_indices()[0]]
 
         for daughter in self.get_daughters():
             score *= daughter.score()

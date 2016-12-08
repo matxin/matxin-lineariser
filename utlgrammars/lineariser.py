@@ -27,10 +27,16 @@ class Lineariser:
 
         if i == 0:
             print('i is 0')
-            node.rules = self.get_grammars().get_grammar(
-                node.get_local_configuration())
-            node.sorted_rules = list(node.get_rules())
-            node.sorted_rules.sort(reverse=True)
+
+            if len(node.get_dependents()) == 0:
+                node.rules = {1.0: [(node.get_deprel(), node.get_word())]}
+                node.sorted_rules = [1.0]
+            else:
+                node.rules = self.get_grammars().get_grammar(
+                        node.get_local_configuration())
+                node.sorted_rules = list(node.get_rules())
+                node.sorted_rules.sort(reverse=True)
+
             indices = [0]
             daughters = []
 
@@ -62,7 +68,7 @@ class Lineariser:
             if len(daughters) != 0:
                 Hypothesis.new_hypothesis(node, daughters, indices)
 
-        node.hypotheses[i] = hypothesis
+        node.get_hypotheses().append(hypothesis)
         return hypothesis
 
     @classmethod

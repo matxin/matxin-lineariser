@@ -25,7 +25,7 @@ class Agenda:
         """Pop the last hypothesis from the list with the highest
         probability."""
         print('pop_hypothesis')
-        agenda = list(self.get_agenda.items())
+        agenda = list(self.get_agenda().items())
         agenda.sort()
         hypothesis = agenda[-1][1].pop()
 
