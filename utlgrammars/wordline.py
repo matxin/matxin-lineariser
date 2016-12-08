@@ -1,4 +1,5 @@
 from agenda import Agenda
+from word import Word
 
 class WordLine:
     def __init__(self, line):
@@ -25,9 +26,7 @@ class WordLine:
         feats = fields.pop()
 
         if feats == '_':
-            self.feats = None
-        else:
-            self.feats = dict(feat.split('=') for feat in feats.split('|'))
+            feats = None
 
         xpostag = fields.pop()
 
@@ -36,7 +35,8 @@ class WordLine:
         else:
             self.xpostag = xpostag
 
-        self.upostag = fields.pop()
+        upostag = fields.pop()
+        self.word = Word(upostag, feats)
         self.lemma = fields.pop()
         self.form = fields.pop()
         self.id_ = int(fields.pop()) # to-do: support multiword integer ranges
@@ -56,11 +56,16 @@ class WordLine:
         return self.head
 
     def add_edge(self, sentence):
-        sentence[self.get_head()].dependents.append(self)
+        try:
+            sentence.get_sentence()[self.get_head()].dependents.append(self) 
+        except(KeyError):
+            sentence.root = self
 
     def get_local_configuration(self):
         """Return a set of the dependents' deprel-s."""
-        raise NotImplementedError
+        return ((self.get_deprel(), self.get_word()), \
+                frozenset((dependent.get_deprel(), dependent.get_word()) \
+                for dependent in self.get_dependents()))
 
     def get_local_linearization(self):
         """Return a list of dependents' PoS-s ordered by their id-s."""
@@ -80,5 +85,8 @@ class WordLine:
         """Return a deep copy of dependens."""
         return self.dependents[:]
 
-    def get_edge(self):
-        return (self.deprel, self.form)
+    def get_deprel(self):
+        return self.deprel
+
+    def get_word(self):
+        return self.word

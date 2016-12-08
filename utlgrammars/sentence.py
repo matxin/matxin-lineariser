@@ -17,7 +17,10 @@ class Sentence:
         self.sentence = sentence
 
         for id_, wordline in sentence.items():
-            wordline.add_edge(sentence)
+            wordline.add_edge(self)
+
+    def get_sentence(self):
+        return self.sentence
 
     def train(self, grammars):
         """Train grammars on all the nodes."""
