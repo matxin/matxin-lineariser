@@ -93,3 +93,11 @@ class WordLine:
 
     def get_agend(self):
         return self.agenda
+
+    def get_rules(self):
+        return self.rules
+
+    def get_sorted_rules(self):
+        sorted_rules = list(self.get_rules())
+        sorted_rules.sort(reverse=True)
+        return sorted_rules
