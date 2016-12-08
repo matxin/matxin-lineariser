@@ -2,7 +2,7 @@ from wordline import WordLine
 
 class Sentence:
     @classmethod
-    def deserialize(cls, conllu):
+    def deserialise(cls, conllu):
         sentence = {}
 
         for line in conllu:
