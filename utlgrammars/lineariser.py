@@ -1,6 +1,14 @@
+from xml.etree import ElementTree
+
 class Lineariser:
-    def __init__(self, lineariser_data):
-        self.grammars = Grammars(lineariser_data)
+    def __init__(self):
+        self.grammars = Grammars()
+
+    def deserialise(self, xml):
+        self.get_grammars().deserialise(ElementTree.parse(xml).getroot())
+
+    def get_grammars(self):
+        return self.grammars
 
     def linearise_node(self, root, n):
         """Roughly corresponds to linearise-node in the paper."""
