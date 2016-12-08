@@ -16,11 +16,14 @@ class Sentence:
     def __init__(self, sentence):
         self.sentence = sentence
 
-        for id_, wordline in sentence.items():
+        for wordline in sentence.values():
             wordline.add_edge(self)
 
     def get_sentence(self):
         return self.sentence
+
+    def get_root(self):
+        return self.root
 
     def train(self, grammars):
         """Train grammars on all the nodes."""

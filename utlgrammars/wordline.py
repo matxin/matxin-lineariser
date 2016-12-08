@@ -49,9 +49,6 @@ class WordLine:
         self.hypotheses = []
         self.agenda = Agenda()
 
-    def get_id(self):
-        return self.id_
-
     def get_head(self):
         return self.head
 
@@ -91,7 +88,7 @@ class WordLine:
     def get_word(self):
         return self.word
 
-    def get_agend(self):
+    def get_agenda(self):
         return self.agenda
 
     def get_rules(self):

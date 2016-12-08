@@ -3,7 +3,6 @@ class Word:
     def deserialise(cls, node_etree):
         upostag = node_etree.get('pos')
         feats = node_etree.get('feats')
-
         return Word(upostag, feats)
 
     def __init__(self, upostag, feats):
@@ -22,8 +21,8 @@ class Word:
 
     def __repr__(self):
         return '<' + self.__module__ + '.' + self.__class__.__name__ + \
-                ' upostag=' + repr(self.upostag) + \
-                ' feats=' + repr(self.feats) + '>'
+                ' upostag=' + repr(self.get_upostag()) + \
+                ' feats=' + repr(self.get_feats()) + '>'
 
     def __eq__(self, other):
         if type(other) is not type(self):
