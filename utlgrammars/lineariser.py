@@ -21,11 +21,12 @@ class Lineariser:
     def hypothesise_node(self, node, i):
         """Roughly corresponds to hypothesise-node in the paper."""
         try:
-            return node.get_hypotheses()
+            return node.get_hypotheses()[i]
         except (IndexError):
             pass
 
         if i == 0:
+            print('i is 0')
             node.rules = self.get_grammars().get_grammar(
                 node.get_local_configuration())
             node.sorted_rules = list(node.get_rules())
@@ -42,9 +43,11 @@ class Lineariser:
         try:
             hypothesis = node.get_agenda().pop_hypothesis()
         except (IndexError):
+            print('Returning from empty agenda exception...')
             return
 
         for indices in self.advance_indices(hypothesis.get_indices()):
+            print('indices is ' + repr(indices))
             daughters = []
 
             for index, dependent in enumerate(node.get_dependents()):
