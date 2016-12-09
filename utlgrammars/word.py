@@ -43,7 +43,7 @@ class Word:
 
     def __str__(self):
         return self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
-                '  upostag = ' + repr(self.get_upostag) + '\n' + \
+                '  upostag = ' + repr(self.get_upostag()) + '\n' + \
                 '  feats = ' + Printing.shift_str(
                         Printing.print_dict(self.get_feats())) + '\n' + \
                 '}'

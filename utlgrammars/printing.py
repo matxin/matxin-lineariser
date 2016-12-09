@@ -75,4 +75,4 @@ class Printing:
     @classmethod
     def print_frozenset(cls, frozenset_, print_item=str, shift=1,
                         shiftwidth=2):
-        return cls.print_list(frozenset_, print_item, shift, shiftwidth)
+        return cls.print_list(list(frozenset_), print_item, shift, shiftwidth)
