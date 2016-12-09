@@ -1,0 +1,35 @@
+gdb ./GDBPrint
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.04) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./GDBPrint...done.
+(gdb) b 24
+Breakpoint 1 at 0x400c52: file GDBPrint.cpp, line 24.
+(gdb) run
+Starting program: ~/github.com/m5w/matxin-lineariser/utlgrammars/test/GDBPrint 
+
+Breakpoint 1, main () at GDBPrint.cpp:24
+24		return 0;
+(gdb) p map
+$1 = std::map with 2 elements = {[0] = 1, [2] = 3}
+(gdb) p set
+$2 = std::set with 2 elements = {[0] = 0, [1] = 1}
+(gdb) p pair
+$3 = {first = 0, second = 1}
+(gdb) p vector
+$4 = std::vector of length 2, capacity 2 = {0, 1}
+(gdb) c
+Continuing.
+[Inferior 1 (process 23454) exited normally]
+(gdb) q
