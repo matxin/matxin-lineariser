@@ -2,7 +2,7 @@ class Hypothesis:
     @classmethod
     def new_hypothesis(cls, node, daughters, indices):
         """Roughly corresponds to new-hypothesis in the paper.
-        
+
         Indexes the new hypothesis by its probability in the node's
         agenda.
         """
@@ -35,7 +35,12 @@ class Hypothesis:
     def instantiate(self):
         """Roughly corresponds to instantiate-hypothesis in the
         paper.
-        
+
         hypothesize_node should set WordLine.rules to an appropriate
         Grammar, so this method does not need to know about Grammars.
         """
+
+    def __repr__(self):
+        return self.__module__ + '.' + self.__class__.__name__ + '(' + repr(
+            self.get_node()) + ', ' + repr(self.get_daughters()) + ', ' + repr(
+                self.get_indices()) + ')'
