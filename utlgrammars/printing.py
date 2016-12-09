@@ -75,4 +75,8 @@ class Printing:
     @classmethod
     def print_frozenset(cls, frozenset_, print_item=str, shift=1,
                         shiftwidth=2):
-        return cls.print_list(list(frozenset_), print_item, shift, shiftwidth)
+        frozenset_list_ = list(frozenset_)
+        frozenset_list_.sort()
+        return cls.print_iterable(
+            cls.get_module_qualname(frozenset_), frozenset_list_, print_item,
+            shift, shiftwidth)
