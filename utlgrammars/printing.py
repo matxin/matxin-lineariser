@@ -11,17 +11,17 @@ class Printing:
         dict_items_list_ = list(dict_.items())
         dict_items_list_.sort()
         return cls.print_iterable(
-            cls.get_name(dict_), dict_items_list_, print_item)
+            cls.get_module_qualname(dict_), dict_items_list_, print_item)
 
     @classmethod
-    def get_name(cls, object_):
+    def get_module_qualname(cls, object_):
         class_ = object_.__class__
-        return class_.__module__ + '.' + class_.__name__
+        return '{0}.{1}'.format(class_.__module__, class_.__qualname__)
 
     @classmethod
-    def print_iterable(cls, name_, iterable_, print_item):
+    def print_iterable(cls, qualname_, iterable_, print_item):
         iterable_len_ = len(iterable_)
-        str_ = name_ + ' of len ' + str(iterable_len_) + ' = {'
+        str_ = qualname_ + ' of len ' + str(iterable_len_) + ' = {'
 
         if iterable_len_ != 0:
             str_ += '\n  ' + print_item(iterable_[0])
@@ -37,4 +37,9 @@ class Printing:
 
     @classmethod
     def print_list(cls, list_, print_item=repr):
-        return cls.print_iterable(cls.get_name(list_), list_, print_item)
+        return cls.print_iterable(
+            cls.get_module_qualname(list_), list_, print_item)
+
+    @classmethod
+    def print_tuple(cls, tuple_, print_item=repr):
+        return cls.print_list(tuple_, print_item)
