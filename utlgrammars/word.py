@@ -45,5 +45,7 @@ class Word:
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  upostag = ' + repr(self.get_upostag()) + '\n' + \
                 '  feats = ' + Printing.shift_str(
-                        Printing.print_dict(self.get_feats())) + '\n' + \
+                    Printing.print_dict(
+                        self.get_feats(), print_key=repr,
+                        print_value=repr)) + '\n' + \
                 '}'
