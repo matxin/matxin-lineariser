@@ -67,7 +67,9 @@ class WordLine:
 
     def get_local_configuration(self):
         """Return a set of the dependents' deprel-s."""
-        return ((self.get_deprel(), self.get_word()), frozenset({(dependent.get_deprel(), dependent.get_word()) for dependent in self.get_dependents()}))
+        return ((self.get_deprel(), self.get_word()),
+                frozenset({(dependent.get_deprel(), dependent.get_word())
+                           for dependent in self.get_dependents()}))
 
     def get_deprel(self):
         return self.deprel

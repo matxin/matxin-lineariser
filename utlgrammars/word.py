@@ -37,3 +37,16 @@ class Word:
     def __repr__(self):
         return self.__module__ + '.' + self.__class__.__name__ + '(' + repr(
             self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'
+
+    def __str__(self):
+        str_ = self.__module__ + '.' + self.__class__.__name__ + '{\n' + \
+                'upostag = ' + str(self.get_upostag()) + '\n' + \
+                '  feats = {'
+
+        if len(self.get_feats()) != 0:
+            str_ += '\n'
+            for key, value in self.get_feats().items():
+                str_ += key.rjust(8) + ': ' + value + '\n'
+
+        str_ += '}\n' + \
+                '}'
