@@ -6,8 +6,8 @@ class Printing:
     @classmethod
     def print_dict(cls,
                    dict_,
-                   print_key=repr,
-                   print_value=repr,
+                   print_key=str,
+                   print_value=str,
                    shift=1,
                    shiftwidth=2):
         def print_item(item):
@@ -27,15 +27,18 @@ class Printing:
     @classmethod
     def print_iterable(cls, qualname_, iterable_, print_item, shift,
                        shiftwidth):
+        def print_item_(item):
+            return cls.shift_str(print_item(item), shift, shiftwidth)
+
         iterable_len_ = len(iterable_)
         str_ = qualname_ + ' of len ' + str(iterable_len_) + ' = {'
 
         if iterable_len_ != 0:
-            str_ += '\n  ' + print_item(iterable_[0])
+            str_ += '\n  ' + print_item_(iterable_[0])
 
             for index in range(1, iterable_len_):
                 str_ += ',\n' + \
-                        '  ' + cls.shift_str(print_item(iterable_[index]), shift, shiftwidth)
+                        '  ' + print_item_(iterable_[index])
 
             str_ += '\n'
 
