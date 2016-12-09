@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <linearisation-rules>
-    <def-rule p="1">
+    <def-rule p="0.5">
 	<NODE ord="2" si="root" pos="VERB">
 	    <NODE ord="1" si="nsubj" pos="PRON"/>
 	    <NODE ord="3" si="obj" pos="NOUN"/>
 	    <NODE ord="4" si="punct" pos="PUNCT"/>
 	</NODE>
     </def-rule>
-    <def-rule p="1">
+    <def-rule p="0.5">
 	<NODE ord="2" si="obj" pos="NOUN">
 	    <NODE ord="1" si="det" pos="DET"/>
 	</NODE>

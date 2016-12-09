@@ -1,5 +1,6 @@
 from xml.etree import ElementTree
 
+from lconfiguration import LocalConfiguration
 from word import Word
 
 
@@ -14,12 +15,13 @@ class LinearisationRule:
             linearisation_rule[int(node_etree.get('ord'))] = (
                 node_etree.get('si'), Word.deserialise(node_etree))
 
-        local_configuration = (
-            (head_node_etree.get('si'), Word.deserialise(head_node_etree)),
-            frozenset([value for value in linearisation_rule.values()]))
+        local_configuration = LocalConfiguration(
+            head_node_etree.get('si'),
+            Word.deserialise(head_node_etree),
+            frozenset(linearisation_rule.values()))
         linearisation_rule[int(head_node_etree.get('ord'))] = (
             head_node_etree.get('si'), Word.deserialise(head_node_etree))
-        linearisation_rule = [value for value in linearisation_rule.values()]
+        linearisation_rule = list(linearisation_rule.values())
 
         try:
             grammars.get_grammars()[local_configuration][

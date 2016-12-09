@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<linearisation-rules>
+    <def-rule p="0.5"> 
+        <NODE ord="2" si="root" pos="VERB"> <!-- _ these differ _ language -->
+            <NODE ord="1" si="nsubj" pos="NOUN"/>
+            <NODE ord="3" si="obl" pos="NOUN"/>
+        </NODE>
+    </def-rule>
+
+
+    <def-rule p="0.5"> 
+        <NODE ord="2" si="root" pos="VERB"> <!-- _ these differ _ other _ language -->
+            <NODE ord="1" si="nsubj" pos="PRON"/>
+            <NODE ord="3" si="obl" pos="PRON"/>
+            <NODE ord="4" si="obl" pos="NOUN"/>
+            <NODE ord="5" si="punct" pos="PUNCT"/>
+        </NODE>
+    </def-rule>
+
+    <def-rule p="0.5">
+        <NODE ord="3" pos="PRON"> <!-- from each other -->
+            <NODE ord="2" si="det" pos="DET"/>
+            <NODE ord="1" si="case" pos="ADP"/>
+        </NODE>
+    </def-rule>
+
+
+    <def-rule p="0.5">
+        <NODE ord="2" pos="PRON"> <!-- All these -->
+            <NODE ord="1" si="det" pos="DET"/>
+        </NODE>
+    </def-rule>
+
+    <def-rule p="0.5"> 
+        <NODE ord="2" pos="NOUN"> <!-- in language _ customs -->
+            <NODE ord="1" si="case" pos="ADP"/>
+            <NODE ord="3" si="conj" pos="NOUN"/>
+        </NODE>
+    </def-rule>
+
+    <def-rule p="0.5">
+        <NODE ord="2" pos="NOUN"> <!-- and laws -->
+            <NODE ord="1" si="cc" pos="CCONJ"/>
+        </NODE>
+    </def-rule>
+
+    <def-rule p="0.5">
+        <NODE ord="2" si="conj" pos="NOUN"> <!-- , customs -->
+            <NODE ord="1" lem="," si="punct" pos="PUNCT"/>
+        </NODE>
+    </def-rule>
+
+    <def-rule p="0.5">
+        <NODE ord="1" si="root" pos="VERB"> <!-- differ _ . -->
+            <NODE ord="2" lem="." si="punct" pos="PUNCT"/>
+        </NODE>
+    </def-rule>
+
+</linearisation-rules>

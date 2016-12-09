@@ -1,5 +1,7 @@
 from printing import Printing
 
+from grammars import Grammars
+
 
 class Hypothesis:
     @classmethod
@@ -10,7 +12,11 @@ class Hypothesis:
         agenda.
         """
         hypothesis = Hypothesis(node, daughters, indices)
-        node.get_agenda().insert_hypothesis(hypothesis.score(), hypothesis)
+
+        try:
+            node.get_agenda().insert_hypothesis(hypothesis.score(), hypothesis)
+        except(IndexError):
+            pass
 
     def __init__(self, node, daughters, indices):
         self.node = node

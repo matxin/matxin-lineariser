@@ -37,6 +37,18 @@ class Word:
     def get_feats(self):
         return self.feats
 
+    def __lt__(self, other):
+        if type(other) is not type(self):
+            raise TypeError
+
+        if self.get_upostag() != other.get_upostag():
+            return self.get_upostag() < other.get_upostag()
+
+        if len(self.get_feats()) != 0 and len(other.get_feats()) != 0:
+            return self.get_feats() < other.get_feats()
+
+        return False
+
     def __repr__(self):
         return Printing.get_module_qualname(self) + '(' + repr(
             self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'

@@ -23,16 +23,9 @@ class Grammars:
         '  grammars = ' + Printing.shift_str(
             Printing.print_dict(
                 self.get_grammars(),
-                print_key=self.print_local_configuration,
                 print_value=self.print_grammar)) + '\n' + \
                 '}'
         return str_
-
-    @classmethod
-    def print_local_configuration(cls, local_configuration):
-        return Printing.print_tuple(
-            local_configuration,
-            print_item=[cls.print_edge, cls.print_dependents])
 
     @classmethod
     def print_edge(cls, edge):
