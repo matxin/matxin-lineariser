@@ -1,4 +1,5 @@
 from agenda import Agenda
+from printing import Printing
 from word import Word
 
 
@@ -102,3 +103,12 @@ class WordLine:
     def get_local_linearisation(self):
         """Return a list of dependents' PoS-s ordered by their id-s."""
         raise NotImplementedError
+
+    def __str__(self):
+        return Printing.get_module_qualname(self) + ' = {\n' + \
+                '  id = ' + str(self.get_id()) + '\n' + \
+                '  word = ' + Printing.shift_str(
+                        str(self.get_word())) + '\n' + \
+                '  head = ' + str(self.get_head()) + '\n' + \
+                '  deprel = ' + repr(self.get_deprel()) + '\n' + \
+                '}'
