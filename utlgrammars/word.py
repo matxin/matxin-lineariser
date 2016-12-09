@@ -42,12 +42,8 @@ class Word:
             self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'
 
     def __str__(self):
-        str_ = self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
-                '  upostag = ' + Printing.print_str(self.get_upostag()) + '\n' + \
-                '  feats = '
-
-        feats = list(self.get_feats().items())
-        feats.sort()
-        str_ += Printing.shift_str(Printing.print_dict(feats)) + '\n' + \
+        return self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
+                '  upostag = ' + repr(self.get_upostag) + '\n' + \
+                '  feats = ' + Printing.shift_str(
+                        Printing.print_dict(self.get_feats())) + '\n' + \
                 '}'
-        return str_
