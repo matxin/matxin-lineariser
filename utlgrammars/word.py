@@ -1,3 +1,6 @@
+from printing import Printing
+
+
 class Word:
     @classmethod
     def deserialise(cls, node_etree):
@@ -39,14 +42,12 @@ class Word:
             self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'
 
     def __str__(self):
-        str_ = self.__module__ + '.' + self.__class__.__name__ + '{\n' + \
-                'upostag = ' + str(self.get_upostag()) + '\n' + \
-                '  feats = {'
+        str_ = self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
+                '  upostag = ' + Printing.print_str(self.get_upostag()) + '\n' + \
+                '  feats = '
 
-        if len(self.get_feats()) != 0:
-            str_ += '\n'
-            for key, value in self.get_feats().items():
-                str_ += key.rjust(8) + ': ' + value + '\n'
-
-        str_ += '}\n' + \
+        feats = list(self.get_feats().items())
+        feats.sort()
+        str_ += Printing.shift_str(Printing.print_dict(feats)) + '\n' + \
                 '}'
+        return str_
