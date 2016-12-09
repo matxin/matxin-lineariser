@@ -26,8 +26,6 @@ class Lineariser:
             pass
 
         if i == 0:
-            print('i is 0')
-
             if len(node.get_dependents()) == 0:
                 node.rules = {1.0: [(node.get_deprel(), node.get_word())]}
                 node.sorted_rules = [1.0]
@@ -49,11 +47,9 @@ class Lineariser:
         try:
             hypothesis = node.get_agenda().pop_hypothesis()
         except (IndexError):
-            print('Returning from empty agenda exception...')
             return
 
         for indices in self.advance_indices(hypothesis.get_indices()):
-            print('indices is ' + repr(indices))
             daughters = []
 
             for index, dependent in enumerate(node.get_dependents()):
