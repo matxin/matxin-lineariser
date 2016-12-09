@@ -46,11 +46,33 @@ class Printing:
         return str_
 
     @classmethod
-    def print_list(cls, list_, print_item=repr, shift=1, shiftwidth=2):
+    def print_list(cls, list_, print_item=str, shift=1, shiftwidth=2):
         return cls.print_iterable(
             cls.get_module_qualname(list_), list_, print_item, shift,
             shiftwidth)
 
     @classmethod
-    def print_tuple(cls, tuple_, print_item=repr, shift=1, shiftwidth=2):
-        return cls.print_list(tuple_, print_item, shift, shiftwidth)
+    def print_tuple(cls, tuple_, print_item=[], shift=1, shiftwidth=2):
+        tuple_len_ = len(tuple_)
+        print_item.extend([str for x in range(tuple_len_ - len(print_item))])
+        str_ = cls.get_module_qualname(tuple_) + ' of len ' + str(
+            tuple_len_) + ' = {'
+
+        if tuple_len_ != 0:
+            str_ += '\n  ' + cls.shift_str(print_item[0](tuple_[0]), shift,
+                                           shiftwidth)
+
+            for index in range(1, tuple_len_):
+                str_ += ',\n' + \
+                        '  ' + cls.shift_str(print_item[index](tuple_[index]),
+                                             shift, shiftwidth)
+
+            str_ += '\n'
+
+        str_ += '}'
+        return str_
+
+    @classmethod
+    def print_frozenset(cls, frozenset_, print_item=str, shift=1,
+                        shiftwidth=2):
+        return cls.print_list(frozenset_, print_item, shift, shiftwidth)
