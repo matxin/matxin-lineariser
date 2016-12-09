@@ -1,3 +1,4 @@
+from printing import Printing
 from wordline import WordLine
 
 
@@ -31,3 +32,11 @@ class Sentence:
     def train(self, grammars):
         """Train grammars on all the nodes."""
         raise NotImplementedError
+
+    def __str__(self):
+        return Printing.get_module_qualname(self) + ' = {\n' + \
+                '  sentence = ' + Printing.shift_str(
+                        Printing.print_dict(self.get_sentence())) + '\n' + \
+                '  root = ' + Printing.shift_str(
+                        str(self.get_root())) + '\n' + \
+                '}'

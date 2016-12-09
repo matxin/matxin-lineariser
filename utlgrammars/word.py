@@ -49,10 +49,6 @@ class Word:
 
         return False
 
-    def __repr__(self):
-        return Printing.get_module_qualname(self) + '(' + repr(
-            self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'
-
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  upostag = ' + repr(self.get_upostag()) + '\n' + \

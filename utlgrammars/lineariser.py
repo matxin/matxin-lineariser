@@ -1,5 +1,6 @@
 from grammars import Grammars
 from hypothesis import Hypothesis
+from printing import Printing
 
 from xml.etree import ElementTree
 
@@ -31,7 +32,7 @@ class Lineariser:
                 node.sorted_rules = [1.0]
             else:
                 node.rules = self.get_grammars().get_grammar(
-                        node.get_local_configuration())
+                    node.get_local_configuration())
                 node.sorted_rules = list(node.get_rules())
                 node.sorted_rules.sort(reverse=True)
 
@@ -75,3 +76,9 @@ class Lineariser:
             new_indices = indices[:]
             new_indices[index] += 1
             yield new_indices
+
+    def __str__(self):
+        return Printing.get_module_qualname(self) + ' = {\n' + \
+                '  grammars = ' + Printing.shift_str(
+                        str(self.get_grammars())) + '\n' + \
+                '}'

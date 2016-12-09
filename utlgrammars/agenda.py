@@ -1,3 +1,6 @@
+from printing import Printing
+
+
 class Agenda:
     def __init__(self):
         self.agenda = {}
@@ -27,3 +30,11 @@ class Agenda:
             del self.get_agenda()[agenda[-1][0]]
 
         return hypothesis
+
+    def __str__(self):
+        return Printing.get_module_qualname(self) + ' = {\n' + \
+                '  agenda = ' + Printing.shift_str(
+                        Printing.print_dict(
+                            self.get_agenda(),
+                            print_value=Printing.print_list)) + '\n' + \
+                '}'
