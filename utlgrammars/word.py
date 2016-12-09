@@ -38,11 +38,11 @@ class Word:
         return self.feats
 
     def __repr__(self):
-        return self.__module__ + '.' + self.__class__.__name__ + '(' + repr(
+        return Printing.get_module_qualname(self) + '(' + repr(
             self.get_upostag()) + ', ' + repr(self.get_feats()) + ')'
 
     def __str__(self):
-        return self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
+        return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  upostag = ' + repr(self.get_upostag()) + '\n' + \
                 '  feats = ' + Printing.shift_str(
                         Printing.print_dict(self.get_feats())) + '\n' + \

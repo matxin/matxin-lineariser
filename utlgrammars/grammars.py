@@ -19,7 +19,7 @@ class Grammars:
         return self.get_grammars()[local_configuration]
 
     def __str__(self):
-        str_ = self.__module__ + '.' + self.__class__.__name__ + ' {\n' + \
+        str_ = self.__module__ + '.' + self.__class__.__name__ + ' = {\n' + \
         '  grammars = ' + Printing.shift_str(
             Printing.print_dict(
                 self.get_grammars(),
