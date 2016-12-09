@@ -1,3 +1,6 @@
+from printing import Printing
+
+
 class Hypothesis:
     @classmethod
     def new_hypothesis(cls, node, daughters, indices):
@@ -41,6 +44,15 @@ class Hypothesis:
         """
 
     def __repr__(self):
-        return self.__module__ + '.' + self.__class__.__name__ + '(' + repr(
-            self.get_node()) + ', ' + repr(self.get_daughters()) + ', ' + repr(
-                self.get_indices()) + ')'
+        return Printing.get_module_qualname(self) + '(' + repr(self.get_node(
+        )) + ', ' + repr(self.get_daughters()) + ', ' + repr(self.get_indices(
+        )) + ')'
+
+    def __str__(self):
+        return Printing.get_module_qualname(self) + ' = {\n' + \
+                '  node = ' + repr(self.get_node()) + '\n' + \
+                '  daughters = ' + Printing.shift_str(
+                        Printing.print_list(self.get_daughters())) + '\n' + \
+                '  indices = ' + Printing.shift_str(
+                        Printing.print_list(self.get_indices())) + '\n' + \
+                '}'
