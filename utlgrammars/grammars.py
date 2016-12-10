@@ -20,8 +20,5 @@ class Grammars:
 
     def __str__(self):
         return self.__module__ + '.' + self.__class__.__name__ + ' = {\n' + \
-        '  grammars = ' + Printing.shift_str(
-                Printing.print_dict(
-                    self.get_grammars(),
-                    print_value=Printing.print_dict)) + '\n' + \
+        '  grammars = ' + Printing.shift_str(Printing.print_dict(self.get_grammars(), print_value=Printing.print_dict)) + '\n' + \
         '}'

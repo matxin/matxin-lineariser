@@ -95,6 +95,5 @@ class Lineariser:
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
-                '  grammars = ' + Printing.shift_str(
-                        str(self.get_grammars())) + '\n' + \
+                '  grammars = ' + Printing.shift_str(str(self.get_grammars())) + '\n' + \
                 '}'

@@ -102,8 +102,7 @@ class WordLine:
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  id = ' + str(self.get_id()) + '\n' + \
-                '  word = ' + Printing.shift_str(
-                        str(self.get_word())) + '\n' + \
+                '  word = ' + Printing.shift_str(str(self.get_word())) + '\n' + \
                 '  head = ' + str(self.get_head()) + '\n' + \
                 '  deprel = ' + repr(self.get_deprel()) + '\n' + \
                 '}'

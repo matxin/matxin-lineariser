@@ -71,10 +71,7 @@ class Hypothesis:
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
-                '  node = ' + Printing.shift_str(
-                        str(self.get_node())) + '\n' + \
-                '  daughters = ' + Printing.shift_str(
-                        Printing.print_list(self.get_daughters())) + '\n' + \
-                '  indices = ' + Printing.shift_str(
-                        Printing.print_list(self.get_indices())) + '\n' + \
+                '  node = ' + Printing.shift_str(str(self.get_node())) + '\n' + \
+                '  daughters = ' + Printing.shift_str(Printing.print_list(self.get_daughters())) + '\n' + \
+                '  indices = ' + Printing.shift_str(Printing.print_list(self.get_indices())) + '\n' + \
                 '}'

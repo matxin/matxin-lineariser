@@ -52,8 +52,5 @@ class Word:
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  upostag = ' + repr(self.get_upostag()) + '\n' + \
-                '  feats = ' + Printing.shift_str(
-                    Printing.print_dict(
-                        self.get_feats(), print_key=repr,
-                        print_value=repr)) + '\n' + \
+                '  feats = ' + Printing.shift_str(Printing.print_dict(self.get_feats(), print_key=repr, print_value=repr)) + '\n' + \
                 '}'

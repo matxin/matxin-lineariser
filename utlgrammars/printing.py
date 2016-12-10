@@ -64,8 +64,7 @@ class Printing:
 
             for index in range(1, tuple_len_):
                 str_ += ',\n' + \
-                        '  ' + cls.shift_str(print_item[index](tuple_[index]),
-                                             shift, shiftwidth)
+                        '  ' + cls.shift_str(print_item[index](tuple_[index]), shift, shiftwidth)
 
             str_ += '\n'
 

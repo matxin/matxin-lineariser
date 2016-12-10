@@ -51,14 +51,8 @@ class LinearisationRule:
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
-                '  insert = ' + Printing.shift_str(
-                        Printing.print_list(
-                            self.get_insert(),
-                            print_item=self.print_edge)) + '\n' + \
-                '  append = ' + Printing.shift_str(
-                        Printing.print_list(
-                            self.get_append(),
-                            print_item=self.print_edge)) + '\n' + \
+                '  insert = ' + Printing.shift_str(Printing.print_list(self.get_insert(), print_item=self.print_edge)) + '\n' + \
+                '  append = ' + Printing.shift_str(Printing.print_list(self.get_append(), print_item=self.print_edge)) + '\n' + \
                 '}'
 
     @classmethod
