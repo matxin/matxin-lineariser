@@ -29,12 +29,27 @@ class Sentence:
 
     def linearise(self, lineariser, n=0):
         self.linearisations = lineariser.linearise_node(self.get_root(), n)
+        self.strings = []
+
+        for linearisation in self.get_linearisations():
+            string = ''
+
+            if len(linearisation) != 0:
+                string += linearisation[0].get_form()
+
+            for word in linearisation[1:]:
+                string += ' ' + word.get_form()
+
+            self.get_strings().append(string.lower())
 
     def get_root(self):
         return self.root
 
     def get_linearisations(self):
         return self.linearisations
+
+    def get_strings(self):
+        return self.strings
 
     def train(self, grammars):
         """Train grammars on all the nodes."""
@@ -44,5 +59,4 @@ class Sentence:
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  sentence = ' + Printing.shift_str(Printing.print_dict(self.get_sentence())) + '\n' + \
                 '  root = ' + Printing.shift_str(str(self.get_root())) + '\n' + \
-                '  linearisations = ' + Printing.shift_str(Printing.print_list(self.get_linearisations(), print_item=Printing.print_list)) + '\n' + \
                 '}'
