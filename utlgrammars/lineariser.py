@@ -77,9 +77,6 @@ class Lineariser:
                 Hypothesis.new_hypothesis(node, daughters, indices)
 
         node.get_hypotheses().append(hypothesis)
-        print('i is ' + str(i))
-        print('len(node.get_hypotheses()) is ' + str(
-            len(node.get_hypotheses())))
         return hypothesis
 
     @classmethod
