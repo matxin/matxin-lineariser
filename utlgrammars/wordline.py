@@ -90,6 +90,9 @@ class WordLine:
     def get_agenda(self):
         return self.agenda
 
+    def get_form(self):
+        return self.form
+
     def train(self, grammars):
         """Increment the rule corresponding to the local configuration
         in the likewise-corresponding Grammar in grammars."""
