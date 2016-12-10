@@ -48,11 +48,10 @@ class LocalConfiguration:
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  deprel = ' + repr(self.get_deprel()) + '\n' + \
-                '  word = ' + Printing.shift_str(
-                        str(self.get_word())) + '\n' + \
-                '  dependents = ' + Printing.shift_str(Printing.print_frozenset(self.get_dependents(), print_item=self.print_edge)) + '\n' + \
+                '  word = ' + Printing.shift_str(str(self.get_word())) + '\n' + \
+                '  dependents = ' + Printing.shift_str(Printing.print_list(self.get_dependents(), print_item=self.print_dependent)) + '\n' + \
                 '}'
 
     @classmethod
-    def print_edge(cls, edge):
+    def print_dependent(cls, edge):
         return Printing.print_tuple(edge, print_item=[repr, str])

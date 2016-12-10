@@ -18,8 +18,10 @@ class LinearisationRule:
 
         head_node = (head_node_etree.get('si'),
                      Word.deserialise(head_node_etree))
-        local_configuration = LocalConfiguration(
-            head_node[0], head_node[1], frozenset(linearisation_rule.values()))
+        dependents = list(linearisation_rule.values())
+        dependents.sort()
+        local_configuration = LocalConfiguration(head_node[0], head_node[1],
+                                                 tuple(dependents))
         head_node_ord = int(head_node_etree.get('ord'))
         linearisation_rule[head_node_ord] = head_node
         linearisation_rule = list(linearisation_rule.items())
