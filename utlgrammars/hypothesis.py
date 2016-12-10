@@ -71,7 +71,7 @@ class Hypothesis:
         # print()
         # print('insert {{{')
         # print('----------')
-        # print('linearisation is ' + Printing.print_list(linearisation))
+        print('linearisation is ' + Printing.print_list(linearisation))
         # print('daughters is ' + Printing.print_list(daughters))
         linearisation.append(self.get_node())
         # print('}}}')
@@ -94,14 +94,15 @@ class Hypothesis:
 
     def instantiate_linearisation_rule_element(
             self, linearisation_rule_element, linearisation, daughters):
-        for daughter in linearisation_rule_element:
+        print('linearisation_rule_element is ' + Printing.print_list(
+            linearisation_rule_element))
+        for dependent in linearisation_rule_element:
             linearisation.extend(
                 daughters.pop(
                     next(index for index, daughter in enumerate(daughters)
-                         if daughter.get_node().get_deprel(
-                         ) == daughter.get_node().get_deprel() and
-                         daughter.get_node().get_word() == daughter.get_node(
-                         ).get_word())).instantiate())
+                         if daughter.get_node().get_deprel() == dependent[0]
+                         and daughter.get_node().get_word() == dependent[1]))
+                .instantiate())
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \

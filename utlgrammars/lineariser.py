@@ -18,7 +18,17 @@ class Lineariser:
 
     def linearise_node(self, root, n):
         """Roughly corresponds to linearise-node in the paper."""
-        raise NotImplementedError
+        results = []
+
+        for i in range(0, n):
+            hypothesis = self.hypothesise_node(root, i)
+
+            if hypothesis is None:
+                break
+
+            results.append(hypothesis.instantiate())
+
+        return results
 
     def hypothesise_node(self, node, i):
         """Roughly corresponds to hypothesise-node in the paper."""
@@ -51,9 +61,11 @@ class Lineariser:
 
         for indices in self.advance_indices(hypothesis.get_indices()):
             daughters = []
+            index = iter(range(1, len(indices)))
 
-            for index, dependent in enumerate(node.get_dependents()):
-                daughter = self.hypothesise_node(dependent, indices[index])
+            for dependent in node.get_dependents():
+                daughter = self.hypothesise_node(dependent,
+                                                 indices[next(index)])
 
                 if daughter is None:
                     daughters = []
@@ -65,6 +77,9 @@ class Lineariser:
                 Hypothesis.new_hypothesis(node, daughters, indices)
 
         node.get_hypotheses().append(hypothesis)
+        print('i is ' + str(i))
+        print('len(node.get_hypotheses()) is ' + str(
+            len(node.get_hypotheses())))
         return hypothesis
 
     @classmethod
