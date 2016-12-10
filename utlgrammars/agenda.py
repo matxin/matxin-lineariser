@@ -33,8 +33,5 @@ class Agenda:
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
-                '  agenda = ' + Printing.shift_str(
-                        Printing.print_dict(
-                            self.get_agenda(),
-                            print_value=Printing.print_list)) + '\n' + \
+                '  agenda = ' + Printing.shift_str(Printing.print_dict(self.get_agenda(), print_value=Printing.print_list)) + '\n' + \
                 '}'
