@@ -14,5 +14,4 @@ lineariser = Lineariser()
 with open(input('xml: ')) as xml:
     lineariser.deserialise(xml)
 
-Printing.print_list(
-    lineariser.hypothesise_node(treebank[0].get_root(), 0).instantiate())
+hypothesis = lineariser.hypothesise_node(treebank[0].get_root(), 0)

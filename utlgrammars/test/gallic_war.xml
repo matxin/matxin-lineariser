@@ -32,9 +32,10 @@
     </def-rule>
 
     <def-rule p="0.5"> 
-        <NODE ord="2" pos="NOUN"> <!-- in language _ customs -->
+        <NODE ord="2" pos="NOUN"> <!-- in language _ customs _ laws -->
             <NODE ord="1" si="case" pos="ADP"/>
             <NODE ord="3" si="conj" pos="NOUN"/>
+            <NODE ord="4" si="conj" pos="NOUN"/>
         </NODE>
     </def-rule>
 
