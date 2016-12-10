@@ -3,3 +3,7 @@
 
 # python
 *.pyc
+
+# g++
+*.o
+/utlgrammars/test/GDBPrint
