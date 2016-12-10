@@ -16,17 +16,22 @@ class Lineariser:
     def get_grammars(self):
         return self.grammars
 
-    def linearise_node(self, root, n):
+    def linearise_node(self, root, n=0):
         """Roughly corresponds to linearise-node in the paper."""
         results = []
+        i = 0
 
-        for i in range(0, n):
+        while True:
             hypothesis = self.hypothesise_node(root, i)
 
             if hypothesis is None:
                 break
 
             results.append(hypothesis.instantiate())
+            i += 1
+
+            if i == n:
+                break
 
         return results
 
