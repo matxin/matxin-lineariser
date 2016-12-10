@@ -1,5 +1,6 @@
 from grammars import Grammars
 from hypothesis import Hypothesis
+from lrule import LinearisationRule
 from printing import Printing
 
 from xml.etree import ElementTree
@@ -28,13 +29,11 @@ class Lineariser:
 
         if i == 0:
             if len(node.get_dependents()) == 0:
-                node.rules = {1.0: [(node.get_deprel(), node.get_word())]}
-                node.sorted_rules = [1.0]
+                node.sorted_rules = [(1.0, LinearisationRule([], []))]
             else:
-                node.rules = self.get_grammars().get_grammar(
-                    node.get_local_configuration())
-                node.sorted_rules = list(node.get_rules())
-                node.sorted_rules.sort(reverse=True)
+                node.sorted_rules = list(self.get_grammars().get_grammar(
+                    node.get_local_configuration()).items())
+                node.get_sorted_rules().sort(reverse=True)
 
             indices = [0]
             daughters = []

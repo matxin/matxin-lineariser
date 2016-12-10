@@ -84,19 +84,11 @@ class WordLine:
     def get_dependents(self):
         return self.dependents
 
-    def get_rules(self):
-        return self.rules
-
-    def get_agenda(self):
-        return self.agenda
-
     def get_sorted_rules(self):
         return self.sorted_rules
 
-    def apply_rule(self, rule):
-        """Return a list of self and dependents ordered according to
-        rule."""
-        raise NotImplementedError
+    def get_agenda(self):
+        return self.agenda
 
     def train(self, grammars):
         """Increment the rule corresponding to the local configuration

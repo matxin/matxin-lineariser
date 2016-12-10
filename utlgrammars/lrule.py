@@ -23,8 +23,6 @@ class LinearisationRule:
         head_node_ord = int(head_node_etree.get('ord'))
         linearisation_rule[head_node_ord] = head_node
         linearisation_rule = list(linearisation_rule.items())
-        print('linearisation_rule is ' + Printing.print_list(
-            linearisation_rule, print_item=cls.print_edge))
         linearisation_rule.sort()
         head_node_index = linearisation_rule.index((head_node_ord, head_node))
         linearisation_rule = LinearisationRule(

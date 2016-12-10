@@ -25,7 +25,7 @@ class Hypothesis:
 
     def score(self):
         """Roughly corresponds to score-hypothesis in the paper."""
-        score = self.get_node().get_sorted_rules()[self.get_indices()[0]]
+        score = self.get_node().get_sorted_rules()[self.get_indices()[0]][0]
 
         for daughter in self.get_daughters():
             score *= daughter.score()
@@ -48,6 +48,27 @@ class Hypothesis:
         hypothesize_node should set WordLine.rules to an appropriate
         Grammar, so this method does not need to know about Grammars.
         """
+        linearisation = []
+        daughters = self.get_daughters()[:]
+        linearisation_rule = self.get_node().get_sorted_rules()[
+            self.get_indices()[0]][1]
+        self.instantiate_linearisation_rule_element(
+            linearisation_rule.get_insert(), linearisation, daughters)
+        linearisation.append(self.get_node())
+        self.instantiate_linearisation_rule_element(
+            linearisation_rule.get_append(), linearisation, daughters)
+        return linearisation
+
+    def instantiate_linearisation_rule_element(
+            self, linearisation_rule_element, linearisation, daughters):
+        for daughter in linearisation_rule_element:
+            linearisation.extend(
+                daughters.pop(
+                    next(index for index, daughter in enumerate(daughters)
+                         if daughter.get_node().get_deprel(
+                         ) == daughter.get_node().get_deprel() and
+                         daughter.get_node().get_word() == daughter.get_node(
+                         ).get_word())).instantiate())
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
