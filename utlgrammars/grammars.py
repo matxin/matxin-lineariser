@@ -1,6 +1,8 @@
 from lrule import LinearisationRule
+from printing import Printing
 
 from xml.etree import ElementTree
+
 
 class Grammars:
     def __init__(self):
@@ -12,3 +14,11 @@ class Grammars:
 
     def get_grammars(self):
         return self.grammars
+
+    def get_grammar(self, local_configuration):
+        return self.get_grammars()[local_configuration]
+
+    def __str__(self):
+        return self.__module__ + '.' + self.__class__.__name__ + ' = {\n' + \
+        '  grammars = ' + Printing.shift_str(Printing.print_dict(self.get_grammars(), print_value=Printing.print_dict)) + '\n' + \
+        '}'

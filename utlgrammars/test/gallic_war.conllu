@@ -1,0 +1,13 @@
+1	All	all	DET	_	_	2	det	_	_
+2	these	this	PRON	_	_	3	nsubj	_	_
+3	differ	differ	VERB	_	_	0	root	_	_
+4	from	from	ADP	_	_	6	case	_	_
+5	each	each	DET	_	_	6	det	_	_
+6	other	other	PRON	_	_	3	obl	_	_
+7	in	in	ADP	_	_	8	case	_	_
+8	language	language	NOUN	_	_	3	obl	_	_
+9	,	,	PUNCT	_	_	10	punct	_	_
+10	customs	custom	NOUN	_	_	8	conj	_	_
+11	and	and	CCONJ	_	_	12	cc	_	_
+12	laws	law	NOUN	_	_	8	conj	_	_
+13	.	.	PUNCT	_	_	3	punct	_	_
