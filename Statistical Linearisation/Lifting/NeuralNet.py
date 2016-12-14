@@ -7,7 +7,7 @@ class NeuralNet():
         self.model = Sequential()
         self.model.add(Dense(10, input_dim=78, init="uniform", activation="relu")) # 78 -> no of features in the table 1 of the article
         self.model.add(Dense(8, init="uniform", activation="relu"))
-        self.model.add(Dense(4, init="uniform", activation="sigmoid")) # 0-3 liftings up
+        self.model.add(Dense(4, init="uniform", activation="softmax")) # 0-3 liftings up
 
         self.model.compile(loss="categorical_crossentropy", optimizer='adam') # see a note on the loss function in the Keras doc
 
