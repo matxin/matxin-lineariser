@@ -25,7 +25,7 @@ class Convert2dependencytree:
         reads a file in conllu, splits fields and invokes adding a node
         :return:
         """
-        fhand = open("test.conllu")
+        fhand = open("test1.conllu")
 
         for line in fhand:
 
@@ -35,7 +35,9 @@ class Convert2dependencytree:
             if len(line) < 2: # if that's a blank line
                 continue
 
-            words = line.split('\t')
+            words = line.rstrip("\n")
+
+            words = words.split('\t')
 
             self.tree.add_node(words)
 
