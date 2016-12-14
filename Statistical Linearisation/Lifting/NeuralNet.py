@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.models import Dense
+from keras.layers import Dense
 import numpy
 
 class NeuralNet():
