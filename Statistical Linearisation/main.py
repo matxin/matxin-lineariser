@@ -2,7 +2,7 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import Convert2dependencytree, Linearisation.Dependency_tree_linearisation
+import Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm
 
 if __name__ == "__main__":
     test = Convert2dependencytree.Convert2dependencytree()
@@ -11,9 +11,14 @@ if __name__ == "__main__":
 
    # print (tree.head)
 
-    linear = Linearisation.Dependency_tree_linearisation.Dependecy_tree_linearisation(tree)
+    #linear = Linearisation.Dependency_tree_linearisation.Dependecy_tree_linearisation(tree)
 
-    linear.execute_algorithm()
+    #linear.execute_algorithm()
+
+    lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+
+    lifting.execute(tree)
+
 
     #for id in tree.tree:
      #   print (id)

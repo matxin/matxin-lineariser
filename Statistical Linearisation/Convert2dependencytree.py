@@ -25,7 +25,7 @@ class Convert2dependencytree:
         reads a file in conllu, splits fields and invokes adding a node
         :return:
         """
-        fhand = open("test1.conllu")
+        fhand = open("non_projective.conllu")
 
         for line in fhand:
 
