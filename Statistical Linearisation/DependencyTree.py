@@ -53,8 +53,11 @@ class DependencyTree:
         prints the val of fields for every node
         :return: None
         """
-        for id in self.tree:
-            print (self.tree[id].fields, "\n")
+        ids = list(self.tree.keys());
+        ids.sort();
+        for id in ids:
+            r = self.tree[id].fields;
+            print ('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (id, r["form"], r["lemma"], r["upostag"], r["xpostag"], r["feats"], r["head"], r["deprel"], r["deps"], r["misc"]))
 
     def add_children(self):
         """
