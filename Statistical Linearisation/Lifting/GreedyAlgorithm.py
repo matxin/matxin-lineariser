@@ -15,7 +15,7 @@ class GreedyAlgorithm():
             tmp1 = self.DFS1(self.tree.head)
             if tmp1:
                 tmp = True
-        self.tree.print_tree()
+        return self.tree
 
 
     def DFS1(self, node):

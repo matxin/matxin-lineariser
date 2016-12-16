@@ -1,6 +1,6 @@
 import copy, random, operator
 
-class Dependecy_tree_linearisation:
+class Dependency_tree_linearisation:
     """
     The actual algorithm which perfoms the linearisation on the lifted dependency tree
     """

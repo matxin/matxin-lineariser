@@ -2,11 +2,20 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm
+import Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, argparse
 
 if __name__ == "__main__":
-    test = Convert2dependencytree.Convert2dependencytree()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('-i', '--input', type=str, help="path to the input CONLLU file", required=True)
+
+    args = parser.parse_args()
+    path = args.input
+
+
+    test = Convert2dependencytree.Convert2dependencytree(path)
     tree = test.ref_tree()
+   # tree.generate_conllu()
    # tree.print_tree()
 
    # print (tree.head)
@@ -17,8 +26,9 @@ if __name__ == "__main__":
 
     lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
 
-    lifting.execute(tree)
+    tree1 = lifting.execute(tree)
 
+    tree1.generate_conllu()
 
     #for id in tree.tree:
      #   print (id)

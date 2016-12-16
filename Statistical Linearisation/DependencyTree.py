@@ -34,7 +34,7 @@ class DependencyTree:
         """
         temp = DependencyTreeNode.DependencyTreeNode()
 
-        for no in range(0, 9):
+        for no in range(0, 10):
             temp.update_field(self.no2field[str(no)], list[no])
 
         temp.beam = [[temp.fields["form"]]]
@@ -175,3 +175,18 @@ class DependencyTree:
             res.append(self.tree[node_1].fields["deprel"])
 
         return res
+
+    def generate_conllu(self):
+        fhand = open("output.conllu", 'w')
+
+        size = len(self.tree)
+
+        for node in range(1, size+1):
+            line = ""
+            for field in range(0, 10):
+                #print (self.tree[str(node)].fields[self.no2field["9"]])
+                line += self.tree[str(node)].fields[self.no2field[str(field)]] + "\t"
+
+            fhand.write(line + "\n")
+
+        fhand.close()
