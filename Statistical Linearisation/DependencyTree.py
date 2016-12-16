@@ -187,3 +187,5 @@ class DependencyTree:
                 line += self.tree[str(node)].fields[self.no2field[str(field)]] + "\t"
 
             sys.stdout.write(line+"\n")
+
+        sys.stdout.write('\n')
