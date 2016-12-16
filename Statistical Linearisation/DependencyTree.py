@@ -1,4 +1,4 @@
-import DependencyTreeNode
+import DependencyTreeNode, sys
 
 class DependencyTree:
     """
@@ -177,7 +177,6 @@ class DependencyTree:
         return res
 
     def generate_conllu(self):
-        fhand = open("output.conllu", 'w')
 
         size = len(self.tree)
 
@@ -187,6 +186,4 @@ class DependencyTree:
                 #print (self.tree[str(node)].fields[self.no2field["9"]])
                 line += self.tree[str(node)].fields[self.no2field[str(field)]] + "\t"
 
-            fhand.write(line + "\n")
-
-        fhand.close()
+            sys.stdout.write(line+"\n")

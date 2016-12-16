@@ -77,4 +77,4 @@ class GreedyAlgorithm():
         self.tree.tree[self.tree.tree[b].fields["head"]].fields["children"].remove(b)
         self.tree.tree[self.tree.tree[a].fields["head"]].fields["children"].append(b)
         self.tree.tree[b].fields["head"] = self.tree.tree[a].fields["head"]
-        print (a,b)
+        #print (a,b)

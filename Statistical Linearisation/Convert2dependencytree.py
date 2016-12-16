@@ -1,17 +1,17 @@
-import DependencyTree
+import DependencyTree, sys
 
 class Convert2dependencytree:
     """
     reads a dependency tree in CoNLL-U format and converts it to a tree of clasess Dependency_tree
     """
 
-    def __init__(self, path):
+    def __init__(self):
         """
         creates a dependency tree and reads it from a file
         """
         self.tree = DependencyTree.DependencyTree()
 
-        self.read_open_file(path)
+        self.read_open_file()
 
         self.tree.add_children()
 
@@ -20,14 +20,13 @@ class Convert2dependencytree:
         self.tree.set_neigbouring_nodes()
 
 
-    def read_open_file(self, path):
+    def read_open_file(self):
         """
         reads a file in conllu, splits fields and invokes adding a node
         :return:
         """
-        fhand = open(path)
 
-        for line in fhand:
+        for line in sys.stdin.readlines():
 
             if line[0] == '#': # if that's a comment
                 continue
@@ -41,7 +40,6 @@ class Convert2dependencytree:
 
             self.tree.add_node(words)
 
-        fhand.close()
 
     def ref_tree(self):
         """
