@@ -109,7 +109,6 @@ class DependencyTree:
                 self.tree[node].neighbouring_nodes["2"] += self.tree[child].fields["children"] #gchildren
 
 
-
     def ufeat(self, node, position, feature):
         """
         returns a feature or a vector of features

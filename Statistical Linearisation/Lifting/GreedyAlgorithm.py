@@ -1,4 +1,4 @@
-class GreedyAlgorithm():
+class GreedyAlgorithm:
     def __init__(self):
         self.tree = None
         self.lifts = dict()
@@ -15,6 +15,7 @@ class GreedyAlgorithm():
             tmp1 = self.DFS1(self.tree.head)
             if tmp1:
                 tmp = True
+
         return self.tree
 
 
@@ -39,7 +40,7 @@ class GreedyAlgorithm():
         if not self.is_projective(ancestor, node):
             tmp = self.lifts.get(node, 0)
             #print ("abc")
-            if tmp < 3:  # max lifts
+            if tmp < 1000:  # max lifts
                 #print (ancestor, node, length)
                 self.lifts[node] = self.lifts.get(node, 0) + length
                 self.lift(ancestor, node)
@@ -64,8 +65,9 @@ class GreedyAlgorithm():
         return True
 
     def is_ancestor(self, a, b):
-        #print (a, b)
-        while self.tree.tree[a].fields["head"] != self.tree.head:
+        if self.tree.tree[a].fields["head"] == '0':
+            return False
+        while self.tree.tree[a].fields["head"] != self.tree.head :
             if self.tree.tree[a].fields["head"] == b:
                 return True
 

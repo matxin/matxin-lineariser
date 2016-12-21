@@ -69,7 +69,7 @@ class Dependency_tree_linearisation:
         executes the linearisation algorithm (algorithm 3 in the paper)
         :return:
         """
-        self.beam_size = 10
+        self.beam_size = 1000
 
         self.DFS(self.T.head)
 
