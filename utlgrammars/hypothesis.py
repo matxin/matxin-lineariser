@@ -52,6 +52,12 @@ class Hypothesis:
         daughters = self.get_daughters()[:]
         linearisation_rule = self.get_node().get_sorted_rules()[
             self.get_indices()[0]][1]
+
+        if linearisation_rule is None:
+            daughters.append(self)
+            daughters.sort(key=WordLine.get_id)
+            return [daughter.instantiate() for daughter in daughters]
+
         self.instantiate_linearisation_rule_element(
             linearisation_rule.get_insert(), linearisation, daughters)
         linearisation.append(self.get_node())
