@@ -9,13 +9,7 @@ class WordLine:
         fields = line.split('\t')
         # parse fields in reverse by popping
 
-        misc = fields.pop()
-
-        if misc == '_':
-            self.misc = None
-        else:
-            self.misc = dict(field.split('=') for field in misc.split('|'))
-
+        self.misc = fields.pop()
         deps = fields.pop()
 
         if deps == '_':
