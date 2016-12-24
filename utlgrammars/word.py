@@ -12,9 +12,10 @@ class Word:
         self.upostag = upostag
 
         if feats is None:
-            self.feats = {}
+            self.feats = frozenset({})
         else:
-            self.feats = dict(feat.split('=') for feat in feats.split('|'))
+            self.feats = frozenset(
+                tuple(feat.split('=')) for feat in feats.split('|'))
 
     def __hash__(self):
         return hash(self.get_upostag())

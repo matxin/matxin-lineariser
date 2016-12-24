@@ -46,9 +46,12 @@ class Lineariser:
             if len(node.get_dependents()) == 0:
                 node.sorted_rules = [(1.0, LinearisationRule([], []))]
             else:
-                node.sorted_rules = list(self.get_grammars().get_grammar(
-                    node.get_local_configuration()).items())
-                node.get_sorted_rules().sort(reverse=True)
+                try:
+                    node.sorted_rules = list(self.get_grammars().get_grammar(
+                        node.get_local_configuration()).items())
+                    node.get_sorted_rules().sort(reverse=True)
+                except (KeyError):
+                    node.sorted_rules = [(1.0, None)]
 
             indices = [0]
             daughters = []
