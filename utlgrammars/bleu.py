@@ -1,3 +1,4 @@
+import hypothesis
 from lineariser import Lineariser
 from sentence import Sentence
 
@@ -21,15 +22,11 @@ hypotheses = []
 for sentence in Sentence.deserialise(stdin):
     reference = list(sentence.get_sentence().items())
     reference.sort()
-    reference = ' '.join([value.get_form().lower() for key, value in reference])
-    print(reference)
-    stdout.flush()
+    references.append([value.get_form().lower() for key, value in reference])
     sentence.linearise(lineariser, 1)
-    hypothesis = sentence.get_strings()[0]
-    print(hypothesis, file=stderr)
-    stderr.flush()
+    hypotheses.append(
+        [item.get_form().lower() for item in sentence.get_linearisations()[0]])
 
-    if len(reference) != len(hypothesis):
-        print('reference = ' + repr(reference))
-        print('hypothesis = ' + repr(hypothesis))
-        sys.exit()
+print('bleu = ' + str(nltk.translate.bleu_score.corpus_bleu(
+    references, hypotheses, weights=(1.0, ))))
+print('coverage = ' + str(float(hypothesis.numerator) / float(hypothesis.denominator)))
