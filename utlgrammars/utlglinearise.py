@@ -4,7 +4,7 @@ from sentence import Sentence
 
 from argparse import ArgumentParser
 from pprint import PrettyPrinter
-import sys
+from sys import stdin, stdout, stderr
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument(
@@ -13,25 +13,23 @@ argument_parser.add_argument(
     '-v', '--verbose', action='store_true', dest='verbose')
 argument_parser.add_argument('xml')
 arguments = argument_parser.parse_args()
-corpus = [sentence for sentence in Sentence.deserialise(sys.stdin)]
 lineariser = Lineariser()
 
 with open(arguments.xml) as xml:
     lineariser.deserialise(xml)
 
-for sentence in corpus:
-    sentence.linearise(lineariser, arguments.quiet)
-
 pretty_printer = PrettyPrinter()
 
-for sentence in corpus:
+for sentence in Sentence.deserialise(stdin):
+    sentence.linearise(lineariser, arguments.quiet)
+
     if arguments.verbose:
-        print('sentence = ' + str(sentence), file=sys.stderr)
+        print('sentence = ' + str(sentence), file=stderr)
         print(
             'sentence.get_linearisations() = ' + Printing.print_list(
                 sentence.get_linearisations(), print_item=Printing.print_list),
-            file=sys.stderr)
-        sys.stderr.flush()
+            file=stderr)
+        stderr.flush()
 
     pretty_printer.pprint(sentence.get_strings())
-    sys.stdout.flush()
+    stdout.flush()
