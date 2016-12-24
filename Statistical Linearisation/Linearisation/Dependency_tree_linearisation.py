@@ -1,6 +1,6 @@
 import copy, random, operator
 
-class Dependecy_tree_linearisation:
+class Dependency_tree_linearisation:
     """
     The actual algorithm which perfoms the linearisation on the lifted dependency tree
     """
@@ -69,7 +69,7 @@ class Dependecy_tree_linearisation:
         executes the linearisation algorithm (algorithm 3 in the paper)
         :return:
         """
-        self.beam_size = 10
+        self.beam_size = 1000
 
         self.DFS(self.T.head)
 

@@ -1,4 +1,4 @@
-import DependencyTreeNode
+import DependencyTreeNode, sys
 
 class DependencyTree:
     """
@@ -34,7 +34,7 @@ class DependencyTree:
         """
         temp = DependencyTreeNode.DependencyTreeNode()
 
-        for no in range(0, 9):
+        for no in range(0, 10):
             temp.update_field(self.no2field[str(no)], list[no])
 
         temp.beam = [[temp.fields["form"]]]
@@ -53,11 +53,8 @@ class DependencyTree:
         prints the val of fields for every node
         :return: None
         """
-        ids = list(self.tree.keys());
-        ids.sort();
-        for id in ids:
-            r = self.tree[id].fields;
-            print ('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s' % (id, r["form"], r["lemma"], r["upostag"], r["xpostag"], r["feats"], r["head"], r["deprel"], r["deps"], r["misc"]))
+        for id in self.tree:
+            print (self.tree[id].fields, "\n")
 
     def add_children(self):
         """
@@ -110,7 +107,6 @@ class DependencyTree:
 
             for child in self.tree[node].fields["children"]:
                 self.tree[node].neighbouring_nodes["2"] += self.tree[child].fields["children"] #gchildren
-
 
 
     def ufeat(self, node, position, feature):
@@ -178,3 +174,17 @@ class DependencyTree:
             res.append(self.tree[node_1].fields["deprel"])
 
         return res
+
+    def generate_conllu(self):
+
+        size = len(self.tree)
+
+        for node in range(1, size+1):
+            line = ""
+            for field in range(0, 10):
+                #print (self.tree[str(node)].fields[self.no2field["9"]])
+                line += self.tree[str(node)].fields[self.no2field[str(field)]] + "\t"
+
+            sys.stdout.write(line+"\n")
+
+        sys.stdout.write('\n')
