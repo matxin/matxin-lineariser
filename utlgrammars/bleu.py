@@ -28,5 +28,5 @@ for sentence in Sentence.deserialise(stdin):
         [item.get_form().lower() for item in sentence.get_linearisations()[0]])
 
 print('bleu = ' + str(nltk.translate.bleu_score.corpus_bleu(
-    references, hypotheses, weights=(1.0, ))))
+    references, hypotheses, weights=(1.0,))))
 print('coverage = ' + str(float(hypothesis.numerator) / float(hypothesis.denominator)))
