@@ -10,6 +10,7 @@ CONLLU_COMMENT = re.compile('\s*#')
 class Sentence:
     @classmethod
     def deserialise(cls, conllu):
+        sentence_bad = False
         sentence = {}
 
         for line in conllu:
@@ -19,10 +20,22 @@ class Sentence:
                 continue
 
             if line == '':
+                if sentence_bad:
+                    sentence_bad = False
+                    sentence = {}
+                    continue
+
                 yield Sentence(sentence)
-            else:
+                sentence = {}
+                continue
+
+            try:
                 wordline = WordLine(line)
-                sentence[wordline.get_id()] = wordline
+            except:
+                sentence_bad = True
+                continue
+
+            sentence[wordline.get_id()] = wordline
 
         yield Sentence(sentence)
 

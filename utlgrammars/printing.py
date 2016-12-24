@@ -34,11 +34,15 @@ class Printing:
         str_ = qualname_ + ' of len ' + str(iterable_len_) + ' = {'
 
         if iterable_len_ != 0:
-            str_ += '\n  ' + print_item_(iterable_[0])
+            iterable_iter_ = iter(iterable_)
+            str_ += '\n  ' + print_item_(next(iterable_iter_))
 
-            for index in range(1, iterable_len_):
-                str_ += ',\n' + \
-                        '  ' + print_item_(iterable_[index])
+            while True:
+                try:
+                    str_ += ',\n' + \
+                            '  ' + print_item_(next(iterable_iter_))
+                except (StopIteration):
+                    break
 
             str_ += '\n'
 
