@@ -3,6 +3,7 @@ from printing import Printing
 from wordline import WordLine
 
 import re
+import sys
 
 
 CONLLU_COMMENT = re.compile('\s*#')
@@ -37,7 +38,8 @@ class Sentence:
 
             sentence[wordline.get_id()] = wordline
 
-        yield Sentence(sentence)
+        if len(sentence) != 0:
+            yield Sentence(sentence)
 
     def __init__(self, sentence):
         self.sentence = sentence
