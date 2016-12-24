@@ -2,6 +2,10 @@ from lineariser import Lineariser
 from printing import Printing
 from wordline import WordLine
 
+import re
+
+
+CONLLU_COMMENT = re.compile('\s*#')
 
 class Sentence:
     @classmethod
@@ -10,6 +14,10 @@ class Sentence:
 
         for line in conllu:
             line = line[:-1]  # strip the trailing newline
+
+            if CONLLU_COMMENT.match(line) is not None:
+                continue
+
             if line == '':
                 yield Sentence(sentence)
             else:
