@@ -5,8 +5,8 @@ from wordline import WordLine
 import re
 import sys
 
-
 CONLLU_COMMENT = re.compile('\s*#')
+
 
 class Sentence:
     @classmethod
@@ -50,20 +50,13 @@ class Sentence:
     def get_sentence(self):
         return self.sentence
 
-    def linearise(self, lineariser, n=0):
-        self.linearisations = lineariser.linearise_node(self.get_root(), n)
-        self.strings = []
-
-        for linearisation in self.get_linearisations():
-            string = ''
-
-            if len(linearisation) != 0:
-                string += linearisation[0].get_form()
-
-            for word in linearisation[1:]:
-                string += ' ' + word.get_form()
-
-            self.get_strings().append(string.lower())
+    def linearise(self, lineariser, n=0, shuffle=False):
+        self.linearisations = lineariser.linearise_node(self.get_root(), n,
+                                                        shuffle)
+        self.strings = [
+            ' '.join([word.get_form().lower() for word in linearisation])
+            for linearisation in self.get_linearisations()
+        ]
 
     def get_root(self):
         return self.root
