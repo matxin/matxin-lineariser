@@ -1,7 +1,9 @@
+from grammars import Grammars
 from printing import Printing
 
-from grammars import Grammars
 
+numerator = 0
+denominator = 0
 
 class Hypothesis:
     @classmethod
@@ -48,16 +50,49 @@ class Hypothesis:
         hypothesize_node should set WordLine.rules to an appropriate
         Grammar, so this method does not need to know about Grammars.
         """
+        global numerator, denominator
+        denominator += 1
         linearisation = []
         daughters = self.get_daughters()[:]
         linearisation_rule = self.get_node().get_sorted_rules()[
             self.get_indices()[0]][1]
+
+        if linearisation_rule is None:
+            daughters.sort(key=Hypothesis.get_id)
+            list_iter_ = iter(daughters)
+
+            while True:
+                try:
+                    daughter = next(list_iter_)
+                except (StopIteration):
+                    linearisation.append(self.get_node())
+                    return linearisation
+
+                if daughter.get_id() > self.get_id():
+                    linearisation.append(self.get_node())
+                    linearisation.extend(daughter.instantiate())
+                    break
+
+                linearisation.extend(daughter.instantiate())
+
+            while True:
+                try:
+                    daughter = next(list_iter_)
+                except (StopIteration):
+                    return linearisation
+
+                linearisation.extend(daughter.instantiate())
+
+        numerator += 1
         self.instantiate_linearisation_rule_element(
             linearisation_rule.get_insert(), linearisation, daughters)
         linearisation.append(self.get_node())
         self.instantiate_linearisation_rule_element(
             linearisation_rule.get_append(), linearisation, daughters)
         return linearisation
+
+    def get_id(self):
+        return self.get_node().get_id()
 
     def instantiate_linearisation_rule_element(
             self, linearisation_rule_element, linearisation, daughters):
