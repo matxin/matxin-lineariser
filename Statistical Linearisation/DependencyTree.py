@@ -63,7 +63,6 @@ class DependencyTree:
         """
         for id in self.tree:
             if self.tree[id].fields["head"] != "0" and self.tree[id].fields["head"] != "_":
-                #print (int(self.tree[id].fields["head"])-1, self.tree[self.tree[id].fields["head"]].fields["id"])
                 self.tree[self.tree[id].fields["head"]].fields["children"].append(id)
 
        # for node in self.tree:

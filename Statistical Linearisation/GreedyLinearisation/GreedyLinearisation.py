@@ -1,4 +1,4 @@
-import DependencyTree
+import DependencyTree, sys
 
 class GreedyLinearisation:
     def __init__(self):
@@ -6,6 +6,8 @@ class GreedyLinearisation:
 
     def add_case(self, pos, pos1, pos2):
         self.probabilities[pos+","+pos1+","+pos2] = self.probabilities.get(pos+","+pos1+","+pos2, 0) + 1
+        self.probabilities[pos+','+pos1] = self.probabilities.get(pos+','+pos1, 0) + 1
+        self.probabilities[pos1 + ',' + pos2] = self.probabilities.get(pos1 + ',' + pos2, 0) + 1
 
     def linearise(self, tree):
 
@@ -44,10 +46,35 @@ class GreedyLinearisation:
                     order.append(node)
 
         linearised = []
+        if order == []:
+            if len(tree.tree) == 1:
+                return [tree.tree['1'].fields["form"]]
+
+            else:
+                if self.get_prob2(tree.tree['1'].fields['upostag'], tree.tree['2'].fields['upostag']) == [1, 2]:
+                    return [tree.tree['1'].fields["form"], tree.tree['2'].fields["form"]]
+                else:
+                    return [tree.tree['2'].fields["form"], tree.tree['1'].fields["form"]]
+
         for word in order:
             linearised.append(tree.tree[word].fields["form"])
 
         return linearised
+
+    def get_prob2(self, pos, pos1):
+        prob_max = 0
+        id = None
+
+        if self.probabilities.get(pos+','+pos1, 0) > prob_max:
+            prob_max = self.probabilities.get(pos+','+pos1, 0)
+            id = [1, 2]
+
+        if self.probabilities.get(pos1+','+pos, 0) > prob_max:
+            prob_max = self.probabilities.get(pos1+','+pos, 0)
+            id = [2, 1]
+
+        return id
+
 
     def get_prob(self, pos, pos1, pos2):
         prob_max = 0
@@ -81,18 +108,25 @@ class GreedyLinearisation:
         return id
 
     def save_dict2file(self):
-        fhand = open("order_probabilities.cvs", 'w')
+        #fhand = open("order_probabilities_en.cvs", 'w')
 
         for pos in self.probabilities:
             keys = pos.split(',')
-            string = keys[0] + "\t" + keys[1] + "\t" + keys[2] + "\t" + str(self.probabilities[pos])
-            fhand.write(string + "\n")
+            try:
+                string = keys[0] + "\t" + keys[1] + "\t" + keys[2] + "\t" + str(self.probabilities[pos])
+            except:
+                string = keys[0] + "\t" + keys[1] + "\t" + str(self.probabilities[pos])
+            sys.stdout.write(string + "\n")
 
     def import_dict(self, file):
         fhand = open(file)
 
         for line in fhand:
             words = line.split('\t')
-            key = words[0]+","+words[1]+','+words[2]
-            self.probabilities[key] = int(words[3])
+            try:
+                key = words[0]+","+words[1]+','+words[2]
+                self.probabilities[key] = int(words[3])
+            except:
+                key = words[0] + "," + words[1]
+                self.probabilities[key] = int(words[2])
 
