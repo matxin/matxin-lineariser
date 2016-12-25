@@ -13,7 +13,7 @@ if __name__ == "__main__":
     inp = sys.stdin.readlines()
     tmp = []
     #NN = Linearisation.NeuralNet()
-
+    good = 0
     greedy.save_dict2file()
 
     for tree_raw in inp:
@@ -26,6 +26,13 @@ if __name__ == "__main__":
 
         tmp = []
 
+        linearised = greedy.linearise(tree)
+
+        gold_order = tree.give_gold_order()
+
+        if linearised == gold_order:
+            print(linearised)
+            good += 1
 
         #for line in sys.stdin.readlines():
          #   sys.stdout.write(line)
@@ -43,13 +50,13 @@ if __name__ == "__main__":
         #tree1.generate_conllu()
 
 
-        n = len(tree.tree)
+        """n = len(tree.tree)
 
         for i in range(1, n+1):
             for j in range(i+1, n+1):
                 for k in range(j+1, n+1):
                     greedy.add_case(tree.tree[str(i)].fields["upostag"], tree.tree[str(j)].fields["upostag"],
-                                    tree.tree[str(k)].fields["upostag"])
+                                    tree.tree[str(k)].fields["upostag"])"""
 
         #for id in tree.tree:
          #   print (id)
@@ -58,3 +65,5 @@ if __name__ == "__main__":
            # print (tree.deprel(id, "-2"), tree.deprel(id, "-1"), tree.deprel(id, "0"), tree.deprel(id, "1"), tree.deprel(id, "2")))
 
     #greedy.save_dict2file()
+
+    print (good)

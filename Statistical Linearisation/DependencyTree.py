@@ -188,3 +188,11 @@ class DependencyTree:
             sys.stdout.write(line+"\n")
 
         sys.stdout.write('\n')
+
+    def give_gold_order(self):
+        order = []
+
+        for node in range(len(self.tree)):
+            order.append(self.tree[str(node+1)].fields["form"])
+
+        return order
