@@ -2,6 +2,9 @@ from grammars import Grammars
 from printing import Printing
 
 
+numerator = 0
+denominator = 0
+
 class Hypothesis:
     @classmethod
     def new_hypothesis(cls, node, daughters, indices):
@@ -47,6 +50,8 @@ class Hypothesis:
         hypothesize_node should set WordLine.rules to an appropriate
         Grammar, so this method does not need to know about Grammars.
         """
+        global numerator, denominator
+        denominator += 1
         linearisation = []
         daughters = self.get_daughters()[:]
         linearisation_rule = self.get_node().get_sorted_rules()[
@@ -78,6 +83,7 @@ class Hypothesis:
 
                 linearisation.extend(daughter.instantiate())
 
+        numerator += 1
         self.instantiate_linearisation_rule_element(
             linearisation_rule.get_insert(), linearisation, daughters)
         linearisation.append(self.get_node())

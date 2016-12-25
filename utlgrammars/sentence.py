@@ -3,6 +3,7 @@ from printing import Printing
 from wordline import WordLine
 
 import re
+import sys
 
 
 CONLLU_COMMENT = re.compile('\s*#')
@@ -10,6 +11,7 @@ CONLLU_COMMENT = re.compile('\s*#')
 class Sentence:
     @classmethod
     def deserialise(cls, conllu):
+        sentence_bad = False
         sentence = {}
 
         for line in conllu:
@@ -19,12 +21,25 @@ class Sentence:
                 continue
 
             if line == '':
-                yield Sentence(sentence)
-            else:
-                wordline = WordLine(line)
-                sentence[wordline.get_id()] = wordline
+                if sentence_bad:
+                    sentence_bad = False
+                    sentence = {}
+                    continue
 
-        yield Sentence(sentence)
+                yield Sentence(sentence)
+                sentence = {}
+                continue
+
+            try:
+                wordline = WordLine(line)
+            except:
+                sentence_bad = True
+                continue
+
+            sentence[wordline.get_id()] = wordline
+
+        if len(sentence) != 0:
+            yield Sentence(sentence)
 
     def __init__(self, sentence):
         self.sentence = sentence
@@ -58,10 +73,6 @@ class Sentence:
 
     def get_strings(self):
         return self.strings
-
-    def train(self, grammars):
-        """Train grammars on all the nodes."""
-        raise NotImplementedError
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
