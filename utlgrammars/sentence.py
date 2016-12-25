@@ -74,10 +74,6 @@ class Sentence:
     def get_strings(self):
         return self.strings
 
-    def train(self, grammars):
-        """Train grammars on all the nodes."""
-        raise NotImplementedError
-
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  sentence = ' + Printing.shift_str(Printing.print_dict(self.get_sentence())) + '\n' + \

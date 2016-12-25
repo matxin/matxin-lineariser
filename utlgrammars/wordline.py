@@ -93,15 +93,6 @@ class WordLine:
     def get_form(self):
         return self.form
 
-    def train(self, grammars):
-        """Increment the rule corresponding to the local configuration
-        in the likewise-corresponding Grammar in grammars."""
-        raise NotImplementedError
-
-    def get_local_linearisation(self):
-        """Return a list of dependents' PoS-s ordered by their id-s."""
-        raise NotImplementedError
-
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  id = ' + str(self.get_id()) + '\n' + \

@@ -1,28 +1,28 @@
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Basque
-$ cat eu-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py eu-ud-train.xml 
+$ cat eu-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py eu-ud-train.xml 
 bleu = 0.9901711869900958
 coverage = 0.9130220727004185
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Basque
-$ cat eu-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py eu-ud-train.xml 
+$ cat eu-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py eu-ud-train.xml 
 bleu = 0.9887007328070692
 coverage = 1.0
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Basque
 $ cd ../UD_Finnish/
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Finnish
-$ cat fi-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py fi-ud-train.xml 
+$ cat fi-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py fi-ud-train.xml 
 bleu = 0.9418334270364448
 coverage = 0.9296528321587053
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Finnish
-$ cat fi-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py fi-ud-train.xml 
+$ cat fi-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py fi-ud-train.xml 
 bleu = 0.9205474589555457
 coverage = 1.0
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Finnish
 $ cd ../UD_Turkish/
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Turkish
-$ cat tr-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py tr-ud-train.xml 
+$ cat tr-ud-test.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py tr-ud-train.xml 
 bleu = 0.9417399284306815
 coverage = 0.8915616647575411
 matthew@E5-573G:~/github.com/UniversalDependencies/UD_Turkish
-$ cat tr-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/bleu.py tr-ud-train.xml 
+$ cat tr-ud-train.conllu | python3 ~/github.com/m5w/matxin-lineariser/utlgrammars/utlgevaluate.py tr-ud-train.xml 
 bleu = 0.9437712469639317
 coverage = 1.0
