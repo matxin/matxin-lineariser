@@ -20,6 +20,17 @@ with open(arguments.xml) as xml:
 
 treebank = [sentence for sentence in Sentence.deserialise(stdin)]
 
+sentence_lengths = [len(sentence.get_sentence()) for sentence in treebank]
+print('sentence_length:   mean = ' + '{0:.4f}'.format(
+    numpy.mean(sentence_lengths)))
+print('                 median = ' + str(numpy.median(sentence_lengths)))
+pyplot.figure()
+pyplot.hist(sentence_lengths, bins=50, range=(0, 50))
+pyplot.title('Frequency Histogram of Sentence Lengths')
+pyplot.xlabel('Sentence Length')
+pyplot.ylabel('# of Sentences')
+
+
 def sample():
     bleu_scores = []
 
@@ -39,15 +50,20 @@ def sample():
 
     return bleu_scores
 
-pyplot.figure(1)
-pyplot.hist(sample(), bins=20, range=(0.5, 1.0))
+
+bleu_scores = sample()
 print('coverage = ' + '{0:.4f}'.format(hypothesis.coverage.get_coverage()))
+print('bleu_scores:   mean = ' + '{0:.4f}'.format(numpy.mean(bleu_scores)))
+print('             median = ' + '{0:.4f}'.format(numpy.median(bleu_scores)))
+pyplot.figure()
+pyplot.hist(bleu_scores, bins=20, range=(0.5, 1.0))
 pyplot.title('Frequency Histogram of Sentence BLEU Scores')
 pyplot.xlabel('Sentence BLEU Score')
 pyplot.ylabel('# of Sentences')
 bleu_scores = [numpy.mean(sample()) for _ in range(arguments.sample_size)]
 print('bleu_score = ' + '{0:.4f}'.format(numpy.mean(bleu_scores)))
-pyplot.figure(2)
+print('std = ' + '{0:.4f}'.format(numpy.std(bleu_scores)))
+pyplot.figure()
 pyplot.hist(bleu_scores, bins=5)
 pyplot.title('Frequency Histogram of Average Sentence BLEU Scores')
 pyplot.xlabel('Average Sentence BLEU Score')
