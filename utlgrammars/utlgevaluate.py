@@ -24,24 +24,12 @@ for sentence in Sentence.deserialise(stdin):
     len_sentences_ += 1
     reference = list(sentence.get_sentence().items())
     reference.sort()
-    print('reference = ' + str(
-        [value.get_form().lower() for key, value in reference]))
     sentence.linearise(lineariser, 1, arguments.shuffle)
-    print('hypothesis = ' + str([
-        item.get_form().lower() for item in sentence.get_linearisations()[0]
-    ]))
     sentence_len_ = len(sentence.get_linearisations()[0])
-    weights = (1.0 / float(sentence_len_) for x in range(sentence_len_))
     bleu += nltk.translate.bleu_score.sentence_bleu(
-        [value.get_form().lower() for key, value in reference],
-        [item.get_form().lower() for item in sentence.get_linearisations()[0]])
-    print('bleu = ' + str(bleu))
-    print('reference = ' + str(
-        [value.get_form().lower() for key, value in reference]))
-    print('hypothesis = ' + str([
-        item.get_form().lower() for item in sentence.get_linearisations()[0]
-    ]))
-    raise StopIteration
+        [[value.get_form().lower() for key, value in reference]],
+        [item.get_form().lower() for item in sentence.get_linearisations()[0]],
+        weights=(1.0 / float(sentence_len_), ) * sentence_len_)
 
 print('bleu = ' + str(bleu / float(len_sentences_)))
 print('coverage = ' + str(hypothesis.coverage.get_coverage()))
