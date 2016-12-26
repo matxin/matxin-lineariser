@@ -11,7 +11,7 @@ from sys import stdin, stdout, stderr
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument('xml')
-argument_parser.add_argument('sample_size', type=int)
+argument_parser.add_argument('samples', type=int)
 arguments = argument_parser.parse_args()
 lineariser = Lineariser()
 
@@ -20,18 +20,8 @@ with open(arguments.xml) as xml:
 
 treebank = [sentence for sentence in Sentence.deserialise(stdin)]
 
-sentence_lengths = [len(sentence.get_sentence()) for sentence in treebank]
-print('sentence_length:   mean = ' + '{0:.4f}'.format(
-    numpy.mean(sentence_lengths)))
-print('                 median = ' + str(numpy.median(sentence_lengths)))
-pyplot.figure()
-pyplot.hist(sentence_lengths, bins=50, range=(0, 50))
-pyplot.title('Frequency Histogram of Sentence Lengths')
-pyplot.xlabel('Sentence Length')
-pyplot.ylabel('# of Sentences')
 
-
-def sample():
+def sample(reference_function=default_reference_function):
     bleu_scores = []
 
     for sentence in treebank:
@@ -51,21 +41,59 @@ def sample():
     return bleu_scores
 
 
-bleu_scores = sample()
-print('coverage = ' + '{0:.4f}'.format(hypothesis.coverage.get_coverage()))
-print('bleu_scores:   mean = ' + '{0:.4f}'.format(numpy.mean(bleu_scores)))
-print('             median = ' + '{0:.4f}'.format(numpy.median(bleu_scores)))
+def default_reference_function(reference):
+    pass
+
+
+reference_len_list = []
+
+
+def get_len_(reference):
+    reference_len_list.append(len(reference))
+
+
+bleu_scores = sample(reference_function=get_len_)
+print('coverage = ' + str(hypothesis.coverage.get_coverage()))
+
+
+def print_statistics(list_):
+    min_ = min(list_)
+    print('               minimum = ' + format_statistic(min_))
+    max_ = max(list_)
+    print('               maximum = ' + format_statistic(max_))
+    print('                 range = ' + format_statistic(max_ - min_))
+    print('                  mean = ' + format_statistic(numpy.mean(list_)))
+    print('    standard deviation = ' + format_statistic(numpy.std(list_)))
+    print('                median = ' + format_statistic(numpy.median(list_)))
+    q_1 = numpy.percentile(list_, 25)
+    print('        first quartile = ' + format_statistic(q_1))
+    q_3 = numpy.percentile(list_, 75)
+    print('        third quartile = ' + format_statistic(q_3))
+    print('  inter-quartile range = ' + format_statistic(q_3 - q_1))
+
+
+def format_statistic(statistic):
+    return '{0:.4f}'.format(statistic)
+
+
+print('sentence lengths:')
+print_statistics(reference_len_list)
 pyplot.figure()
-pyplot.hist(bleu_scores, bins=20, range=(0.5, 1.0))
-pyplot.title('Frequency Histogram of Sentence BLEU Scores')
-pyplot.xlabel('Sentence BLEU Score')
-pyplot.ylabel('# of Sentences')
-bleu_scores = [numpy.mean(sample()) for _ in range(arguments.sample_size)]
-print('bleu_score = ' + '{0:.4f}'.format(numpy.mean(bleu_scores)))
-print('std = ' + '{0:.4f}'.format(numpy.std(bleu_scores)))
+pyplot.hist(reference_len_list, bins=5, range=(0, 50))
+pyplot.title('Reference Length Frequency Histogram')
+pyplot.xlabel('Reference Length (# of Words)')
+pyplot.ylabel('# of References')
+print('bleu scores:')
+print_statistics(bleu_scores)
 pyplot.figure()
-pyplot.hist(bleu_scores, bins=5)
-pyplot.title('Frequency Histogram of Average Sentence BLEU Scores')
-pyplot.xlabel('Average Sentence BLEU Score')
-pyplot.ylabel('# of Sentences')
+pyplot.hist(bleu_scores, bins=5, range=(0.5, 1.0))
+pyplot.title('BLEU Score Frequency Histogram')
+pyplot.xlabel('BLEU Score')
+pyplot.ylabel('# of References')
+mean_bleu_scores = [numpy.mean(bleu_scores)]
+mean_bleu_scores.extend(
+    [numpy.mean(sample()) for _ in range(
+        arguments.samples, start=1)])
+print('mean bleu scores:')
+print_statistics(mean_bleu_scores)
 pyplot.show()
