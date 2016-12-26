@@ -16,7 +16,7 @@ class Lineariser:
     def get_grammars(self):
         return self.grammars
 
-    def linearise_node(self, root, n=0):
+    def linearise_node(self, root, n=0, shuffle=False):
         """Roughly corresponds to linearise-node in the paper."""
         results = []
         i = 0
@@ -27,7 +27,7 @@ class Lineariser:
             if hypothesis is None:
                 break
 
-            results.append(hypothesis.instantiate())
+            results.append(hypothesis.instantiate(shuffle))
             i += 1
 
             if i == n:

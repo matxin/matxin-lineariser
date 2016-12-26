@@ -1,9 +1,29 @@
 from grammars import Grammars
 from printing import Printing
 
+import random
 
-numerator = 0
-denominator = 0
+random.seed(0)
+
+
+class Coverage:
+    def __init__(self):
+        self.numerator = 0
+        self.denominator = 0
+
+    def covered(self):
+        self.numerator += 1
+        self.denominator += 1
+
+    def not_covered(self):
+        self.denominator += 1
+
+    def get_coverage(self):
+        return float(self.numerator) / float(self.denominator)
+
+
+coverage = Coverage()
+
 
 class Hypothesis:
     @classmethod
@@ -43,66 +63,94 @@ class Hypothesis:
     def get_daughters(self):
         return self.daughters
 
-    def instantiate(self):
+    def instantiate(self, shuffle=False):
         """Roughly corresponds to instantiate-hypothesis in the
         paper.
 
         hypothesize_node should set WordLine.rules to an appropriate
         Grammar, so this method does not need to know about Grammars.
         """
-        global numerator, denominator
-        denominator += 1
+        global coverage
         linearisation = []
         daughters = self.get_daughters()[:]
         linearisation_rule = self.get_node().get_sorted_rules()[
             self.get_indices()[0]][1]
 
         if linearisation_rule is None:
+            coverage.not_covered()
+
+            if shuffle:
+                daughters.append(self.get_node())
+                random.shuffle(daughters)
+                daughters_iter_ = iter(daughters)
+
+                while True:
+                    x = next(daughters_iter_)
+
+                    if x is self.get_node():
+                        linearisation.append(x)
+                        break
+
+                    linearisation.extend(x.instantiate(shuffle))
+
+                while True:
+                    try:
+                        daughter = next(daughters_iter_)
+                    except (StopIteration):
+                        return linearisation
+
+                    linearisation.extend(daughter.instantiate(shuffle))
+
             daughters.sort(key=Hypothesis.get_id)
-            list_iter_ = iter(daughters)
+            daughters_iter_ = iter(daughters)
 
             while True:
                 try:
-                    daughter = next(list_iter_)
+                    daughter = next(daughters_iter_)
                 except (StopIteration):
                     linearisation.append(self.get_node())
                     return linearisation
 
                 if daughter.get_id() > self.get_id():
                     linearisation.append(self.get_node())
-                    linearisation.extend(daughter.instantiate())
+                    linearisation.extend(daughter.instantiate(shuffle))
                     break
 
-                linearisation.extend(daughter.instantiate())
+                linearisation.extend(daughter.instantiate(shuffle))
 
             while True:
                 try:
-                    daughter = next(list_iter_)
+                    daughter = next(daughters_iter_)
                 except (StopIteration):
                     return linearisation
 
-                linearisation.extend(daughter.instantiate())
+                linearisation.extend(daughter.instantiate(shuffle))
 
-        numerator += 1
+        if len(daughters) != 0:
+            coverage.covered()
+
         self.instantiate_linearisation_rule_element(
-            linearisation_rule.get_insert(), linearisation, daughters)
+            linearisation_rule.get_insert(), linearisation, daughters, shuffle)
         linearisation.append(self.get_node())
         self.instantiate_linearisation_rule_element(
-            linearisation_rule.get_append(), linearisation, daughters)
+            linearisation_rule.get_append(), linearisation, daughters, shuffle)
         return linearisation
 
     def get_id(self):
         return self.get_node().get_id()
 
-    def instantiate_linearisation_rule_element(
-            self, linearisation_rule_element, linearisation, daughters):
+    def instantiate_linearisation_rule_element(self,
+                                               linearisation_rule_element,
+                                               linearisation,
+                                               daughters,
+                                               shuffle=False):
         for dependent in linearisation_rule_element:
             linearisation.extend(
                 daughters.pop(
                     next(index for index, daughter in enumerate(daughters)
                          if daughter.get_node().get_deprel() == dependent[0]
                          and daughter.get_node().get_word() == dependent[1]))
-                .instantiate())
+                .instantiate(shuffle))
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
