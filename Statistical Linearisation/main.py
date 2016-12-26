@@ -82,6 +82,9 @@ def linearisation():
         if len(gold_order) > 1:
             id += 1
             bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(0.5, 0.5))
+        else:
+            id += 1
+            bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(1.0,))
 
     print(bleu/float(id))
 
@@ -114,6 +117,9 @@ def lift_linearise(prob_path):
         if len(gold_order) > 1:
             id += 1
             bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(0.5, 0.5))
+        else:
+            id += 1
+            bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(1.0,))
 
     print(bleu/float(id))
 
