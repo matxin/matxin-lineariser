@@ -78,7 +78,7 @@ class GreedyLinearisation:
 
     def get_prob(self, pos, pos1, pos2):
         prob_max = 0
-        id = None
+        id = [1, 2, 3]
         #print (self.probabilities)
 
         if self.probabilities.get(pos + "," + pos1 + "," + pos2, 0) > prob_max:

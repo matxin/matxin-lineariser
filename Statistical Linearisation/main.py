@@ -3,7 +3,7 @@ An implementation of an linearisation algorithm as described here: https://aclwe
 """
 
 import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, sys, \
-    Linearisation.NeuralNet, GreedyLinearisation.GreedyLinearisation, nltk
+    Linearisation.NeuralNet, GreedyLinearisation.GreedyLinearisation, nltk, argparse
 
 def lifting():
 
@@ -87,10 +87,10 @@ def linearisation():
 
     print(bleu/float(id))
 
-def lift_linearise():
+def lift_linearise(prob_path):
     id = 0
     greedy = GreedyLinearisation.GreedyLinearisation.GreedyLinearisation()
-    greedy.import_dict("order_probabilities_tr.cvs")
+    greedy.import_dict(prob_path)
     inp = sys.stdin.readlines()
     tmp = []
     bleu = 0.0
@@ -120,7 +120,18 @@ def lift_linearise():
     print(bleu/float(id))
 
 if __name__ == "__main__":
-    lift_linearise()
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('--train', action='store_true')
+    parser.add_argument('-l', '--lang', type=str, help="Path to the probabilities file")
+
+    args = parser.parse_args()
+
+    if args.train is True:
+        #print ("YES!")
+        gen_prob()
+
+    else:
+        lift_linearise(args.lang)
     #linearisation()
-    #gen_prob()
     #lifting()
