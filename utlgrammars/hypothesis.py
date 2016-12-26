@@ -3,6 +3,8 @@ from printing import Printing
 
 import random
 
+random.seed(0)
+
 
 class Coverage:
     def __init__(self):

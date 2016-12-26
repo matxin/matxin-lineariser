@@ -25,7 +25,7 @@ def default_reference_function(reference):
     pass
 
 
-def sample(reference_function=default_reference_function):
+def get_bleu_score_sample(reference_function=default_reference_function):
     bleu_scores = []
 
     for sentence in treebank:
@@ -53,7 +53,7 @@ def get_len_(reference):
     reference_len_list.append(len(reference))
 
 
-bleu_scores = sample(reference_function=get_len_)
+bleu_scores = get_bleu_score_sample(reference_function=get_len_)
 print()
 print('coverage = ' + str(hypothesis.coverage.get_coverage()))
 
@@ -96,12 +96,26 @@ pyplot.hist(bleu_scores, bins=10, range=(0.5, 1.0))
 pyplot.title('BLEU Score Frequency Histogram')
 pyplot.xlabel('BLEU Score')
 pyplot.ylabel('# of References')
-mean_bleu_scores = [numpy.mean(bleu_scores)]
-mean_bleu_scores.extend(
-    [numpy.mean(sample()) for _ in range(1, arguments.samples)])
-print()
-print('mean bleu scores')
-print('================')
-print_statistics(mean_bleu_scores)
+bleu_score_sample_means = [numpy.mean(bleu_scores)]
+samples = '{:,}'.format(arguments.samples)
+sample_format_str = '{:>' + str(len(samples)) + ',}'
+precision = str(max(0, len(str(1.0 / arguments.samples)) - 4))
+percent_format_str = '{:>' + str(len(('{:.' + precision + '%}').format(
+    1))) + '.' + precision + '%}'
+format_str = '\rsample ' + sample_format_str + ' of ' + samples + ' (' + percent_format_str + ')'
+print(flush=True)
+
+for sample in range(1, arguments.samples):
+    print(
+        format_str.format(sample, sample / float(arguments.samples)),
+        end='',
+        file=stderr,
+        flush=True)
+    bleu_score_sample_means.append(numpy.mean(get_bleu_score_sample()))
+
+print(end='\n\n', file=stderr)
+print('bleu score sample means')
+print('=======================')
+print_statistics(bleu_score_sample_means)
 print()
 pyplot.show()
