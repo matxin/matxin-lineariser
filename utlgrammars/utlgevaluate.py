@@ -55,10 +55,17 @@ def get_len_(reference):
 
 bleu_scores = get_bleu_score_sample(reference_function=get_len_)
 print()
-print('coverage = ' + str(hypothesis.coverage.get_coverage()))
+
+
+def format_statistic(statistic):
+    return '{0:.4f}'.format(statistic)
+
+
+print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
 
 
 def print_statistics(list_):
+    print('size = ' + str(len(list_)))
     min_ = min(list_)
     print('minimum = ' + format_statistic(min_))
     max_ = max(list_)
@@ -72,10 +79,6 @@ def print_statistics(list_):
     q_3 = numpy.percentile(list_, 75)
     print('third quartile = ' + format_statistic(q_3))
     print('inter-quartile range = ' + format_statistic(q_3 - q_1))
-
-
-def format_statistic(statistic):
-    return '{0:.4f}'.format(statistic)
 
 
 print()
