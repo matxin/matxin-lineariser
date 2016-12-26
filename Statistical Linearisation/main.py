@@ -79,8 +79,6 @@ def linearisation():
 
         gold_order = tree.give_gold_order()
 
-        # print (gold_order, linearised)
-
         if len(gold_order) > 1:
             id += 1
             bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(0.5, 0.5))
