@@ -35,6 +35,9 @@ class Convert2dependencytree:
 
             words = words.split('\t')
 
+            if len(words[0].split('-')) > 1: # id of type: a-b
+                continue
+
             self.tree.add_node(words)
 
     def ref_tree(self):

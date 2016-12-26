@@ -63,7 +63,6 @@ class DependencyTree:
         """
         for id in self.tree:
             if self.tree[id].fields["head"] != "0" and self.tree[id].fields["head"] != "_":
-                #print (int(self.tree[id].fields["head"])-1, self.tree[self.tree[id].fields["head"]].fields["id"])
                 self.tree[self.tree[id].fields["head"]].fields["children"].append(id)
 
        # for node in self.tree:
@@ -188,3 +187,11 @@ class DependencyTree:
             sys.stdout.write(line+"\n")
 
         sys.stdout.write('\n')
+
+    def give_gold_order(self):
+        order = []
+
+        for node in range(len(self.tree)):
+            order.append(self.tree[str(node+1)].fields["form"])
+
+        return order

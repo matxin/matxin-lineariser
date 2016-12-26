@@ -2,19 +2,69 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, sys, Linearisation.NeuralNet, GreedyLinearisation.GreedyLinearisation
+import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, sys, \
+    Linearisation.NeuralNet, GreedyLinearisation.GreedyLinearisation, nltk
 
-if __name__ == "__main__":
+def lifting():
 
+    inp = sys.stdin.readlines()
+    tmp = []
+
+    for tree_raw in inp:
+        #print (tree_raw)
+        if tree_raw != '\n':
+            tmp.append(tree_raw)
+            continue
+
+        test = Convert2dependencytree.Convert2dependencytree(tmp)
+        tree = test.ref_tree()
+
+        lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+
+        #print (len(tree.tree))
+
+        tree1 = lifting.execute(tree)
+
+        tree1.generate_conllu()
+
+        tmp = []
+
+def gen_prob():
+    greedy = GreedyLinearisation.GreedyLinearisation.GreedyLinearisation()
+    inp = sys.stdin.readlines()
+    tmp = []
+
+    linearised = gold_order = []
+
+    for tree_raw in inp:
+        if tree_raw != '\n':
+            tmp.append(tree_raw)
+            continue
+
+        test = Convert2dependencytree.Convert2dependencytree(tmp)
+        tree = test.ref_tree()
+
+
+        n = len(tree.tree)
+        #print (n)
+        for i in range(1, n+1):
+            for j in range(i+1, n+1):
+                for k in range(j+1, n+1):
+                    greedy.add_case(tree.tree[str(i)].fields["upostag"], tree.tree[str(j)].fields["upostag"],
+                                    tree.tree[str(k)].fields["upostag"])
+        tmp = []
+
+    greedy.save_dict2file()
+
+
+def linearisation():
     res = True
     id = 0
     greedy = GreedyLinearisation.GreedyLinearisation.GreedyLinearisation()
-    greedy.import_dict("order_probabilities.cvs")
+    greedy.import_dict("order_probabilities_en.cvs")
     inp = sys.stdin.readlines()
     tmp = []
-    #NN = Linearisation.NeuralNet()
-
-    greedy.save_dict2file()
+    bleu = 0.0
 
     for tree_raw in inp:
         if tree_raw != '\n':
@@ -25,36 +75,52 @@ if __name__ == "__main__":
         tree = test.ref_tree()
 
         tmp = []
+        linearised = greedy.linearise(tree)
 
+        gold_order = tree.give_gold_order()
 
-        #for line in sys.stdin.readlines():
-         #   sys.stdout.write(line)
+        # print (gold_order, linearised)
 
-        #linear = Linearisation.Dependency_tree_linearisation.Dependecy_tree_linearisation(tree)
+        if len(gold_order) > 1:
+            id += 1
+            bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(0.5, 0.5))
 
-        #linear.execute_algorithm()
+    print(bleu/float(id))
 
-        #lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+def lift_linearise():
+    id = 0
+    greedy = GreedyLinearisation.GreedyLinearisation.GreedyLinearisation()
+    greedy.import_dict("order_probabilities_tr.cvs")
+    inp = sys.stdin.readlines()
+    tmp = []
+    bleu = 0.0
 
-        #tree.generate_conllu()
+    for tree_raw in inp:
+        if tree_raw != '\n':
+            tmp.append(tree_raw)
+            continue
 
-        #tree1 = lifting.execute(copy.deepcopy(tree))
+        test = Convert2dependencytree.Convert2dependencytree(tmp)
+        tree = test.ref_tree()
 
-        #tree1.generate_conllu()
+        lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+        tree1 = lifting.execute(tree)
 
+        tmp = []
+        linearised = greedy.linearise(tree1)
 
-        n = len(tree.tree)
+        gold_order = tree1.give_gold_order()
 
-        for i in range(1, n+1):
-            for j in range(i+1, n+1):
-                for k in range(j+1, n+1):
-                    greedy.add_case(tree.tree[str(i)].fields["upostag"], tree.tree[str(j)].fields["upostag"],
-                                    tree.tree[str(k)].fields["upostag"])
+        # print (gold_order, linearised)
 
-        #for id in tree.tree:
-         #   print (id)
-          #  print (tree.tree[id].neighbouring_nodes["-2"], tree.tree[id].neighbouring_nodes["-1"], tree.tree[id].neighbouring_nodes["0"], tree.tree[id].neighbouring_nodes["1"], tree.tree[id].neighbouring_nodes["2"])
-            #print (tree.ufeat(id, "-2", "Gender"), tree.ufeat(id, "-1", "Gender"), tree.ufeat(id, "0", "Gender"), tree.ufeat(id, "1", "Gender"), tree.ufeat(id, "2", "Gender"))
-           # print (tree.deprel(id, "-2"), tree.deprel(id, "-1"), tree.deprel(id, "0"), tree.deprel(id, "1"), tree.deprel(id, "2")))
+        if len(gold_order) > 1:
+            id += 1
+            bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=(0.5, 0.5))
 
-    #greedy.save_dict2file()
+    print(bleu/float(id))
+
+if __name__ == "__main__":
+    lift_linearise()
+    #linearisation()
+    #gen_prob()
+    #lifting()

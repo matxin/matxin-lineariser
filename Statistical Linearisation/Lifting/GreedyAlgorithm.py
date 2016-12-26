@@ -1,12 +1,13 @@
+import copy
+
 class GreedyAlgorithm:
     def __init__(self):
         self.tree = None
         self.lifts = dict()
 
     def execute(self, T):
-        self.tree = T
+        self.tree = copy.deepcopy(T)
         tmp = True
-       # print (self.tree.head)
         while tmp:
             #print (tmp)
             #self.tree.print_tree()
@@ -67,6 +68,7 @@ class GreedyAlgorithm:
     def is_ancestor(self, a, b):
         if self.tree.tree[a].fields["head"] == '0':
             return False
+
         while self.tree.tree[a].fields["head"] != self.tree.head :
             if self.tree.tree[a].fields["head"] == b:
                 return True
