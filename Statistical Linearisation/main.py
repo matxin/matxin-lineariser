@@ -3,7 +3,7 @@ An implementation of an linearisation algorithm as described here: https://aclwe
 """
 
 import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, sys, \
-    Linearisation.NeuralNet, GreedyLinearisation.GreedyLinearisation, nltk, argparse
+    Linearisation.NeuralNet, GreedyLinearisation, nltk, argparse, GreedyDomains
 
 def lifting():
 
@@ -88,9 +88,9 @@ def linearisation():
 
     print(bleu/float(id))
 
-def lift_linearise(prob_path):
+def lift_linearise_greedy(prob_path):
     id = 0
-    greedy = GreedyLinearisation.GreedyLinearisation.GreedyLinearisation()
+    greedy = GreedyLinearisation.GreedyLinearisation()
     greedy.import_dict(prob_path)
     inp = sys.stdin.readlines()
     tmp = []
@@ -106,6 +106,7 @@ def lift_linearise(prob_path):
 
         lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
         tree1 = lifting.execute(tree)
+
 
         tmp = []
         linearised = greedy.linearise(tree1)
@@ -123,19 +124,69 @@ def lift_linearise(prob_path):
 
     print(bleu/float(id))
 
+def lift_linearise_greedy_domains(prob_path):
+    id = 0
+    greedy = GreedyDomains.GreedyDomains()
+    greedy.import_dict(prob_path)
+    inp = sys.stdin.readlines()
+    tmp = []
+    bleu = 0.0
+
+    for tree_raw in inp:
+        if tree_raw != '\n':
+            tmp.append(tree_raw)
+            continue
+
+        test = Convert2dependencytree.Convert2dependencytree(tmp)
+        tree = test.ref_tree()
+
+        #if len(tree.tree) > 30:
+         #   continue
+
+        lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+        tree1 = lifting.execute(tree)
+
+        tmp = []
+
+        tree1.calculate_domains()
+
+        #for node in tree1.tree:
+         #   print (node, tree1.tree[node].give_domain())
+
+        linearised = greedy.linearise(tree1)
+
+        gold_order = tree1.give_gold_order()
+
+        #print (str(gold_order)+'\n'+str(linearised))
+
+        weights = ()
+        for i in range(0, len(gold_order)):
+            weights += (1.0/float(len(gold_order)),)
+
+        id += 1
+        bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=weights)
+    try:
+        print(bleu/float(id))
+    except:
+        print ("ONLY BIG SENTENCES.")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--train', action='store_true')
     parser.add_argument('-l', '--lang', type=str, help="Path to the probabilities file")
+    parser.add_argument('--domains', action='store_true')
 
     args = parser.parse_args()
-
+    #print ("a")
     if args.train is True:
         #print ("YES!")
         gen_prob()
 
+    elif args.domains is True:
+        #print ("a")
+        lift_linearise_greedy_domains(args.lang)
     else:
-        lift_linearise(args.lang)
+        lift_linearise_greedy(args.lang)
     #linearisation()
     #lifting()

@@ -37,7 +37,7 @@ class DependencyTree:
         for no in range(0, 10):
             temp.update_field(self.no2field[str(no)], list[no])
 
-        temp.beam = [[temp.fields["form"]]]
+        temp.beam = [[temp.fields["id"]]]
 
         self.tree[temp.fields["id"]] = temp
         self.tree[temp.fields["id"]].extract_features()

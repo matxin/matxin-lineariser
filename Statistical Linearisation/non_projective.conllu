@@ -6,3 +6,4 @@
 6	get	get	VERB	VB	VerbForm=Inf	4	xcomp	_	_
 7	her	she	PRON	PRP	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	6	iobj	_	SpaceAfter=No
 8	?	?	PUNCT	.	_	6	punct	_	_
+
