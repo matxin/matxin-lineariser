@@ -2,7 +2,7 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, Lifting.GreedyAlgorithm, sys, \
+import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, GreedyLifting, sys, \
     Linearisation.NeuralNet, GreedyLinearisation, nltk, argparse, GreedyDomains
 
 def lifting():
@@ -19,7 +19,7 @@ def lifting():
         test = Convert2dependencytree.Convert2dependencytree(tmp)
         tree = test.ref_tree()
 
-        lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+        lifting = GreedyLifting.GreedyLifting()
 
         #print (len(tree.tree))
 
@@ -143,7 +143,7 @@ def lift_linearise_greedy_domains(prob_path):
         #if len(tree.tree) > 30:
          #   continue
 
-        lifting = Lifting.GreedyAlgorithm.GreedyAlgorithm()
+        lifting = GreedyLifting.GreedyLifting()
         tree1 = lifting.execute(tree)
 
         tmp = []
