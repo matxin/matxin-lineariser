@@ -34,19 +34,16 @@ class DependencyTree:
         """
         temp = DependencyTreeNode.DependencyTreeNode()
 
-        for no in range(0, 10):
+        for no in range(0, 10): # indices of all the fields
             temp.update_field(self.no2field[str(no)], list[no])
 
-        temp.beam = [[temp.fields["form"]]]
+        temp.beam = [[temp.fields["id"]]]
 
         self.tree[temp.fields["id"]] = temp
         self.tree[temp.fields["id"]].extract_features()
 
         if temp.fields["head"] == "0":
             self.head = temp.fields["id"]
-
-
-
 
     def print_tree(self):
         """
@@ -65,9 +62,6 @@ class DependencyTree:
             if self.tree[id].fields["head"] != "0" and self.tree[id].fields["head"] != "_":
                 self.tree[self.tree[id].fields["head"]].fields["children"].append(id)
 
-       # for node in self.tree:
-        #    print (node.fields["id"], node.fields["children"])
-
     def calculate_domains(self):
         """
         fills out the domain fields for every node
@@ -77,12 +71,8 @@ class DependencyTree:
         for id in self.tree:
             self.tree[id].domain = [id]
 
-            #print (node.domain)
-
             for child in self.tree[id].fields["children"]:
-                #print (int(child))
                 self.tree[id].domain.append(child)
-            #print(node.domain)
 
     def set_neigbouring_nodes(self):
         """
@@ -92,7 +82,6 @@ class DependencyTree:
         for node in self.tree:
             self.tree[node].neighbouring_nodes["0"] = [node]
 
-            #print (node, self.tree[node].fields["head"])
 
             if self.tree[node].fields["head"] != "0" and self.tree[node].fields["head"] != "_":
                 self.tree[node].neighbouring_nodes["-1"] = [self.tree[node].fields["head"]] # parent
@@ -175,13 +164,16 @@ class DependencyTree:
         return res
 
     def generate_conllu(self):
+        """
+        generates the tree in the CONLLU format and puts it to the stdout
+        :return:
+        """
 
         size = len(self.tree)
 
         for node in range(1, size+1):
             line = ""
             for field in range(0, 10):
-                #print (self.tree[str(node)].fields[self.no2field["9"]])
                 line += self.tree[str(node)].fields[self.no2field[str(field)]] + "\t"
 
             sys.stdout.write(line+"\n")
@@ -189,6 +181,10 @@ class DependencyTree:
         sys.stdout.write('\n')
 
     def give_gold_order(self):
+        """
+        returns the gold linear order for a tree
+        :return: the list with all the words
+        """
         order = []
 
         for node in range(len(self.tree)):
