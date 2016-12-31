@@ -129,6 +129,9 @@ class GreedyDomains(GreedyLinearisation.GreedyLinearisation):
         sum = self.probabilities.get(pos1+','+pos2, 0)
         sum += self.probabilities.get(pos2+','+pos1, 0)
 
+        if sum == 0:
+            return 0.0
+
         return float(self.probabilities.get(pos1+','+pos2, 0)) / float(sum)
 
     def get_prob3(self, pos1, pos2, pos3):
@@ -145,5 +148,8 @@ class GreedyDomains(GreedyLinearisation.GreedyLinearisation):
         sum += self.probabilities.get(pos2+','+pos3+','+pos1, 0)
         sum += self.probabilities.get(pos3+','+pos2+','+pos1, 0)
         sum += self.probabilities.get(pos3 + ',' + pos1 + ',' + pos2, 0)
+
+        if sum == 0:
+            return 0.0
 
         return float(self.probabilities.get(pos1+','+pos2+','+pos3, 0)) / float(sum)
