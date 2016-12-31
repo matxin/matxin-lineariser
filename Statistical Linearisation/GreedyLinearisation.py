@@ -5,11 +5,23 @@ class GreedyLinearisation:
         self.probabilities = {} # dict with POSs and indices
 
     def add_case(self, pos, pos1, pos2):
+        """
+        adds a case of 3 PoS tags in that order
+        :param pos:
+        :param pos1:
+        :param pos2:
+        :return: None
+        """
         self.probabilities[pos+","+pos1+","+pos2] = self.probabilities.get(pos+","+pos1+","+pos2, 0) + 1
         self.probabilities[pos+','+pos1] = self.probabilities.get(pos+','+pos1, 0) + 1
         self.probabilities[pos1 + ',' + pos2] = self.probabilities.get(pos1 + ',' + pos2, 0) + 1
 
     def linearise(self, tree):
+        """
+        linearises the tree using the Greedy method
+        :param tree:
+        :return: the linearised tree
+        """
 
         use_now = []
         tmp = 0
@@ -62,6 +74,12 @@ class GreedyLinearisation:
         return linearised
 
     def get_prob2(self, pos, pos1):
+        """
+        get the order for a bigram
+        :param pos:
+        :param pos1:
+        :return: the order
+        """
         prob_max = 0
         id = None
 
@@ -77,6 +95,13 @@ class GreedyLinearisation:
 
 
     def get_prob(self, pos, pos1, pos2):
+        """
+        get the order for a trigram
+        :param pos:
+        :param pos1:
+        :param pos2:
+        :return: the order
+        """
         prob_max = 0
         id = [1, 2, 3]
         #print (self.probabilities)
@@ -108,6 +133,10 @@ class GreedyLinearisation:
         return id
 
     def save_dict2file(self):
+        """
+        saves the probabilities to a stdout
+        :return: None
+        """
         #fhand = open("order_probabilities_en.cvs", 'w')
 
         for pos in self.probabilities:
@@ -119,6 +148,11 @@ class GreedyLinearisation:
             sys.stdout.write(string + "\n")
 
     def import_dict(self, file):
+        """
+        imports the probabilities from the file
+        :param file:
+        :return: None
+        """
         fhand = open(file)
 
         for line in fhand:
