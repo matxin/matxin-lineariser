@@ -1,6 +1,6 @@
 import DependencyTree
 
-fhand = open("en-ud-train.conllu")
+fhand = open("Treebank/en-ud-train.conllu")
 
 tree = DependencyTree.DependencyTree()
 
