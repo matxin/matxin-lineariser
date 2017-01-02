@@ -52,7 +52,7 @@ class Sentence:
     def deserialise_matxin(cls, corpus_etree):
         for sentence_etree in corpus_etree.findall('SENTENCE'):
             sentence = Sentence()
-            root_node_etree = corpus_etree.find('NODE')
+            root_node_etree = sentence_etree.find('NODE')
             root = WordLine()
             maximum_ref = root.deserialise_matxin(root_node_etree)
             sentence.root = root
@@ -67,10 +67,6 @@ class Sentence:
     def linearise(self, lineariser, n=0, shuffle=False):
         self.linearisations = lineariser.linearise_node(self.get_root(), n,
                                                         shuffle)
-        self.strings = [
-            ' '.join([word.get_form().lower() for word in linearisation])
-            for linearisation in self.get_linearisations()
-        ]
 
     def get_root(self):
         return self.root
@@ -79,7 +75,10 @@ class Sentence:
         return self.linearisations
 
     def get_strings(self):
-        return self.strings
+        return [
+            ' '.join([word.get_form().lower() for word in linearisation])
+            for linearisation in self.get_linearisations()
+        ]
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \

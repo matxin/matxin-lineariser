@@ -6,7 +6,9 @@ from word import Word
 
 class WordLine:
     def __init__(self):
-        pass
+        self.dependents = []
+        self.hypotheses = []
+        self.agenda = Agenda()
 
     def deserialise(self, line):
         fields = line.split('\t')
@@ -41,7 +43,8 @@ class WordLine:
             self.xpostag = xpostag
 
         upostag = fields.pop()
-        self.word = Word(upostag, feats)
+        self.word = Word(upostag)
+        self.word.parse_feats(feats)
         self.lemma = fields.pop()
         self.form = fields.pop()
 
@@ -51,30 +54,33 @@ class WordLine:
         # - also support empty nodes (e.g. 5.1)
         self.id_ = int(fields.pop())
 
-        self.dependents = []
-        self.hypotheses = []
-        self.agenda = Agenda()
-
     def deserialise_matxin(self, node_etree, maximum_ref = 0):
+        self.node_etree = node_etree
         node_attributes = dict(node_etree.items())
 
         try:
-            self.id_ = node_attributes.get('ref')
+            self.id_ = int(node_attributes.get('ref'))
 
             if self.get_id() > maximum_ref:
                 maximum_ref = self.get_id()
 
             del node_attributes['ref']
-        except (KeyError):
+        except (TypeError):
             self.id_ = None
 
-        self.lemma = node_attributes['lem']
-        del node_attributes['lem']
-        upostag = node_attributes['upostag']
-        del node_attributes['upostag']
-        feats = list(node_attributes)
-        feats.sort()
-        self.word = Word(upostag, feats)
+        upostag = node_attributes['UPOSTAG']
+        del node_attributes['UPOSTAG']
+        self.deprel = node_attributes['si']
+        del node_attributes['si']
+
+        for attribute in ['alloc', 'slem', 'smi', 'UpCase', 'lem']:
+            try:
+                del node_attributes[attribute]
+            except (KeyError):
+                pass
+
+        self.word = Word(upostag)
+        self.word.feats = frozenset(node_attributes.items())
 
         for dependent_node_etree in node_etree.findall('NODE'):
             dependent = WordLine()
