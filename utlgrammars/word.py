@@ -2,15 +2,18 @@ from printing import Printing
 
 
 class Word:
+    def __init__(self, upostag):
+        self.upostag = upostag
+
     @classmethod
     def deserialise(cls, node_etree):
         upostag = node_etree.get('pos')
         feats = node_etree.get('feats')
-        return Word(upostag, feats)
+        word = Word(upostag)
+        word.parse_feats(feats)
+        return word
 
-    def __init__(self, upostag, feats):
-        self.upostag = upostag
-
+    def parse_feats(self, feats):
         if feats is None:
             self.feats = frozenset({})
         else:

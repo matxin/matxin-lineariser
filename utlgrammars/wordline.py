@@ -5,7 +5,12 @@ from word import Word
 
 
 class WordLine:
-    def __init__(self, line):
+    def __init__(self):
+        self.dependents = []
+        self.hypotheses = []
+        self.agenda = Agenda()
+
+    def deserialise(self, line):
         fields = line.split('\t')
         # parse fields in reverse by popping
 
@@ -38,7 +43,8 @@ class WordLine:
             self.xpostag = xpostag
 
         upostag = fields.pop()
-        self.word = Word(upostag, feats)
+        self.word = Word(upostag)
+        self.word.parse_feats(feats)
         self.lemma = fields.pop()
         self.form = fields.pop()
 
@@ -48,9 +54,44 @@ class WordLine:
         # - also support empty nodes (e.g. 5.1)
         self.id_ = int(fields.pop())
 
-        self.dependents = []
-        self.hypotheses = []
-        self.agenda = Agenda()
+    def deserialise_matxin(self, node_etree, maximum_ref = 0):
+        self.node_etree = node_etree
+        node_attributes = dict(node_etree.items())
+
+        try:
+            self.id_ = int(node_attributes.get('ref'))
+
+            if self.get_id() > maximum_ref:
+                maximum_ref = self.get_id()
+
+            del node_attributes['ref']
+        except (TypeError):
+            self.id_ = None
+
+        upostag = node_attributes['UPOSTAG']
+        del node_attributes['UPOSTAG']
+        self.deprel = node_attributes['si']
+        del node_attributes['si']
+
+        for attribute in ['alloc', 'slem', 'smi', 'UpCase', 'lem']:
+            try:
+                del node_attributes[attribute]
+            except (KeyError):
+                pass
+
+        self.word = Word(upostag)
+        self.word.feats = frozenset(node_attributes.items())
+
+        for dependent_node_etree in node_etree.findall('NODE'):
+            dependent = WordLine()
+            ref = dependent.deserialise_matxin(dependent_node_etree)
+
+            if ref > maximum_ref:
+                maximum_ref = ref
+
+            self.get_dependents().append(dependent)
+
+        return maximum_ref
 
     def get_id(self):
         return self.id_
@@ -58,9 +99,9 @@ class WordLine:
     def get_head(self):
         return self.head
 
-    def add_edge(self, sentence):
+    def add_edge(self, sentence, wordlines):
         try:
-            sentence.get_sentence()[self.get_head()].dependents.append(self)
+            wordlines[self.get_head()].get_dependents().append(self)
         except (KeyError):
             sentence.root = self
 
@@ -89,6 +130,22 @@ class WordLine:
 
     def get_agenda(self):
         return self.agenda
+
+    def add_word(self, wordlines):
+        wordlines[self.get_id()] = self
+
+        for dependent in self.get_dependents():
+            dependent.add_word(wordlines)
+
+    def add_ref(self, maximum_ref):
+        if self.get_id() is None:
+            maximum_ref += 1
+            self.id_ = maximum_ref
+
+        for dependent in self.get_dependents():
+            maximum_ref = dependent.add_ref(maximum_ref)
+
+        return maximum_ref
 
     def get_form(self):
         return self.form

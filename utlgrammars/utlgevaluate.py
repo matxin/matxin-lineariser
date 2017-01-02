@@ -29,7 +29,7 @@ def get_bleu_score_sample(reference_function=default_reference_function):
     bleu_scores = []
 
     for sentence in treebank:
-        sentence_list = list(sentence.get_sentence().items())
+        sentence_list = list(sentence.get_wordlines().items())
         sentence_list.sort()
         reference = [word.get_form().lower() for _, word in sentence_list]
         reference_function(reference)
