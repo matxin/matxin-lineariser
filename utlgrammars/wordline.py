@@ -5,7 +5,10 @@ from word import Word
 
 
 class WordLine:
-    def __init__(self, line):
+    def __init__(self):
+        pass
+
+    def deserialise(self, line):
         fields = line.split('\t')
         # parse fields in reverse by popping
 
@@ -52,15 +55,47 @@ class WordLine:
         self.hypotheses = []
         self.agenda = Agenda()
 
+    def deserialise_matxin(self, node_etree, maximum_ref = 0):
+        node_attributes = dict(node_etree.items())
+
+        try:
+            self.id_ = node_attributes.get('ref')
+
+            if self.get_id() > maximum_ref:
+                maximum_ref = self.get_id()
+
+            del node_attributes['ref']
+        except (KeyError):
+            self.id_ = None
+
+        self.lemma = node_attributes['lem']
+        del node_attributes['lem']
+        upostag = node_attributes['upostag']
+        del node_attributes['upostag']
+        feats = list(node_attributes)
+        feats.sort()
+        self.word = Word(upostag, feats)
+
+        for dependent_node_etree in node_etree.findall('NODE'):
+            dependent = WordLine()
+            ref = dependent.deserialise_matxin(dependent_node_etree)
+
+            if ref > maximum_ref:
+                maximum_ref = ref
+
+            self.get_dependents().append(dependent)
+
+        return maximum_ref
+
     def get_id(self):
         return self.id_
 
     def get_head(self):
         return self.head
 
-    def add_edge(self, sentence):
+    def add_edge(self, sentence, wordlines):
         try:
-            sentence.get_sentence()[self.get_head()].dependents.append(self)
+            wordlines[self.get_head()].get_dependents().append(self)
         except (KeyError):
             sentence.root = self
 
@@ -89,6 +124,22 @@ class WordLine:
 
     def get_agenda(self):
         return self.agenda
+
+    def add_word(self, wordlines):
+        wordlines[self.get_id()] = self
+
+        for dependent in self.get_dependents():
+            dependent.add_word(wordlines)
+
+    def add_ref(self, maximum_ref):
+        if self.get_id() is None:
+            maximum_ref += 1
+            self.id_ = maximum_ref
+
+        for dependent in self.get_dependents():
+            maximum_ref = dependent.add_ref(maximum_ref)
+
+        return maximum_ref
 
     def get_form(self):
         return self.form
