@@ -191,3 +191,14 @@ class DependencyTree:
             order.append(self.tree[str(node+1)].fields["form"])
 
         return order
+
+    def generate_linearised_xml(self, order, input):
+        """
+        stdout xml in matxin format for lineariser output
+        :order: the order of id in the linearised version
+        :return: None
+        """
+
+
+
+

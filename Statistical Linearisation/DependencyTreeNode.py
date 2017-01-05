@@ -62,7 +62,6 @@ class DependencyTreeNode:
             return
 
         temp = self.fields["feats"].split('|') #split features
-
         for feat in temp:
             temp1 = feat.split('=') # splits into a feature and value
             self.features[temp1[0]] = temp1[1]
