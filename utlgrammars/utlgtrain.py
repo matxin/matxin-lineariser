@@ -1,4 +1,5 @@
 import sys
+from argparse import ArgumentParser
 
 # This file extracts local linearisation rules from a treebank in CoNLL-U format.
 # The format of the rules is
@@ -13,6 +14,15 @@ domains = {}
 heads = {}
 nodes = {}
 
+argument_parser = ArgumentParser()
+argument_parser.add_argument('--lemma-file', type=str)
+arguments = argument_parser.parse_args()
+
+try:
+    with open(arguments.lemma_file) as lemma_file:
+        lemmas = [line[:-1] for line in lemma_file]
+except (TypeError):
+    lemmas = []
 
 def proc_node(h, n, i, r, cnf):  #{
     rule = {}
