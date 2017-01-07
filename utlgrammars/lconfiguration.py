@@ -1,8 +1,6 @@
 from printing import Printing
 from word import word_eq
 
-from sys import stderr
-
 
 class LocalConfiguration:
     def __init__(self, deprel, word, dependents):
@@ -56,7 +54,6 @@ class LocalConfiguration:
 
 
 def lconfiguration_eq(a, b):
-    print('lconfiguration_eq', file=stderr, flush=True)
     if type(a) is not type(b):
         return False
 
@@ -77,5 +74,4 @@ def lconfiguration_eq(a, b):
         if not word_eq(dependent[1], b.get_dependents()[index][1]):
             return False
 
-    print('eq', file=stderr, flush=True)
     return True
