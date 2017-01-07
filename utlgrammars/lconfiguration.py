@@ -60,7 +60,7 @@ def lconfiguration_eq(a, b):
         if a.get_deprel() != b.get_deprel():
             return False
 
-    if !word_eq(a.get_word(), b.get_word()):
+    if not word_eq(a.get_word(), b.get_word()):
         return False
 
     if len(a.get_dependents()) != len(b.get_dependents()):
@@ -70,7 +70,7 @@ def lconfiguration_eq(a, b):
         if dependent[0] != b.get_dependents()[index][0]:
             return False
 
-        if !word_eq(dependent[1], b.get_dependents()[index][1]):
+        if not word_eq(dependent[1], b.get_dependents()[index][1]):
             return False
 
     return True

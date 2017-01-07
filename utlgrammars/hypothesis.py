@@ -77,9 +77,6 @@ class Hypothesis:
         linearisation_rule = self.get_node().get_sorted_rules()[
             self.get_indices()[0]][1]
 
-        print('self = ' + str(self))
-        print('linearisation_rule = ' + str(linearisation_rule))
-
         if linearisation_rule is None:
             coverage.not_covered()
 
@@ -148,9 +145,6 @@ class Hypothesis:
                                                linearisation,
                                                daughters,
                                                shuffle=False):
-        print('linearisation_rule_element = ' + Printing.print_list(
-            linearisation_rule_element))
-        print('daughters = ' + Printing.print_list(daughters))
         for dependent in linearisation_rule_element:
             linearisation.extend(
                 daughters.pop(

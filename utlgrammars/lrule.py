@@ -30,9 +30,6 @@ class LinearisationRule:
         linearisation_rule = LinearisationRule(
             [value for key, value in linearisation_rule[:head_node_index]],
             [value for key, value in linearisation_rule[head_node_index + 1:]])
-        print('deserialise')
-        print('local_configuration = ' + str(local_configuration))
-        print('linearisation_rule = ' + str(linearisation_rule))
 
         try:
             grammars.get_grammars()[local_configuration][
