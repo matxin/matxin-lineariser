@@ -29,8 +29,9 @@ class LocalConfiguration:
         if type(self) is not type(other):
             raise TypeError
 
-        if self.get_deprel() != other.get_deprel():
-            return self.get_deprel() < other.get_deprel()
+        if self.get_deprel() is not None and other.get_deprel() is not None:
+            if self.get_deprel() != other.get_deprel():
+                return self.get_deprel() < other.get_deprel()
 
         if self.get_word() != other.get_word():
             return self.get_word() < other.get_word()
