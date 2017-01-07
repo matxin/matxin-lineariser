@@ -40,17 +40,15 @@ def proc_node(h, n, i, r, cnf):  #{
             j = k[ord]
             #print(' ', j, rule[j], ':', ord);
             if j == lin_h:  #{
-                rhead = str(ord) + '/' + rule[j][0] + '/' + rule[j][1]
-                config_head = rule[j][0] + '/' + rule[j][1]
+                rhead = '/'.join([str(ord)] + list(rule[j]))
+                config_head = '/'.join(rule[j])
             else:  #{
                 if childs == '':  #{
-                    childs = str(ord) + '/' + rule[j][0] + '/' + rule[j][1]
-                    config_childs = rule[j][0] + '/' + rule[j][1]
+                    childs = '/'.join([str(ord)] + list(rule[j]))
+                    config_childs = '/'.join(rule[j])
                 else:  #{
-                    childs = childs + '|' + str(ord) + '/' + rule[j][
-                        0] + '/' + rule[j][1]
-                    config_childs = config_childs + '|' + rule[j][
-                        0] + '/' + rule[j][1]
+                    childs = childs + '|' + '/'.join([str(ord)] + list(rule[j]))
+                    config_childs = config_childs + '|' + '/'.join(rule[j])
                 #}
                 #}
 
