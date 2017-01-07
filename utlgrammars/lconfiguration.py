@@ -56,7 +56,7 @@ class LocalConfiguration:
 
 
 def lconfiguration_eq(a, b):
-    print('lconfiguration_eq', file=stderr)
+    print('lconfiguration_eq', file=stderr, flush=True)
     if type(a) is not type(b):
         return False
 
@@ -77,5 +77,5 @@ def lconfiguration_eq(a, b):
         if not word_eq(dependent[1], b.get_dependents()[index][1]):
             return False
 
-    print('eq', file=stderr)
+    print('eq', file=stderr, flush=True)
     return True

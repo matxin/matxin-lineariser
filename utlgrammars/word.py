@@ -85,7 +85,7 @@ def word_eq(a, b):
         if a.get_lemma() != b.get_lemma():
             return False
 
-        print('a.get_lemma() = ' + a.get_lemma(), file=stderr)
-        print('b.get_lemma() = ' + b.get_lemma(), file=stderr)
+        print('a.get_lemma() = ' + a.get_lemma(), file=stderr, flush=True)
+        print('b.get_lemma() = ' + b.get_lemma(), file=stderr, flush=True)
 
     return True

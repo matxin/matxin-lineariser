@@ -19,13 +19,13 @@ class Grammars:
         return self.grammars
 
     def get_grammar(self, local_configuration):
-        print('get_grammar', file=stderr)
+        print('get_grammar', file=stderr, flush=True)
 
         try:
             return next(grammar[1] for grammar in self.get_grammars().items()
                         if lconfiguration_eq(local_configuration, grammar[0]))
         except (StopIteration):
-            print('StopIteration', file=stderr)
+            print('StopIteration', file=stderr, flush=True)
             raise KeyError
 
     def __str__(self):
