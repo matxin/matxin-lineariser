@@ -4,6 +4,8 @@ from printing import Printing
 
 from xml.etree import ElementTree
 
+from sys import stderr
+
 
 class Grammars:
     def __init__(self):
@@ -17,10 +19,13 @@ class Grammars:
         return self.grammars
 
     def get_grammar(self, local_configuration):
+        print('get_grammar', file=stderr)
+
         try:
             return next(grammar[1] for grammar in self.get_grammars().items()
                         if lconfiguration_eq(local_configuration, grammar[0]))
         except (StopIteration):
+            print('StopIteration', file=stderr)
             raise KeyError
 
     def __str__(self):

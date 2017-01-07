@@ -1,5 +1,7 @@
 from printing import Printing
 
+from sys import stderr
+
 
 class Word:
     def __init__(self, upostag):
@@ -82,5 +84,8 @@ def word_eq(a, b):
     if a.get_lemma() is not None and b.get_lemma() is not None:
         if a.get_lemma() != b.get_lemma():
             return False
+
+        print('a.get_lemma() = ' + a.get_lemma(), file=stderr)
+        print('b.get_lemma() = ' + b.get_lemma(), file=stderr)
 
     return True
