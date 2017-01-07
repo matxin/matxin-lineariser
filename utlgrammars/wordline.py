@@ -45,7 +45,7 @@ class WordLine:
         upostag = fields.pop()
         self.word = Word(upostag)
         self.word.parse_feats(feats)
-        self.lemma = fields.pop()
+        self.word.add_lemma(fields.pop())
         self.form = fields.pop()
 
         # to-do
@@ -72,8 +72,10 @@ class WordLine:
         del node_attributes['UPOSTAG']
         self.deprel = node_attributes['si']
         del node_attributes['si']
+        lemma = node_attributes['lem']
+        del node_attributes['lem']
 
-        for attribute in ['alloc', 'slem', 'smi', 'UpCase', 'lem']:
+        for attribute in ['alloc', 'slem', 'smi', 'UpCase']:
             try:
                 del node_attributes[attribute]
             except (KeyError):
@@ -81,6 +83,7 @@ class WordLine:
 
         self.word = Word(upostag)
         self.word.feats = frozenset(node_attributes.items())
+        self.word.add_lemma(lemma)
 
         for dependent_node_etree in node_etree.findall('NODE'):
             dependent = WordLine()

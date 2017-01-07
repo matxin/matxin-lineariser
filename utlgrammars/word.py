@@ -4,6 +4,11 @@ from printing import Printing
 class Word:
     def __init__(self, upostag):
         self.upostag = upostag
+        self.feats = frozenset({})
+        self.lemma = None
+
+    def add_lemma(self, lemma):
+        self.lemma = lemma
 
     @classmethod
     def deserialise(cls, node_etree):
@@ -11,6 +16,7 @@ class Word:
         feats = node_etree.get('feats')
         word = Word(upostag)
         word.parse_feats(feats)
+        word.add_lemma(node_etree.get('lem'))
         return word
 
     def parse_feats(self, feats):
@@ -21,22 +27,18 @@ class Word:
                 tuple(feat.split('=')) for feat in feats.split('|'))
 
     def __hash__(self):
-        return hash(self.get_upostag())
+        return hash((self.get_upostag(), self.get_feats(), self.get_lemma()))
 
     def get_upostag(self):
         return self.upostag
 
+    def get_lemma(self):
+        return self.lemma
+
     def __eq__(self, other):
-        if type(other) is not type(self):
-            return False
-
-        if self.get_upostag() != other.get_upostag():
-            return False
-
-        if len(self.get_feats()) == 0 or len(other.get_feats()) == 0:
-            return True
-
-        return self.get_feats() == other.get_feats()
+        return type(self) is type(other) and self.get_upostag(
+        ) == other.get_upostag() and self.get_feats() == other.get_feats(
+        ) and self.get_lemma() == other.get_lemma()
 
     def get_feats(self):
         return self.feats
@@ -49,7 +51,12 @@ class Word:
             return self.get_upostag() < other.get_upostag()
 
         if len(self.get_feats()) != 0 and len(other.get_feats()) != 0:
-            return self.get_feats() < other.get_feats()
+            if self.get_feats() != other.get_feats():
+                return self.get_feats() < other.get_feats()
+
+        if self.get_lemma() is not None and other.get_lemma() is not None:
+            if self.get_lemma() != other.get_lemma():
+                return self.get_lemma() < other.get_lemma()
 
         return False
 
@@ -57,4 +64,23 @@ class Word:
         return Printing.get_module_qualname(self) + ' = {\n' + \
                 '  upostag = ' + repr(self.get_upostag()) + '\n' + \
                 '  feats = ' + Printing.shift_str(Printing.print_list(self.get_feats(), print_item=Printing.print_tuple)) + '\n' + \
+                '  lemma = ' + repr(self.get_lemma()) + '\n' + \
                 '}'
+
+
+def word_eq(a, b):
+    if type(a) is not type(b):
+        return False
+
+    if a.get_upostag() != b.get_upostag():
+        return False
+
+    if len(a.get_feats()) != 0 and len(b.get_feats()) != 0:
+        if a.get_feats() != b.get_feats():
+            return False
+
+    if a.get_lemma() is not None and b.get_lemma() is not None:
+        if a.get_lemma() != b.get_lemma():
+            return False
+
+    return True

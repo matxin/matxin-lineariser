@@ -1,5 +1,6 @@
 from grammars import Grammars
 from printing import Printing
+from word import word_eq
 
 import random
 
@@ -76,6 +77,9 @@ class Hypothesis:
         linearisation_rule = self.get_node().get_sorted_rules()[
             self.get_indices()[0]][1]
 
+        print('self = ' + str(self))
+        print('linearisation_rule = ' + str(linearisation_rule))
+
         if linearisation_rule is None:
             coverage.not_covered()
 
@@ -144,13 +148,16 @@ class Hypothesis:
                                                linearisation,
                                                daughters,
                                                shuffle=False):
+        print('linearisation_rule_element = ' + Printing.print_list(
+            linearisation_rule_element))
+        print('daughters = ' + Printing.print_list(daughters))
         for dependent in linearisation_rule_element:
             linearisation.extend(
                 daughters.pop(
                     next(index for index, daughter in enumerate(daughters)
                          if daughter.get_node().get_deprel() == dependent[0]
-                         and daughter.get_node().get_word() == dependent[1]))
-                .instantiate(shuffle))
+                         and word_eq(daughter.get_node().get_word(), dependent[
+                             1]))).instantiate(shuffle))
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
