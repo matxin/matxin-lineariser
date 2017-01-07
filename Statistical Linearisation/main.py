@@ -3,7 +3,7 @@ An implementation of an linearisation algorithm as described here: https://aclwe
 """
 
 import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, GreedyLifting, sys, \
-    Linearisation.NeuralNet, GreedyLinearisation, nltk, argparse, GreedyDomains
+    Linearisation.NeuralNet, GreedyLinearisation, nltk, argparse, GreedyDomains, DependencyTree
 
 def lifting():
 
@@ -170,23 +170,127 @@ def lift_linearise_greedy_domains(prob_path):
     except:
         print ("ONLY BIG SENTENCES.")
 
+def lift_linearise_xml(prob_path):
+    id = 0
+    greedy = GreedyLinearisation.GreedyLinearisation()
+    greedy.import_dict(prob_path)
+    tmp = []
+    bleu = 0.0
+
+    order = ['0']
+    tree = DependencyTree.DependencyTree()
+    i = 0
+    xml2conllu = {
+        "lem": '_',
+        "pos": '_',
+        "smi": '_',
+        "si": '_',
+        "ref": '_',
+        "head": '_'
+
+    }
+    unnumbered = []
+    input = sys.stdin.readlines()
+
+    for line in input:
+        words = line.split()
+
+        if (words[0] != '<NODE') and (words[0] != '</NODE>'):  # if not a node or an end of a node
+            continue
+
+        if words[0] == '</NODE>':
+            order.pop()
+            continue
+
+        i += 1
+        list = []
+
+        xml2conllu = {
+            "lem": '_',
+            "pos": '_',
+            "smi": '_',
+            "si": '_',
+            "ref": '_',
+            "head": '_'
+
+        }
+
+        for word in words[1:-1]:
+            # print (word)
+            (feature, val) = word.split('="')
+            val = val.strip('\"')
+            if feature in xml2conllu:
+                xml2conllu[feature] = val
+
+        # print (xml2conllu["ref"], order)
+        xml2conllu["head"] = order[-1]
+
+        xml2conllu["ref"] = str(i)
+
+        mi = xml2conllu["smi"].split('|')
+        mi.pop(0)
+        mi = '|'.join(mi)
+
+        if mi == '':
+            mi = '_'
+        list = [xml2conllu["ref"], xml2conllu["lem"], xml2conllu["lem"], xml2conllu["pos"], '_', mi, xml2conllu["head"],
+                xml2conllu["si"], '_', '_']
+        tree.add_node(list)
+        # sys.stdout.write(str(list)+'\n')
+        # print (words[-1].split('/'))
+
+        if [words[-1]] != words[-1].split('/'):  # a node without children
+            # print ("L")
+            continue
+
+        order.append(xml2conllu["ref"])
+
+    tree.add_children()
+
+    tree.calculate_domains()
+
+    tree.set_neigbouring_nodes()
+
+    lifting = GreedyLifting.GreedyLifting()
+    tree1 = lifting.execute(tree)
+
+    linearised = greedy.linearise(tree1)
+
+    id = 1
+    for line in input:
+        words = line.split()
+        #print (words)
+        if words[0] != '<NODE':  # if not a node or an end of a node
+            sys.stdout.write(line)
+            continue
+
+        tmp = linearised.index(str(id))+1
+        words = words[:1] + [('ord="%d"' % tmp)] + words[1:]
+        line = ' '.join(words)
+        sys.stdout.write(line + '\n')
+        #print (line)
+        id += 1
+
+
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--train', action='store_true')
     parser.add_argument('-l', '--lang', type=str, help="Path to the probabilities file")
-    parser.add_argument('--domains', action='store_true')
+    parser.add_argument('--xml', action="store_true")
 
     args = parser.parse_args()
-    #print ("a")
+
     if args.train is True:
         #print ("YES!")
         gen_prob()
 
-    elif args.domains is True:
-        #print ("a")
-        lift_linearise_greedy_domains(args.lang)
     else:
-        lift_linearise_greedy(args.lang)
+        if args.xml is True:
+            lift_linearise_xml(args.lang)
+        else:
+            lift_linearise_greedy_domains(args.lang)
     #linearisation()
     #lifting()

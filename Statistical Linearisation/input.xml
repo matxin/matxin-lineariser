@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<corpus>
+  <SENTENCE ref="0" alloc="0">
+    <NODE vform="inf" alloc="0" si="root" ref="2" slem="używać" smi="VERB|Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" UpCase="none" lem="use" pos="verb" asp="imp" md="ind" nbr="sing" prs="3" tns="pres">
+      <NODE alloc="0" si="neg" ref="1" slem="nie" smi="PART" UpCase="none" lem="not" pos="part"/>
+      <NODE alloc="0" si="nsubj" ref="3" slem="on" smi="PRON|Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|Person=3|PrepCase=Npr|PronType=Prs|Variant=Long" UpCase="none" lem="he" pos="PRON" anm="anim" cas="nom" gnd="masc" nbr="sing" prs="3" pcs="npr" ptp="prs" vrt="long"/>
+      <NODE alloc="0" si="dobj" ref="5" slem="słowo" smi="NOUN|Case=Gen|Gender=Neut|Number=Plur" UpCase="none" lem="word" pos="noun" cas="gen" gnd="neut" nbr="plur">
+        <NODE alloc="0" si="amod" ref="4" slem="wielki" smi="ADJ|Case=Gen|Degree=Pos|Gender=Neut|Number=Plur" UpCase="none" lem="big" pos="adj" cas="gen" deg="pos" gnd="neut" nbr="plur"/>
+        <NODE si="det" lem="the" pos="det" def="def" ptp="art"/>
+      </NODE>
+      <NODE alloc="0" si="punct" ref="6" slem="," smi="PUNCT" UpCase="none" lem="," pos="punct"/>
+      <NODE alloc="0" si="conj" ref="8" slem="nazywać" smi="VERB|Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" UpCase="none" lem="say" pos="verb" asp="imp" md="ind" nbr="sing" prs="3" tns="pres" vform="fin">
+        <NODE/>
+        <NODE alloc="0" si="dobj" ref="9" slem="nic" smi="PRON|Case=Gen|Gender=Neut|Number=Sing|PronType=Neg" UpCase="none" lem="nothing" pos="PRON" cas="gen" gnd="neut" nbr="sing" ptp="neg"/>
+        <NODE alloc="0" si="nmod" ref="11" slem="koniec" smi="NOUN|Animacy=Inan|Case=Gen|Gender=Masc|Number=Sing" UpCase="none" lem="end" pos="noun" anm="inan" cas="gen" gnd="masc" nbr="sing">
+          <NODE alloc="0" si="case" ref="10" slem="do" smi="ADP|AdpType=Prep|Case=Gen" UpCase="none" lem="to" pos="adp" adt="prep" cas="gen"/>
+          <NODE si="det" lem="the" pos="det" def="def" ptp="art"/>
+        </NODE>
+      </NODE>
+      <NODE alloc="0" si="punct" ref="12" slem="," smi="PUNCT" UpCase="none" lem="," pos="punct"/>
+      <NODE alloc="0" si="conj" ref="19" slem="tłumaczyć" smi="VERB|Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin" UpCase="none" lem="explain" pos="verb" asp="imp" md="ind" nbr="sing" prs="3" tns="pres" vform="fin">
+        <NODE alloc="0" si="dobj" ref="13" slem="nic" smi="PRON|Case=Gen|Gender=Neut|Number=Sing|PronType=Neg" UpCase="none" lem="nothing" pos="PRON" cas="gen" gnd="neut" nbr="sing" ptp="neg"/>
+        <NODE alloc="0" si="advmod" ref="14" slem="też" smi="PART" UpCase="none" lem="too" pos="part"/>
+        <NODE alloc="0" si="nmod" ref="16" slem="sposób" smi="NOUN|Animacy=Inan|Case=Acc|Gender=Masc|Number=Sing" UpCase="none" lem="way" pos="noun" anm="inan" cas="acc" gnd="masc" nbr="sing">
+          <NODE alloc="0" si="case" ref="15" slem="w" smi="ADP|AdpType=Prep|Case=Acc|Variant=Short" UpCase="none" lem="in" pos="adp" adt="prep" cas="acc" vrt="short"/>
+          <NODE alloc="0" si="amod" ref="17" slem="dyskursywny" smi="ADJ|Animacy=Inan|Case=Acc|Degree=Pos|Gender=Masc|Number=Sing" UpCase="none" lem="discursive" pos="adj" anm="inan" cas="acc" deg="pos" gnd="masc" nbr="sing"/>
+          <NODE si="det" lem="the" pos="det" def="def" ptp="art"/>
+        </NODE>
+        <NODE/>
+      </NODE>
+      <NODE alloc="0" si="punct" ref="20" slem="." smi="PUNCT" UpCase="none" lem="." pos="punct"/>
+      <NODE si="aux" lem="do" pos="aux" md="ind" tns="pres" vform="fin" nbr="sing" prs="3"/>
+    </NODE>
+  </SENTENCE>
+</corpus>

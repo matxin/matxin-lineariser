@@ -68,10 +68,12 @@ class GreedyLinearisation:
                 else:
                     return [tree.tree['2'].fields["form"], tree.tree['1'].fields["form"]]
 
-        for word in order:
+        """for word in order:
             linearised.append(tree.tree[word].fields["form"])
 
-        return linearised
+        return linearised"""
+
+        return order
 
     def get_prob2(self, pos, pos1):
         """
