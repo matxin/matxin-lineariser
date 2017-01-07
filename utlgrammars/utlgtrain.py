@@ -31,6 +31,9 @@ def proc_node(h, n, i, r, cnf):  #{
     pos_h = head[3]
     deprel_h = head[7]
     rule[lin_h] = (pos_h, deprel_h)
+    lem_h = head[2]
+    if lem_h in lemmas:
+        rule[lin_h] += (lem_h,)
     if i in h:  #{
         for child in h[i]:  #{
             dep = nodes[child]
@@ -38,6 +41,9 @@ def proc_node(h, n, i, r, cnf):  #{
             pos_c = dep[3]
             deprel_c = dep[7]
             rule[lin_c] = (pos_c, deprel_c)
+            lem_c = dep[2]
+            if lem_c in lemmas:
+                rule[lin_c] += (lem_c,)
         #}
         k = list(rule.keys())
         k.sort()
