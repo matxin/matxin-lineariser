@@ -149,12 +149,20 @@ for c in configs:  #{
         deps = r.split('!')[1].split('|')
 
         print('<def-rule p="%.4f">' % (prob))
-        print('  <NODE ord="%s" si="%s" pos="%s">' %
-              (head[0], head[2], head[1]))
+        if len(head) == 4:
+            print('  <NODE ord="%s" si="%s" pos="%s" lem="%s">' %
+                  (head[0], head[2], head[1], head[3]))
+        else:
+            print('  <NODE ord="%s" si="%s" pos="%s">' %
+                  (head[0], head[2], head[1]))
         for dep in deps:  #{
             deprow = dep.split('/')
-            print('     <NODE ord="%s" si="%s" pos="%s"/>' %
-                  (deprow[0], deprow[2], deprow[1]))
+            if len(deprow) == 4:
+                print('     <NODE ord="%s" si="%s" pos="%s" lem="%s"/>' %
+                      (deprow[0], deprow[2], deprow[1], deprow[3]))
+            else:
+                print('     <NODE ord="%s" si="%s" pos="%s"/>' %
+                      (deprow[0], deprow[2], deprow[1]))
         #}
         print('  </NODE>')
         print('</def-rule>')
