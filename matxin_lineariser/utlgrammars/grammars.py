@@ -1,6 +1,6 @@
-from lconfiguration import lconfiguration_eq
-from lrule import LinearisationRule
-from printing import Printing
+from .lconfiguration import lconfiguration_eq
+from .lrule import LinearisationRule
+from .printing import Printing
 
 from xml.etree import ElementTree
 

@@ -1,6 +1,6 @@
-from grammars import Grammars
-from printing import Printing
-from word import word_eq
+from .grammars import Grammars
+from .printing import Printing
+from .word import word_eq
 
 import random
 

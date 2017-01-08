@@ -1,7 +1,7 @@
-from agenda import Agenda
-from lconfiguration import LocalConfiguration
-from printing import Printing
-from word import Word
+from .agenda import Agenda
+from .lconfiguration import LocalConfiguration
+from .printing import Printing
+from .word import Word
 
 
 class WordLine:
@@ -28,7 +28,7 @@ class WordLine:
         self.word = Word(upostag)
         self.word.parse_feats(feats)
         self.word.add_lemma(fields.pop())
-        fields.pop()  # form
+        self.form = fields.pop()
 
         # to-do
         # =====

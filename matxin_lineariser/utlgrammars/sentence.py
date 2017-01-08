@@ -1,6 +1,6 @@
-from lineariser import Lineariser
-from printing import Printing
-from wordline import WordLine
+from .lineariser import Lineariser
+from .printing import Printing
+from .wordline import WordLine
 
 import re
 

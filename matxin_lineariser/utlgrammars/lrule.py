@@ -1,8 +1,8 @@
-from xml.etree import ElementTree
+from .lconfiguration import LocalConfiguration
+from .printing import Printing
+from .word import Word
 
-from lconfiguration import LocalConfiguration
-from printing import Printing
-from word import Word
+from xml.etree import ElementTree
 
 
 class LinearisationRule:

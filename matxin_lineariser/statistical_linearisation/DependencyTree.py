@@ -1,4 +1,6 @@
-import DependencyTreeNode, sys
+from . import DependencyTreeNode
+
+import sys
 
 class DependencyTree:
     """

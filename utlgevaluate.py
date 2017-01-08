@@ -1,6 +1,6 @@
 from matxin_lineariser.utlgrammars.lineariser import Lineariser
 from matxin_lineariser.utlgrammars.sentence import Sentence
-import matxin_lineariser.utlgrammars.hypothesis
+import matxin_lineariser.utlgrammars.hypothesis as hypothesis
 
 from matplotlib import pyplot
 from nltk.translate import bleu_score
