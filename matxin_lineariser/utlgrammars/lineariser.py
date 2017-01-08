@@ -1,7 +1,7 @@
-from grammars import Grammars
-from hypothesis import Hypothesis
-from lrule import LinearisationRule
-from printing import Printing
+from .grammars import Grammars
+from .hypothesis import Hypothesis
+from .lrule import LinearisationRule
+from .printing import Printing
 
 from xml.etree import ElementTree
 

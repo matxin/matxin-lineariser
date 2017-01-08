@@ -1,5 +1,5 @@
-from printing import Printing
-from word import word_eq
+from .printing import Printing
+from .word import word_eq
 
 
 class LocalConfiguration:

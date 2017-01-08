@@ -1,6 +1,6 @@
-from lineariser import Lineariser
-from printing import Printing
-from sentence import Sentence
+from matxin_lineariser.utlgrammars.lineariser import Lineariser
+from matxin_lineariser.utlgrammars.printing import Printing
+from matxin_lineariser.utlgrammars.sentence import Sentence
 
 from argparse import ArgumentParser
 from pprint import PrettyPrinter

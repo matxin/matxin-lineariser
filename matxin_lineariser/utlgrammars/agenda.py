@@ -1,4 +1,4 @@
-from printing import Printing
+from .printing import Printing
 
 
 class Agenda:

@@ -1,12 +1,10 @@
-from lineariser import Lineariser
-from printing import Printing
-from wordline import WordLine
+from .lineariser import Lineariser
+from .printing import Printing
+from .wordline import WordLine
 
 import re
 
-from sys import path
-path.append('../Statistical Linearisation')
-from DependencyTree import DependencyTree
+from ..statistical_linearisation.DependencyTree import DependencyTree
 
 CONLLU_COMMENT = re.compile('\s*#')
 
@@ -115,3 +113,14 @@ class Sentence:
         dependency_tree.calculate_domains()
         dependency_tree.set_neigbouring_nodes()
         return dependency_tree
+
+    def deserialise_dependency_tree(self, dependency_tree):
+        wordlines = {}
+
+        for id_, dependency_tree_node in dependency_tree.tree.items():
+            wordline = WordLine()
+            wordline.deserialise_dependency_tree_node(dependency_tree_node)
+            wordlines[int(id_)] = wordline
+
+        for wordline in wordlines.values():
+            wordline.add_edge(self, wordlines)
