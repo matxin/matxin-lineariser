@@ -4,9 +4,7 @@ from wordline import WordLine
 
 import re
 
-from sys import path
-path.append('../Statistical Linearisation')
-from DependencyTree import DependencyTree
+from ..statistical_linearisation.DependencyTree import DependencyTree
 
 CONLLU_COMMENT = re.compile('\s*#')
 

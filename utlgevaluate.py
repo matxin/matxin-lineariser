@@ -1,6 +1,6 @@
-import hypothesis
-from lineariser import Lineariser
-from sentence import Sentence
+from matxin_lineariser.utlgrammars.lineariser import Lineariser
+from matxin_lineariser.utlgrammars.sentence import Sentence
+import matxin_lineariser.utlgrammars.hypothesis
 
 from matplotlib import pyplot
 from nltk.translate import bleu_score
@@ -38,7 +38,10 @@ def get_bleu_score_sample(reference_function=default_reference_function):
         linearisation = sentence.get_linearisations()[0]
         hypothesis = [word.get_form().lower() for word in linearisation]
         hypothesis_len = len(hypothesis)
-        weights = (1.0 / hypothesis_len, ) * hypothesis_len
+        if hypothesis_len < 4:
+            weights = (1.0 / hypothesis_len, ) * hypothesis_len
+        else:
+            weights = (0.25,) * 4
         bleu_scores.append(
             bleu_score.sentence_bleu(
                 references, hypothesis, weights=weights))

@@ -1,5 +1,5 @@
-import sys
 from argparse import ArgumentParser
+from sys import stdin, stderr
 
 # This file extracts local linearisation rules from a treebank in CoNLL-U format.
 # The format of the rules is
@@ -96,7 +96,7 @@ def proc_node(h, n, i, r, cnf):  #{
 
 ### Process a CoNLL-U file
 
-for line in sys.stdin.readlines():  #{
+for line in stdin.readlines():  #{
 
     if line[0] == '#':  #{
         continue
@@ -144,7 +144,7 @@ for c in configs:  #{
         prob = float(configs[c][r]) / float(total)
         print(
             '%.2f\t%d\t%d\t%s\t%s' % (prob, total, configs[c][r], c, r),
-            file=sys.stderr)
+            file=stderr)
         head = r.split('!')[0].split('/')
         deps = r.split('!')[1].split('|')
 
