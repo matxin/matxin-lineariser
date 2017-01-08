@@ -3,7 +3,10 @@ from printing import Printing
 from wordline import WordLine
 
 import re
-import sys
+
+from sys import path
+path.append('../Statistical Linearisation')
+from DependencyTree import DependencyTree
 
 CONLLU_COMMENT = re.compile('\s*#')
 
@@ -85,3 +88,30 @@ class Sentence:
                 '  wordlines = ' + Printing.shift_str(Printing.print_dict(self.get_wordlines())) + '\n' + \
                 '  root = ' + Printing.shift_str(str(self.get_root())) + '\n' + \
                 '}'
+
+    def get_dependency_tree(self):
+        dependency_tree = DependencyTree()
+
+        for wordline in self.get_wordlines().values():
+            for dependent in wordline.get_dependents():
+                dependent.head = wordline.get_id()
+
+        for wordline in self.get_wordlines().values():
+            feats = '|'.join([
+                '='.join(item)
+                for item in dict(wordline.get_word().get_feats()).items()
+            ])
+
+            if feats == '':
+                feats = '_'
+
+            dependency_tree.add_node([
+                str(wordline.get_id()), '_', wordline.get_word().get_lemma(),
+                wordline.get_word().get_upostag(), '_', feats,
+                str(wordline.get_head()), wordline.get_deprel(), '_', '_'
+            ])
+
+        dependency_tree.add_children()
+        dependency_tree.calculate_domains()
+        dependency_tree.set_neigbouring_nodes()
+        return dependency_tree
