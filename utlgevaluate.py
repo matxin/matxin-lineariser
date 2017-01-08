@@ -55,13 +55,13 @@ def print_statistics(list_):
     print('maximum = ' + format_statistic(max_))
     print('range = ' + format_statistic(max_ - min_))
     print('median = ' + format_statistic(numpy.median(list_)))
-    q_1 = numpy.percentile(list_, 25)
+    q_1 = numpy.percentile(list_, 25, interpolation='midpoint')
     print('first quartile = ' + format_statistic(q_1))
-    q_3 = numpy.percentile(list_, 75)
+    q_3 = numpy.percentile(list_, 75, interpolation='midpoint')
     print('third quartile = ' + format_statistic(q_3))
     print('inter-quartile range = ' + format_statistic(q_3 - q_1))
     print('mean = ' + format_statistic(numpy.mean(list_)))
-    print('standard deviation = ' + format_statistic(numpy.std(list_)))
+    print('standard deviation = ' + format_statistic(numpy.std(list_, ddof=1)))
 
 
 print()
