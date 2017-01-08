@@ -14,20 +14,8 @@ class WordLine:
         fields = line.split('\t')
         # parse fields in reverse by popping
 
-        misc = fields.pop()
-
-        if misc == '_':
-            self.misc = None
-        else:
-            self.misc = dict(field.split('=') for field in misc.split('|'))
-
-        deps = fields.pop()
-
-        if deps == '_':
-            self.deps = None
-        else:
-            self.deps = dict(dep.split(':') for dep in deps.split('|'))
-
+        fields.pop()  # misc
+        fields.pop()  # deps
         self.deprel = fields.pop()
         self.head = int(fields.pop())
         feats = fields.pop()
@@ -35,18 +23,12 @@ class WordLine:
         if feats == '_':
             feats = None
 
-        xpostag = fields.pop()
-
-        if xpostag == '_':
-            self.xpostag = None
-        else:
-            self.xpostag = xpostag
-
+        fields.pop()  # xpostag
         upostag = fields.pop()
         self.word = Word(upostag)
         self.word.parse_feats(feats)
         self.word.add_lemma(fields.pop())
-        self.form = fields.pop()
+        fields.pop()  # form
 
         # to-do
         # =====
@@ -54,7 +36,7 @@ class WordLine:
         # - also support empty nodes (e.g. 5.1)
         self.id_ = int(fields.pop())
 
-    def deserialise_matxin(self, node_etree, maximum_ref = 0):
+    def deserialise_matxin(self, node_etree, maximum_ref=0):
         self.node_etree = node_etree
         node_attributes = dict(node_etree.items())
 
@@ -160,3 +142,13 @@ class WordLine:
                 '  head = ' + str(self.get_head()) + '\n' + \
                 '  deprel = ' + repr(self.get_deprel()) + '\n' + \
                 '}'
+
+    def deserialise_dependency_tree_node(self, dependency_tree_node):
+        self.id_ = int(dependency_tree_node.fields['id'])
+        self.lemma = dependency_tree_node.fields['lemma']
+        self.word = Word(dependency_tree_node.fields['upostag'])
+        self.get_word().feats = frozenset(dependency_tree_node.features.items(
+        ))
+        self.get_word().add_lemma(dependency_tree_node.fields['lemma'])
+        self.head = int(dependency_tree_node.fields['head'])
+        self.deprel = dependency_tree_node.fields['deprel']
