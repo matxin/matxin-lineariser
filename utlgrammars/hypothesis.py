@@ -1,5 +1,6 @@
 from grammars import Grammars
 from printing import Printing
+from word import word_eq
 
 import random
 
@@ -149,8 +150,8 @@ class Hypothesis:
                 daughters.pop(
                     next(index for index, daughter in enumerate(daughters)
                          if daughter.get_node().get_deprel() == dependent[0]
-                         and daughter.get_node().get_word() == dependent[1]))
-                .instantiate(shuffle))
+                         and word_eq(daughter.get_node().get_word(), dependent[
+                             1]))).instantiate(shuffle))
 
     def __str__(self):
         return Printing.get_module_qualname(self) + ' = {\n' + \
