@@ -1,6 +1,10 @@
 #!/bin/bash
-for d in *
-do mkdir "/home/matthew/github.com/m5w/matxin-lineariser/matxin_lineariser/utlgrammars/test/evaluate/${d}"
+for d in *; do
+        if [ ! -d "${d}" ]; then
+                continue
+        fi
+
+        mkdir "/home/matthew/github.com/m5w/matxin-lineariser/matxin_lineariser/utlgrammars/test/evaluate/${d}"
         mkdir "/home/matthew/github.com/m5w/matxin-lineariser/matxin_lineariser/utlgrammars/test/evaluate/${d}/test"
         mkdir "/home/matthew/github.com/m5w/matxin-lineariser/matxin_lineariser/utlgrammars/test/evaluate/${d}/train"
         echo "${0}: Entering directory \`${d}/utlgevaluate'"
