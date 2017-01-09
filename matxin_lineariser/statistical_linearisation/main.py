@@ -2,8 +2,15 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import copy, Convert2dependencytree, Linearisation.Dependency_tree_linearisation, GreedyLifting, sys, \
-    Linearisation.NeuralNet, GreedyLinearisation, nltk, argparse, GreedyDomains, DependencyTree
+from . import Convert2dependencytree, DependencyTree, GreedyDomains, GreedyLifting, GreedyLinearisation
+
+from .Linearisation import Dependency_tree_linearisation, NeuralNet
+
+import ntlk
+
+import copy
+import argparse
+import sys
 
 def lifting():
 

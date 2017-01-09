@@ -1,4 +1,4 @@
-import DependencyTree
+from . import DependencyTree
 
 fhand = open("Treebank/en-ud-train.conllu")
 

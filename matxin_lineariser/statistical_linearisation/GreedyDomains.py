@@ -1,4 +1,8 @@
-import GreedyLinearisation, copy, operator, random
+from . import GreedyLinearisation
+
+import copy
+import operator
+import random
 
 class GreedyDomains(GreedyLinearisation.GreedyLinearisation):
     """

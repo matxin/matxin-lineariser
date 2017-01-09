@@ -1,4 +1,6 @@
-import DependencyTree, sys
+from . import DependencyTree
+
+import sys
 
 class Convert2dependencytree:
     """
