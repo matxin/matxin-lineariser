@@ -1,3 +1,6 @@
+from matxin_lineariser.statistical_linearisation.DependencyTree import DependencyTree
+from matxin_lineariser.statistical_linearisation.GreedyLifting import GreedyLifting
+
 from argparse import ArgumentParser
 from sys import stdin, stderr
 
@@ -16,6 +19,7 @@ nodes = {}
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument('--lemma-file', type=str)
+argument_parser.add_argument('--projectivise', action='store_true')
 arguments = argument_parser.parse_args()
 
 try:
@@ -96,6 +100,9 @@ def proc_node(h, n, i, r, cnf):  #{
 
 ### Process a CoNLL-U file
 
+if arguments.projectivise:
+    dependency_tree = DependencyTree()
+
 for line in stdin.readlines():  #{
 
     if line[0] == '#':  #{
@@ -110,24 +117,47 @@ for line in stdin.readlines():  #{
             continue
         #}
 
-        bas = int(row[6])
-        cur = int(row[0])
+        if arguments.projectivise:
+            dependency_tree.add_node(row)
+        else:
+            bas = int(row[6])
+            cur = int(row[0])
 
-        if bas not in heads:  #{
-            heads[bas] = []
-        #}
-        heads[bas].append(cur)
-        if cur not in nodes:  #{
-            nodes[cur] = row
-        #}
-        #}
+            if bas not in heads:  #{
+                heads[bas] = []
+            #}
+            heads[bas].append(cur)
+            if cur not in nodes:  #{
+                nodes[cur] = row
+            #}
+    #}
 
     if line == '\n':  #{
-        for i in heads[0]:  #{
-            (rules, configs) = proc_node(heads, nodes, i, rules, configs)
-        #}
-        heads = {}
-        nodes = {}
+        if arguments.projectivise:
+            dependency_tree.add_children()
+            dependency_tree.calculate_domains()
+            dependency_tree.set_neigbouring_nodes()
+            greedy_lifting = GreedyLifting()
+            dependency_tree = greedy_lifting.execute(dependency_tree)
+
+            for dependency_tree_node in dependency_tree.tree:
+                del dependency_tree_node.fields['children']
+                id_ = int(dependency_tree_node.fields['id'])
+                head = int(dependency_tree_node.fields['head'])
+
+                if head not in heads:
+                    heads[head] = []
+
+                heads[head].append(id_)
+
+                if id_ not in nodes:
+                    nodes[id_] = list(dependency_tree_node.fields.values())
+        else:
+            for i in heads[0]:  #{
+                (rules, configs) = proc_node(heads, nodes, i, rules, configs)
+            #}
+            heads = {}
+            nodes = {}
     #}
     #}
 
