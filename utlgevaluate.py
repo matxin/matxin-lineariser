@@ -37,7 +37,7 @@ def print_statistics(list_):
     print('standard deviation = ' + format_statistic(numpy.std(list_, ddof=1)))
 
 
-def get_sample_bleu_score():
+def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
     with open(arguments.tst_file, mode='w') as tst_file:
         print(
             '<tstset trglang="' + arguments.trglang +
@@ -128,7 +128,9 @@ def main():
     pyplot.ylabel('# of Sentences')
     pyplot.savefig(arguments.corpus_sentence_length_frequency_histogram_fname)
     BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
-    corpus_linearisation_bleu_scores = [get_sample_bleu_score()]
+    corpus_linearisation_bleu_scores = [
+        get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
+    ]
     print()
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
     print(flush=True)
@@ -152,7 +154,8 @@ def main():
             end='',
             file=stderr,
             flush=True)
-        corpus_linearisation_bleu_scores.append(get_sample_bleu_score())
+        corpus_linearisation_bleu_scores.append(
+            get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE))
 
     print(end='\n\n', file=stderr)
     print('Corpus Linearisation BLEU Score Statistics')
