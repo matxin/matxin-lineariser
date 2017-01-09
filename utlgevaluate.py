@@ -13,12 +13,13 @@ import subprocess
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument('xml')
-argument_parser.add_argument('samples', type=int)
-argument_parser.add_argument('trglang', type=str)
-argument_parser.add_argument('mteval', type=str)
-argument_parser.add_argument('ref_file', type=str)
-argument_parser.add_argument('src_file', type=str)
-argument_parser.add_argument('tst_file', type=str)
+argument_parser.add_argument('n', type=int)
+argument_parser.add_argument('trglang')
+argument_parser.add_argument('mteval')
+argument_parser.add_argument('ref_file')
+argument_parser.add_argument('src_file')
+argument_parser.add_argument('tst_file')
+argument_parser.add_argument('fname')
 arguments = argument_parser.parse_args()
 lineariser = Lineariser()
 
@@ -127,17 +128,17 @@ def get_sample_bleu_score():
 sample_bleu_scores = [get_sample_bleu_score()]
 print()
 print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
-samples = '{:,}'.format(arguments.samples)
-sample_format_str = '{:>' + str(len(samples)) + ',}'
-precision = str(max(0, len(str(1.0 / arguments.samples)) - 4))
+n = '{:,}'.format(arguments.n)
+sample_format_str = '{:>' + str(len(n)) + ',}'
+precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
 percent_format_str = '{:>' + str(len(('{:.' + precision + '%}').format(
     1))) + '.' + precision + '%}'
-format_str = '\rsample ' + sample_format_str + ' of ' + samples + ' (' + percent_format_str + ')'
+format_str = '\rsample ' + sample_format_str + ' of ' + n + ' (' + percent_format_str + ')'
 print(flush=True)
 
-for sample in range(1, arguments.samples):
+for sample in range(1, arguments.n):
     print(
-        format_str.format(sample, sample / float(arguments.samples)),
+        format_str.format(sample, sample / float(arguments.n)),
         end='',
         file=stderr,
         flush=True)
