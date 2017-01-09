@@ -135,15 +135,19 @@ for line in stdin.readlines():  #{
 
 print('<?xml version="1.0"?>')
 print('<linearisation-rules>')
-for c in configs:  #{
+configs = list(configs.items())
+configs.sort()
+for c, i in configs:  #{
     total = 0
-    for r in configs[c]:  #{
-        total = total + configs[c][r]
+    i = list(i.items())
+    i.sort()
+    for r, j in i:  #{
+        total = total + j
     #}
-    for r in configs[c]:  #{
-        prob = float(configs[c][r]) / float(total)
+    for r, j in i:  #{
+        prob = float(j) / float(total)
         print(
-            '%.2f\t%d\t%d\t%s\t%s' % (prob, total, configs[c][r], c, r),
+            '%.2f\t%d\t%d\t%s\t%s' % (prob, total, j, c, r),
             file=stderr)
         head = r.split('!')[0].split('/')
         deps = r.split('!')[1].split('|')
