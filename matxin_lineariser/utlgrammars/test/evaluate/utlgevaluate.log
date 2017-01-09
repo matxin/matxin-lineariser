@@ -1,0 +1,49 @@
+./utlgevaluate.sh: Entering directory `UD_Basque/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 1799
+minimum = 3.0000
+maximum = 39.0000
+range = 36.0000
+median = 13.0000
+first quartile = 9.0000
+third quartile = 17.0000
+inter-quartile range = 8.0000
+mean = 13.5486
+standard deviation = 6.2603
+
+coverage = 0.7718
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.3598
+maximum = 0.3697
+range = 0.0099
+median = 0.3639
+first quartile = 0.3628
+third quartile = 0.3652
+inter-quartile range = 0.0024
+mean = 0.3640
+standard deviation = 0.0017
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 5396
+minimum = 3.0000
+maximum = 64.0000
+range = 61.0000
+median = 12.0000
+first quartile = 9.0000
+third quartile = 17.0000
+inter-quartile range = 8.0000
+mean = 13.5237
+standard deviation = 6.4147
+
+coverage = 1.0000
+
+BLEU score = 0.7244
+
+./utlgevaluate.sh: Leaving directory `UD_Basque/utlgevaluate'
