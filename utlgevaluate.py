@@ -13,20 +13,23 @@ import subprocess
 
 argument_parser = ArgumentParser()
 argument_parser.add_argument('xml')
-argument_parser.add_argument('n', type=int)
-argument_parser.add_argument('trglang')
-argument_parser.add_argument('mteval')
 argument_parser.add_argument('ref_file')
 argument_parser.add_argument('src_file')
+argument_parser.add_argument('trglang')
+argument_parser.add_argument(
+    'corpus_sentence_length_frequency_histogram_fname')
 argument_parser.add_argument('tst_file')
-argument_parser.add_argument('fname')
+argument_parser.add_argument('mteval')
+argument_parser.add_argument('n', type=int)
+argument_parser.add_argument(
+    'corpus_linearisation_bleu_score_frequency_histogram_fname')
 arguments = argument_parser.parse_args()
 lineariser = Lineariser()
 
 with open(arguments.xml) as xml:
     lineariser.deserialise(xml)
 
-reference_len_list = []
+corpus_sentence_lengths = []
 treebank = [sentence for sentence in Sentence.deserialise(stdin)]
 
 
@@ -47,7 +50,7 @@ with open(arguments.ref_file, mode='w') as ref_file, \
         sentence_list = list(sentence.get_wordlines().items())
         sentence_list.sort()
         reference = [word.get_form().lower() for _, word in sentence_list]
-        reference_len_list.append(len(reference))
+        corpus_sentence_lengths.append(len(reference))
         print_seg(id_, reference, ref_file)
         print_seg(id_, reference, src_file)
 
@@ -79,14 +82,15 @@ def print_statistics(list_):
 
 
 print()
-print('sentence lengths')
-print('================')
-print_statistics(reference_len_list)
+print('Corpus Sentence Length Statistics')
+print('=================================')
+print_statistics(corpus_sentence_lengths)
 pyplot.figure()
-pyplot.hist(reference_len_list, bins=10, range=(0, 50))
-pyplot.title('Reference Length Frequency Histogram')
-pyplot.xlabel('Reference Length (# of Words)')
-pyplot.ylabel('# of References')
+pyplot.hist(corpus_sentence_lengths)
+pyplot.title('Corpus Sentence Length Frequency Histogram')
+pyplot.xlabel('Sentence Length (# of Words)')
+pyplot.ylabel('# of Sentences')
+pyplot.savefig(arguments.corpus_sentence_length_frequency_histogram_fname)
 BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
 
 
@@ -125,7 +129,7 @@ def get_sample_bleu_score():
     return float(BLEU_SCORE.search(completed_process.stdout).group(1))
 
 
-sample_bleu_scores = [get_sample_bleu_score()]
+corpus_linearisation_bleu_scores = [get_sample_bleu_score()]
 print()
 print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
 n = '{:,}'.format(arguments.n)
@@ -142,11 +146,17 @@ for sample in range(1, arguments.n):
         end='',
         file=stderr,
         flush=True)
-    sample_bleu_scores.append(get_sample_bleu_score())
+    corpus_linearisation_bleu_scores.append(get_sample_bleu_score())
 
 print(end='\n\n', file=stderr)
-print('sample BLEU scores')
-print('==================')
-print_statistics(sample_bleu_scores)
+print('Corpus Linearisation BLEU Score Statistics')
+print('==========================================')
+print_statistics(corpus_linearisation_bleu_scores)
+pyplot.figure()
+pyplot.hist(corpus_linearisation_bleu_scores)
+pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
+pyplot.xlabel('BLEU Score')
+pyplot.ylabel('# of Samples')
+pyplot.savefig(
+    arguments.corpus_linearisation_bleu_score_frequency_histogram_fname)
 print()
-pyplot.show()
