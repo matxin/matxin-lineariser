@@ -11,53 +11,9 @@ from sys import stdin, stdout, stderr
 import re
 import subprocess
 
-argument_parser = ArgumentParser()
-argument_parser.add_argument('xml')
-argument_parser.add_argument('ref_file')
-argument_parser.add_argument('src_file')
-argument_parser.add_argument('trglang')
-argument_parser.add_argument(
-    'corpus_sentence_length_frequency_histogram_fname')
-argument_parser.add_argument('tst_file')
-argument_parser.add_argument('mteval')
-argument_parser.add_argument('n', type=int)
-argument_parser.add_argument(
-    'corpus_linearisation_bleu_score_frequency_histogram_fname')
-arguments = argument_parser.parse_args()
-lineariser = Lineariser()
-
-with open(arguments.xml) as xml:
-    lineariser.deserialise(xml)
-
-corpus_sentence_lengths = []
-treebank = [sentence for sentence in Sentence.deserialise(stdin)]
-
 
 def print_seg(id_, seg, file):
     print('<seg id="' + str(id_) + '">' + ' '.join(seg) + '</seg>', file=file)
-
-
-with open(arguments.ref_file, mode='w') as ref_file, \
-     open(arguments.src_file, mode='w') as src_file:
-    print(
-        '<refset trglang="' + arguments.trglang + '" setid="1" srclang="any">',
-        file=ref_file)
-    print('<doc sysid="ref" docid="1">', file=ref_file)
-    print('<srcset setid="1" srclang="any">', file=src_file)
-    print('<doc docid="1">', file=src_file)
-
-    for id_, sentence in enumerate(treebank, start=1):
-        sentence_list = list(sentence.get_wordlines().items())
-        sentence_list.sort()
-        reference = [word.get_form().lower() for _, word in sentence_list]
-        corpus_sentence_lengths.append(len(reference))
-        print_seg(id_, reference, ref_file)
-        print_seg(id_, reference, src_file)
-
-    print('</doc>', file=src_file)
-    print('</srcset>', file=src_file)
-    print('</doc>', file=ref_file)
-    print('</refset>', file=ref_file)
 
 
 def format_statistic(statistic):
@@ -79,19 +35,6 @@ def print_statistics(list_):
     print('inter-quartile range = ' + format_statistic(q_3 - q_1))
     print('mean = ' + format_statistic(numpy.mean(list_)))
     print('standard deviation = ' + format_statistic(numpy.std(list_, ddof=1)))
-
-
-print()
-print('Corpus Sentence Length Statistics')
-print('=================================')
-print_statistics(corpus_sentence_lengths)
-pyplot.figure()
-pyplot.hist(corpus_sentence_lengths)
-pyplot.title('Corpus Sentence Length Frequency Histogram')
-pyplot.xlabel('Sentence Length (# of Words)')
-pyplot.ylabel('# of Sentences')
-pyplot.savefig(arguments.corpus_sentence_length_frequency_histogram_fname)
-BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
 
 
 def get_sample_bleu_score():
@@ -129,34 +72,101 @@ def get_sample_bleu_score():
     return float(BLEU_SCORE.search(completed_process.stdout).group(1))
 
 
-corpus_linearisation_bleu_scores = [get_sample_bleu_score()]
-print()
-print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
-n = '{:,}'.format(arguments.n)
-sample_format_str = '{:>' + str(len(n)) + ',}'
-precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
-percent_format_str = '{:>' + str(len(('{:.' + precision + '%}').format(
-    1))) + '.' + precision + '%}'
-format_str = '\rsample ' + sample_format_str + ' of ' + n + ' (' + percent_format_str + ')'
-print(flush=True)
+def main():
+    argument_parser = ArgumentParser()
+    argument_parser.add_argument('xml')
+    argument_parser.add_argument('ref_file')
+    argument_parser.add_argument('src_file')
+    argument_parser.add_argument('trglang')
+    argument_parser.add_argument(
+        'corpus_sentence_length_frequency_histogram_fname')
+    argument_parser.add_argument('tst_file')
+    argument_parser.add_argument('mteval')
+    argument_parser.add_argument('n', type=int)
+    argument_parser.add_argument(
+        'corpus_linearisation_bleu_score_frequency_histogram_fname')
+    arguments = argument_parser.parse_args()
+    lineariser = Lineariser()
 
-for sample in range(1, arguments.n):
-    print(
-        format_str.format(sample, sample / float(arguments.n)),
-        end='',
-        file=stderr,
-        flush=True)
-    corpus_linearisation_bleu_scores.append(get_sample_bleu_score())
+    with open(arguments.xml) as xml:
+        lineariser.deserialise(xml)
 
-print(end='\n\n', file=stderr)
-print('Corpus Linearisation BLEU Score Statistics')
-print('==========================================')
-print_statistics(corpus_linearisation_bleu_scores)
-pyplot.figure()
-pyplot.hist(corpus_linearisation_bleu_scores)
-pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
-pyplot.xlabel('BLEU Score')
-pyplot.ylabel('# of Samples')
-pyplot.savefig(
-    arguments.corpus_linearisation_bleu_score_frequency_histogram_fname)
-print()
+    corpus_sentence_lengths = []
+    treebank = [sentence for sentence in Sentence.deserialise(stdin)]
+
+    with open(arguments.ref_file, mode='w') as ref_file, \
+         open(arguments.src_file, mode='w') as src_file:
+        print(
+            '<refset trglang="' + arguments.trglang +
+            '" setid="1" srclang="any">',
+            file=ref_file)
+        print('<doc sysid="ref" docid="1">', file=ref_file)
+        print('<srcset setid="1" srclang="any">', file=src_file)
+        print('<doc docid="1">', file=src_file)
+
+        for id_, sentence in enumerate(treebank, start=1):
+            sentence_list = list(sentence.get_wordlines().items())
+            sentence_list.sort()
+            reference = [word.get_form().lower() for _, word in sentence_list]
+            corpus_sentence_lengths.append(len(reference))
+            print_seg(id_, reference, ref_file)
+            print_seg(id_, reference, src_file)
+
+        print('</doc>', file=src_file)
+        print('</srcset>', file=src_file)
+        print('</doc>', file=ref_file)
+        print('</refset>', file=ref_file)
+
+    print()
+    print('Corpus Sentence Length Statistics')
+    print('=================================')
+    print_statistics(corpus_sentence_lengths)
+    pyplot.figure()
+    pyplot.hist(corpus_sentence_lengths)
+    pyplot.title('Corpus Sentence Length Frequency Histogram')
+    pyplot.xlabel('Sentence Length (# of Words)')
+    pyplot.ylabel('# of Sentences')
+    pyplot.savefig(arguments.corpus_sentence_length_frequency_histogram_fname)
+    BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
+    corpus_linearisation_bleu_scores = [get_sample_bleu_score()]
+    print()
+    print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
+    print(flush=True)
+
+    if arguments.n == 1:
+        print('BLEU score = ' + format_statistic(
+            corpus_linearisation_bleu_scores[0]))
+        print()
+        return
+
+    n = '{:,}'.format(arguments.n)
+    sample_format_str = '{:>' + str(len(n)) + ',}'
+    precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
+    percent_format_str = '{:>' + str(
+        len(('{:.' + precision + '%}').format(1))) + '.' + precision + '%}'
+    format_str = '\rsample ' + sample_format_str + ' of ' + n + ' (' + percent_format_str + ')'
+
+    for sample in range(2, arguments.n + 1):
+        print(
+            format_str.format(sample, sample / float(arguments.n)),
+            end='',
+            file=stderr,
+            flush=True)
+        corpus_linearisation_bleu_scores.append(get_sample_bleu_score())
+
+    print(end='\n\n', file=stderr)
+    print('Corpus Linearisation BLEU Score Statistics')
+    print('==========================================')
+    print_statistics(corpus_linearisation_bleu_scores)
+    pyplot.figure()
+    pyplot.hist(corpus_linearisation_bleu_scores)
+    pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
+    pyplot.xlabel('BLEU Score')
+    pyplot.ylabel('# of Samples')
+    pyplot.savefig(
+        arguments.corpus_linearisation_bleu_score_frequency_histogram_fname)
+    print()
+
+
+if __name__ == '__main__':
+    main()
