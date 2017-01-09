@@ -47,3 +47,444 @@ coverage = 1.0000
 BLEU score = 0.7244
 
 ./utlgevaluate.sh: Leaving directory `UD_Basque/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Catalan/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 834
+minimum = 2.0000
+maximum = 103.0000
+range = 101.0000
+median = 23.0000
+first quartile = 15.5000
+third quartile = 32.0000
+inter-quartile range = 16.5000
+mean = 24.8261
+standard deviation = 13.3924
+
+coverage = 0.8515
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.5095
+maximum = 0.5158
+range = 0.0063
+median = 0.5121
+first quartile = 0.5113
+third quartile = 0.5134
+inter-quartile range = 0.0021
+mean = 0.5123
+standard deviation = 0.0013
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 5810
+minimum = 2.0000
+maximum = 151.0000
+range = 149.0000
+median = 22.0000
+first quartile = 14.0000
+third quartile = 32.0000
+inter-quartile range = 18.0000
+mean = 24.6737
+standard deviation = 14.1311
+
+coverage = 1.0000
+
+BLEU score = 0.7737
+
+./utlgevaluate.sh: Leaving directory `UD_Catalan/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Chinese/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 500
+minimum = 7.0000
+maximum = 97.0000
+range = 90.0000
+median = 21.5000
+first quartile = 15.0000
+third quartile = 30.0000
+inter-quartile range = 15.0000
+mean = 24.0240
+standard deviation = 11.9059
+
+coverage = 0.7631
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.4680
+maximum = 0.4783
+range = 0.0103
+median = 0.4733
+first quartile = 0.4723
+third quartile = 0.4750
+inter-quartile range = 0.0027
+mean = 0.4735
+standard deviation = 0.0023
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 3997
+minimum = 4.0000
+maximum = 111.0000
+range = 107.0000
+median = 22.0000
+first quartile = 16.0000
+third quartile = 31.0000
+inter-quartile range = 15.0000
+mean = 24.6705
+standard deviation = 12.3384
+
+coverage = 1.0000
+
+BLEU score = 0.9435
+
+./utlgevaluate.sh: Leaving directory `UD_Chinese/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Czech/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 9835
+minimum = 1.0000
+maximum = 132.0000
+range = 131.0000
+median = 15.0000
+first quartile = 9.0000
+third quartile = 23.0000
+inter-quartile range = 14.0000
+mean = 16.7784
+standard deviation = 10.7504
+
+coverage = 0.9021
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.4366
+maximum = 0.4383
+range = 0.0017
+median = 0.4374
+first quartile = 0.4371
+third quartile = 0.4377
+inter-quartile range = 0.0005
+mean = 0.4374
+standard deviation = 0.0004
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 66500
+minimum = 1.0000
+maximum = 194.0000
+range = 193.0000
+median = 15.0000
+first quartile = 9.0000
+third quartile = 23.0000
+inter-quartile range = 14.0000
+mean = 16.8329
+standard deviation = 10.9095
+
+coverage = 1.0000
+
+BLEU score = 0.6475
+
+./utlgevaluate.sh: Leaving directory `UD_Czech/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_English/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 2077
+minimum = 1.0000
+maximum = 81.0000
+range = 80.0000
+median = 9.0000
+first quartile = 4.0000
+third quartile = 17.0000
+inter-quartile range = 13.0000
+mean = 12.0828
+standard deviation = 10.6050
+
+coverage = 0.7501
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.5203
+maximum = 0.5271
+range = 0.0068
+median = 0.5232
+first quartile = 0.5223
+third quartile = 0.5241
+inter-quartile range = 0.0018
+mean = 0.5233
+standard deviation = 0.0013
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 12543
+minimum = 1.0000
+maximum = 159.0000
+range = 158.0000
+median = 14.0000
+first quartile = 7.0000
+third quartile = 23.0000
+inter-quartile range = 16.0000
+mean = 16.3108
+standard deviation = 12.4016
+
+coverage = 1.0000
+
+BLEU score = 0.8755
+
+./utlgevaluate.sh: Leaving directory `UD_English/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Finnish/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 648
+minimum = 1.0000
+maximum = 98.0000
+range = 97.0000
+median = 12.0000
+first quartile = 8.0000
+third quartile = 18.0000
+inter-quartile range = 10.0000
+mean = 14.1049
+standard deviation = 9.7217
+
+coverage = 0.8100
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.4443
+maximum = 0.4555
+range = 0.0112
+median = 0.4497
+first quartile = 0.4481
+third quartile = 0.4515
+inter-quartile range = 0.0034
+mean = 0.4498
+standard deviation = 0.0024
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 12217
+minimum = 1.0000
+maximum = 238.0000
+range = 237.0000
+median = 12.0000
+first quartile = 7.0000
+third quartile = 17.0000
+inter-quartile range = 10.0000
+mean = 13.3192
+standard deviation = 9.4880
+
+coverage = 1.0000
+
+BLEU score = 0.7978
+
+./utlgevaluate.sh: Leaving directory `UD_Finnish/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_German/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 746
+minimum = 1.0000
+maximum = 49.0000
+range = 48.0000
+median = 13.0000
+first quartile = 8.0000
+third quartile = 20.0000
+inter-quartile range = 12.0000
+mean = 14.8029
+standard deviation = 8.7140
+
+coverage = 0.7292
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.3942
+maximum = 0.4057
+range = 0.0115
+median = 0.3995
+first quartile = 0.3977
+third quartile = 0.4012
+inter-quartile range = 0.0035
+mean = 0.3995
+standard deviation = 0.0023
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 10289
+minimum = 2.0000
+maximum = 106.0000
+range = 104.0000
+median = 16.0000
+first quartile = 11.0000
+third quartile = 22.0000
+inter-quartile range = 11.0000
+mean = 17.3008
+standard deviation = 9.1374
+
+coverage = 1.0000
+
+BLEU score = 0.7843
+
+./utlgevaluate.sh: Leaving directory `UD_German/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Latin/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 230
+minimum = 5.0000
+maximum = 44.0000
+range = 39.0000
+median = 21.0000
+first quartile = 16.0000
+third quartile = 25.0000
+inter-quartile range = 9.0000
+mean = 21.0087
+standard deviation = 6.5484
+
+coverage = 0.6907
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.1442
+maximum = 0.1651
+range = 0.0209
+median = 0.1526
+first quartile = 0.1497
+third quartile = 0.1557
+inter-quartile range = 0.0060
+mean = 0.1529
+standard deviation = 0.0047
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 2660
+minimum = 1.0000
+maximum = 78.0000
+range = 77.0000
+median = 12.0000
+first quartile = 7.0000
+third quartile = 18.0000
+inter-quartile range = 11.0000
+mean = 14.2177
+standard deviation = 9.6301
+
+coverage = 1.0000
+
+BLEU score = 0.5657
+
+./utlgevaluate.sh: Leaving directory `UD_Latin/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Spanish/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 164
+minimum = 3.0000
+maximum = 76.0000
+range = 73.0000
+median = 19.0000
+first quartile = 12.0000
+third quartile = 29.0000
+inter-quartile range = 17.0000
+mean = 23.0244
+standard deviation = 15.3902
+
+coverage = 0.8119
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.4448
+maximum = 0.4593
+range = 0.0145
+median = 0.4517
+first quartile = 0.4491
+third quartile = 0.4538
+inter-quartile range = 0.0048
+mean = 0.4517
+standard deviation = 0.0034
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 9080
+minimum = 2.0000
+maximum = 118.0000
+range = 116.0000
+median = 20.0000
+first quartile = 14.0000
+third quartile = 29.0000
+inter-quartile range = 15.0000
+mean = 22.6374
+standard deviation = 12.1597
+
+coverage = 1.0000
+
+BLEU score = 0.7237
+
+./utlgevaluate.sh: Leaving directory `UD_Spanish/utlgevaluate'
+./utlgevaluate.sh: Entering directory `UD_Turkish/utlgevaluate'
+
+Corpus Sentence Length Statistics
+=================================
+size = 612
+minimum = 1.0000
+maximum = 47.0000
+range = 46.0000
+median = 7.0000
+first quartile = 4.5000
+third quartile = 11.0000
+inter-quartile range = 6.5000
+mean = 8.5588
+standard deviation = 5.8103
+
+coverage = 0.7364
+
+Corpus Linearisation BLEU Score Statistics
+==========================================
+size = 100
+minimum = 0.4227
+maximum = 0.4457
+range = 0.0230
+median = 0.4317
+first quartile = 0.4292
+third quartile = 0.4359
+inter-quartile range = 0.0066
+mean = 0.4323
+standard deviation = 0.0047
+
+
+Corpus Sentence Length Statistics
+=================================
+size = 3022
+minimum = 1.0000
+maximum = 49.0000
+range = 48.0000
+median = 7.0000
+first quartile = 5.0000
+third quartile = 11.0000
+inter-quartile range = 6.0000
+mean = 9.1343
+standard deviation = 6.6433
+
+coverage = 1.0000
+
+BLEU score = 0.8394
+
+./utlgevaluate.sh: Leaving directory `UD_Turkish/utlgevaluate'
