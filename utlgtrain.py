@@ -28,6 +28,7 @@ try:
 except (TypeError):
     lemmas = []
 
+
 def proc_node(h, n, i, r, cnf):  #{
     rule = {}
     head = nodes[i]
@@ -37,7 +38,7 @@ def proc_node(h, n, i, r, cnf):  #{
     rule[lin_h] = (pos_h, deprel_h)
     lem_h = head[2]
     if lem_h in lemmas:
-        rule[lin_h] += (lem_h,)
+        rule[lin_h] += (lem_h, )
     if i in h:  #{
         for child in h[i]:  #{
             dep = nodes[child]
@@ -47,7 +48,7 @@ def proc_node(h, n, i, r, cnf):  #{
             rule[lin_c] = (pos_c, deprel_c)
             lem_c = dep[2]
             if lem_c in lemmas:
-                rule[lin_c] += (lem_c,)
+                rule[lin_c] += (lem_c, )
         #}
         k = list(rule.keys())
         k.sort()
@@ -67,7 +68,8 @@ def proc_node(h, n, i, r, cnf):  #{
                     childs = '/'.join([str(ord)] + list(rule[j]))
                     config_childs = '/'.join(rule[j])
                 else:  #{
-                    childs = childs + '|' + '/'.join([str(ord)] + list(rule[j]))
+                    childs = childs + '|' + '/'.join([str(ord)] + list(rule[
+                        j]))
                     config_childs = config_childs + '|' + '/'.join(rule[j])
                 #}
                 #}
@@ -130,7 +132,7 @@ for line in stdin.readlines():  #{
             if cur not in nodes:  #{
                 nodes[cur] = row
             #}
-    #}
+            #}
 
     if line == '\n':  #{
         if arguments.projectivise:
@@ -140,8 +142,7 @@ for line in stdin.readlines():  #{
             greedy_lifting = GreedyLifting()
             dependency_tree = greedy_lifting.execute(dependency_tree)
 
-            for dependency_tree_node in dependency_tree.tree:
-                del dependency_tree_node.fields['children']
+            for dependency_tree_node in dependency_tree.tree.values():
                 id_ = int(dependency_tree_node.fields['id'])
                 head = int(dependency_tree_node.fields['head'])
 
@@ -151,13 +152,24 @@ for line in stdin.readlines():  #{
                 heads[head].append(id_)
 
                 if id_ not in nodes:
-                    nodes[id_] = list(dependency_tree_node.fields.values())
-        else:
-            for i in heads[0]:  #{
-                (rules, configs) = proc_node(heads, nodes, i, rules, configs)
-            #}
-            heads = {}
-            nodes = {}
+                    nodes[id_] = [
+                        dependency_tree_node.fields['id'],
+                        dependency_tree_node.fields['form'],
+                        dependency_tree_node.fields['lemma'],
+                        dependency_tree_node.fields['upostag'],
+                        dependency_tree_node.fields['xpostag'],
+                        dependency_tree_node.fields['feats'],
+                        dependency_tree_node.fields['head'],
+                        dependency_tree_node.fields['deprel'],
+                        dependency_tree_node.fields['deps'],
+                        dependency_tree_node.fields['misc']
+                    ]
+
+        for i in heads[0]:  #{
+            (rules, configs) = proc_node(heads, nodes, i, rules, configs)
+        #}
+        heads = {}
+        nodes = {}
     #}
     #}
 
@@ -176,9 +188,7 @@ for c, i in configs:  #{
     #}
     for r, j in i:  #{
         prob = float(j) / float(total)
-        print(
-            '%.2f\t%d\t%d\t%s\t%s' % (prob, total, j, c, r),
-            file=stderr)
+        print('%.2f\t%d\t%d\t%s\t%s' % (prob, total, j, c, r), file=stderr)
         head = r.split('!')[0].split('/')
         deps = r.split('!')[1].split('|')
 

@@ -5,6 +5,7 @@ from .wordline import WordLine
 import re
 
 from ..statistical_linearisation.DependencyTree import DependencyTree
+from ..statistical_linearisation.GreedyLifting import GreedyLifting
 
 CONLLU_COMMENT = re.compile('\s*#')
 
@@ -95,6 +96,11 @@ class Sentence:
                 dependent.head = wordline.get_id()
 
         for wordline in self.get_wordlines().values():
+            try:
+                form = wordline.get_form()
+            except (AttributeError):
+                form = '_'
+
             feats = '|'.join([
                 '='.join(item)
                 for item in dict(wordline.get_word().get_feats()).items()
@@ -104,7 +110,7 @@ class Sentence:
                 feats = '_'
 
             dependency_tree.add_node([
-                str(wordline.get_id()), '_', wordline.get_word().get_lemma(),
+                str(wordline.get_id()), form, wordline.get_word().get_lemma(),
                 wordline.get_word().get_upostag(), '_', feats,
                 str(wordline.get_head()), wordline.get_deprel(), '_', '_'
             ])
@@ -124,3 +130,9 @@ class Sentence:
 
         for wordline in wordlines.values():
             wordline.add_edge(self, wordlines)
+
+    def projectivise(self):
+        dependency_tree = self.get_dependency_tree()
+        greedy_lifting = GreedyLifting()
+        dependency_tree = greedy_lifting.execute(dependency_tree)
+        self.deserialise_dependency_tree(dependency_tree)

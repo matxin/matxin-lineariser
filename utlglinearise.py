@@ -16,6 +16,7 @@ argument_parser.add_argument(
     '-v', '--verbose', action='store_true', dest='verbose')
 argument_parser.add_argument(
     '-s', '--shuffle', action='store_true', dest='shuffle')
+argument_parser.add_argument('--projectivise', action='store_true')
 argument_parser.add_argument('xml')
 arguments = argument_parser.parse_args()
 lineariser = Lineariser()
@@ -39,6 +40,9 @@ def main():
         corpus_etree = etree.getroot()
 
         for sentence in Sentence.deserialise_matxin(corpus_etree):
+            if arguments.projectivise:
+                sentence.projectivise()
+
             sentence.linearise(lineariser, arguments.n, arguments.shuffle)
             for ref, wordline in enumerate(
                     sentence.get_linearisations()[0], start=1):
@@ -54,6 +58,9 @@ def main():
         pretty_printer = PrettyPrinter()
 
     for sentence in Sentence.deserialise(stdin):
+        if arguments.projectivise:
+            sentence.projectivise()
+
         sentence.linearise(lineariser, arguments.n, arguments.shuffle)
 
         if arguments.verbose:
