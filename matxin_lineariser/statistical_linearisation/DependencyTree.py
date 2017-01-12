@@ -1,4 +1,4 @@
-from . import DependencyTreeNode
+from DependencyTreeNode import DependencyTreeNode
 
 import sys
 
@@ -34,7 +34,7 @@ class DependencyTree:
         :param list: val of fields got from input
         :return: None
         """
-        temp = DependencyTreeNode.DependencyTreeNode()
+        temp = DependencyTreeNode()
 
         for no in range(0, 10): # indices of all the fields
             temp.update_field(self.no2field[str(no)], list[no])
