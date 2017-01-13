@@ -144,6 +144,26 @@ def lift_linearise_greedy_domains(prob_path):
     tmp = []
     bleu = 0.0
 
+    tst = open("tst.out", 'w')
+    src = open("src.out", 'w')
+    ref = open('ref.out', 'w')
+
+    tst.write(
+    '<tstset trglang="' + 'en' +
+            '" setid="1" srclang="any">\n'
+    )
+    tst.write('<doc sysid="1" docid="1">\n')
+
+
+    ref.write('<refset trglang="' + 'en' +
+            '" setid="1" srclang="any">\n')
+    ref.write('<doc sysid="ref" docid="1">\n')
+
+    src.write('<srcset setid="1" srclang="any">\n')
+    src.write('<doc docid="1">\n')
+
+
+
     for tree_raw in inp:
         if tree_raw != '\n':
             tmp.append(tree_raw)
@@ -157,6 +177,7 @@ def lift_linearise_greedy_domains(prob_path):
 
         lifting = GreedyLifting.GreedyLifting()
         tree1 = lifting.execute(tree)
+        id += 1
 
         tmp = []
 
@@ -166,8 +187,11 @@ def lift_linearise_greedy_domains(prob_path):
          #   print (node, tree1.tree[node].give_domain())
 
         linearised = greedy.linearise(tree1)
+        tst.write('<seg id="' + str(id) + '">' + ' '.join(linearised) + '</seg>\n')
 
         gold_order = tree1.give_gold_order()
+        ref.write('<seg id="' + str(id) + '">' + ' '.join(gold_order) + '</seg>\n')
+        src.write('<seg id="' + str(id) + '">' + ' '.join(gold_order) + '</seg>\n')
 
         #print (str(gold_order)+'\n'+str(linearised))
 
@@ -175,12 +199,20 @@ def lift_linearise_greedy_domains(prob_path):
         for i in range(0, len(gold_order)):
             weights += (1.0/float(len(gold_order)),)
 
-        id += 1
         bleu += nltk.translate.bleu_score.sentence_bleu(gold_order, linearised, weights=weights)
     try:
         print(bleu/float(id))
     except:
         print ("ONLY BIG SENTENCES.")
+
+    tst.write('</doc>\n')
+    tst.write('</tstset>\n')
+
+    ref.write('</doc>\n')
+    ref.write('</refset>\n')
+
+    src.write('</doc>\n')
+    src.write('</srcset>\n')
 
 def lift_linearise_xml(prob_path):
     id = 0
