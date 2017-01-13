@@ -1,4 +1,4 @@
-from . import DependencyTree
+import DependencyTree
 
 import sys
 

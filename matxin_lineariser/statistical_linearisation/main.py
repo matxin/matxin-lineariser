@@ -2,11 +2,16 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-from . import Convert2dependencytree, DependencyTree, GreedyDomains, GreedyLifting, GreedyLinearisation
+import Convert2dependencytree
+import DependencyTree
+import GreedyDomains
+import GreedyLifting
+import GreedyLinearisation
 
-from .Linearisation import Dependency_tree_linearisation, NeuralNet
+import Linearisation.Dependency_tree_linearisation
+import Linearisation.NeuralNet
 
-import ntlk
+import nltk
 
 import copy
 import argparse

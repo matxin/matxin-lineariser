@@ -1,4 +1,4 @@
-from . import DependencyTreeNode
+import DependencyTreeNode
 
 import sys
 

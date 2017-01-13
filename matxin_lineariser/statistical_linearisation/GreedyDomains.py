@@ -1,4 +1,4 @@
-from . import GreedyLinearisation
+import GreedyLinearisation
 
 import copy
 import operator
