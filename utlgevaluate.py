@@ -74,17 +74,15 @@ def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
 
 def main():
     argument_parser = ArgumentParser()
-    argument_parser.add_argument('xml')
-    argument_parser.add_argument('ref_file')
-    argument_parser.add_argument('src_file')
-    argument_parser.add_argument('trglang')
-    argument_parser.add_argument(
-        'corpus_sentence_length_frequency_histogram_fname')
-    argument_parser.add_argument('tst_file')
-    argument_parser.add_argument('mteval')
-    argument_parser.add_argument('n', type=int)
-    argument_parser.add_argument(
-        'corpus_linearisation_bleu_score_frequency_histogram_fname')
+    argument_parser.add_argument('xml', help='the name of the data file to use for linearization')
+    argument_parser.add_argument('ref_file', help='the name of the file to use as the <ref_file> for Moses SMT\'s MT evaluation scorer')
+    argument_parser.add_argument('src_file', help='the name of the file to use as the <src_file> for Moses SMT\'s MT evaluation scorer')
+    argument_parser.add_argument('trglang', help='the target language\'s ISO 639-1 two-letter code')
+    argument_parser.add_argument('figure-1', help='the name of the file to write the corpus sentence length frequency histogram to')
+    argument_parser.add_argument('tst_file', help='the name of the file to use as the <tst_file> for Moses SMT\'s MT evaluation scorer')
+    argument_parser.add_argument('mteval', help='the filename of Moses SMT\'s MT evaluation scorer')
+    argument_parser.add_argument('n', type=int, help='the number of corpus linearisation BLEU scores to get')
+    argument_parser.add_argument('figure-2', help='the name of the file to write the corpus linearisation BLEU score frequency histogram to')
     arguments = argument_parser.parse_args()
     lineariser = Lineariser()
 
