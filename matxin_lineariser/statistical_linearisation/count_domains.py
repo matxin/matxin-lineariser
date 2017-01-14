@@ -1,4 +1,4 @@
-import matxin_lineariser.statistical_linearisation.DependencyTree
+import matxin_lineariser.statistical_linearisation.DependencyTree as DependencyTree
 
 fhand = open("Treebank/en-ud-train.conllu")
 

@@ -1,4 +1,4 @@
-import matxin_lineariser.statistical_linearisation.DependencyTreeNode
+import matxin_lineariser.statistical_linearisation.DependencyTreeNode as DependencyTreeNode
 
 import sys
 
