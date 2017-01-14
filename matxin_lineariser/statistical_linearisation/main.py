@@ -2,14 +2,14 @@
 An implementation of an linearisation algorithm as described here: https://aclweb.org/anthology/D/D12/D12-1085.pdf
 """
 
-import Convert2dependencytree
-import DependencyTree
-import GreedyDomains
-import GreedyLifting
-import GreedyLinearisation
+import matxin_lineariser.statistical_linearisation.Convert2dependencytree
+import matxin_lineariser.statistical_linearisation.DependencyTree
+import matxin_lineariser.statistical_linearisation.GreedyDomains
+import matxin_lineariser.statistical_linearisation.GreedyLifting
+import matxin_lineariser.statistical_linearisation.GreedyLinearisation
 
-import Linearisation.Dependency_tree_linearisation
-import Linearisation.NeuralNet
+import matxin_lineariser.statistical_linearisation.Linearisation.Dependency_tree_linearisation
+import matxin_lineariser.statistical_linearisation.Linearisation.NeuralNet
 
 import nltk
 

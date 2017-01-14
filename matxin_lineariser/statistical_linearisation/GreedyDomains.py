@@ -1,4 +1,4 @@
-import GreedyLinearisation
+import matxin_lineariser.statistical_linearisation.GreedyLinearisation
 
 import copy
 import operator
