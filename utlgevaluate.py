@@ -74,7 +74,7 @@ def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
 
 def main():
     argument_parser = ArgumentParser()
-    argument_parser.add_argument('xml', help='the name of the data file to use for linearization')
+    argument_parser.add_argument('data', help='the name of the data file to use for linearization')
     argument_parser.add_argument('ref_file', help='the name of the file to use as the <ref_file> for Moses SMT\'s MT evaluation scorer')
     argument_parser.add_argument('src_file', help='the name of the file to use as the <src_file> for Moses SMT\'s MT evaluation scorer')
     argument_parser.add_argument('trglang', help='the target language\'s ISO 639-1 two-letter code')
@@ -86,8 +86,8 @@ def main():
     arguments = argument_parser.parse_args()
     lineariser = Lineariser()
 
-    with open(arguments.xml) as xml:
-        lineariser.deserialise(xml)
+    with open(arguments.data) as data:
+        lineariser.deserialise(data)
 
     corpus_sentence_lengths = []
     treebank = [sentence for sentence in Sentence.deserialise(stdin)]
@@ -124,7 +124,7 @@ def main():
     pyplot.title('Corpus Sentence Length Frequency Histogram')
     pyplot.xlabel('Sentence Length (# of Words)')
     pyplot.ylabel('# of Sentences')
-    pyplot.savefig(arguments.corpus_sentence_length_frequency_histogram_fname)
+    pyplot.savefig(arguments.figure_1)
     BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
     corpus_linearisation_bleu_scores = [
         get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
@@ -164,8 +164,7 @@ def main():
     pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
     pyplot.xlabel('BLEU Score')
     pyplot.ylabel('# of Samples')
-    pyplot.savefig(
-        arguments.corpus_linearisation_bleu_score_frequency_histogram_fname)
+    pyplot.savefig(arguments.figure_2)
     print()
 
 
