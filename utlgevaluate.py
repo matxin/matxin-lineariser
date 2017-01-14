@@ -13,14 +13,28 @@ import subprocess
 
 
 def print_seg(id_, seg, file):
+    """Write a sentence to an SGML file *file* to be used by Moses SMT's MT
+    evaluation scorer.
+
+    *id_* is the sentence's position in the treebank.  The first sentence's
+    position would be 1.
+    *seg* is a list of the sentence's FORMs.
+    """
     print('<seg id="' + str(id_) + '">' + ' '.join(seg) + '</seg>', file=file)
 
 
 def format_statistic(statistic):
+    """Return a string of *statistic* to four decimal places."""
     return '{0:.4f}'.format(statistic)
 
 
 def print_statistics(list_):
+    """Print the (1) size, (2) minimum value, (3) maximum value, (4) range, (5)
+    median, (6) first quartile, (7) third quartile, (8) inter-quartile range,
+    (9) mean, and (10) standard deviation of a sample.
+
+    *list_* is the sample.
+    """
     print('size = ' + str(len(list_)))
     min_ = min(list_)
     print('minimum = ' + format_statistic(min_))
@@ -38,6 +52,21 @@ def print_statistics(list_):
 
 
 def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
+    """Linearise the corpus with the lineariser *lineariser* and score the
+    linearisation with Moses SMT's MT evaluation scorer.
+
+    *arguments* contain the command-line arguments passed to the program.
+    *treebank* is a list of all the corpus' sentences, each as a Sentence
+    object.
+    *BLEU_SCORE* is a regular expression that finds the BLEU score as a string
+    in the output of Moses-SMT's MT evaluation scorer.
+
+    Returns the linearisation's BLEU score.
+
+    subprocess.CalledProcessError is raised if the return of Moses-SMT's MT
+    evaluation scorer is non-zero.
+
+    """
     with open(arguments.tst_file, mode='w') as tst_file:
         print(
             '<tstset trglang="' + arguments.trglang +
