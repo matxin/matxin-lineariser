@@ -215,7 +215,7 @@ def main():
     print('==========================================')
     print_statistics(corpus_linearisation_bleu_scores)
     pyplot.figure()
-    pyplot.hist(corpus_linearisation_bleu_scores, range=(0, 1))
+    pyplot.hist(corpus_linearisation_bleu_scores)
     pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
     pyplot.xlabel('BLEU Score')
     pyplot.ylabel('# of Samples')
