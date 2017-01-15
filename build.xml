@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="tg" default="dist" basedir=".">
+    <property name="src" location="src"/>
+    <property name="lib" location="lib"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="doc" location="doc"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}">
+            <classpath>
+                <fileset dir="${lib}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile">
+        <mkdir dir="${dist}/lib"/>
+        <jar jarfile="${dist}/lib/tg.jar" basedir="${build}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${doc}"/>
+    </target>
+
+    <target name="doc">
+        <javadoc sourcepath="${src}" destdir="${doc}"/>
+    </target>
+
+    <path id="classpath">
+        <pathelement location="${dist}/lib/tg.jar"/>
+        <fileset dir="${lib}"/>
+        <pathelement path="${java.class.path}"/>
+    </path>
+
+    <target name="commata.Evaluator">
+        <java classname="commata.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="commata.Tagger">
+        <java classname="commata.Tagger" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt.Convert">
+        <java classname="dsynt2synt.Convert" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt.Evaluator">
+        <java classname="dsynt2synt.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt.Mapper">
+        <java classname="dsynt2synt.Mapper" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt2.Convert">
+        <java classname="dsynt2synt2.Convert" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt2.Evaluator">
+        <java classname="dsynt2synt2.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2synt2.Mapper">
+        <java classname="dsynt2synt2.Mapper" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2syntP.Convert">
+        <java classname="dsynt2syntP.Convert" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2syntP.Evaluator">
+        <java classname="dsynt2syntP.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="dsynt2syntP.Mapper">
+        <java classname="dsynt2syntP.Mapper" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="morph2.Main">
+        <java classname="morph2.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="morph2.StringEdit">
+        <java classname="morph2.StringEdit" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="move.Main">
+        <java classname="move.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn.DSyntConverter">
+        <java classname="sem2syn.DSyntConverter" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn.Main">
+        <java classname="sem2syn.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn.SemConverter">
+        <java classname="sem2syn.SemConverter" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn2.DSyntConverter">
+        <java classname="sem2syn2.DSyntConverter" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn2.Main">
+        <java classname="sem2syn2.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="sem2syn2.SemConverter">
+        <java classname="sem2syn2.SemConverter" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin2.Main">
+        <java classname="syn2lin2.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin2b.Main">
+        <java classname="syn2lin2b.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin3.Lin">
+        <java classname="syn2lin3.Lin" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin4.Main">
+        <java classname="syn2lin4.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin5.Main">
+        <java classname="syn2lin5.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin6.Main">
+        <java classname="syn2lin6.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin6b.Main">
+        <java classname="syn2lin6b.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin6c.Main">
+        <java classname="syn2lin6c.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="syn2lin7.Main">
+        <java classname="syn2lin7.Main" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="tag7.Evaluator">
+        <java classname="tag7.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="tag7.Tagger">
+        <java classname="tag7.Tagger" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="util.ConvertDS">
+        <java classname="util.ConvertDS" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="util.ConvertSSynt">
+        <java classname="util.ConvertSSynt" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="util.Converter">
+        <java classname="util.Converter" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="util.Evaluate">
+        <java classname="util.Evaluate" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+
+    <target name="util.Evaluator">
+        <java classname="util.Evaluator" classpathref="classpath">
+            <arg line="${argv}"/>
+        </java>
+    </target>
+</project>
