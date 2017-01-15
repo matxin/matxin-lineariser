@@ -1,0 +1,34 @@
+
+<h4>Where does the bug with unresolved words come from?</h4>
+
+From sentences with multiple roots. I fixed this in version 7.
+
+
+<h4>Does version 6 support a language model?</h4>
+
+yes. it does.<br>
+The accuracy with a language model on the words forms is 65.39 compared to 58.92 without LM. 
+However, since the first word is uppercase, the LM might just be able to figure out which word commes at the beginning of the sentence first. 
+
+
+
+
+<h4>Which is the best linearization version?</h4>
+
+20.Feb.2012<br>
+
+The linearization syn2lin contains different version, which one is the best? <br>
+<ul>
+<li> Version 2: older version with less features. 
+<li> Version 3: ?
+<li> Version 4: more features but no language model (LM); 36000/53.39/38.1 on dev set and 6 iterations 
+<li> Version 5: possible LM; 36000/59.55/43.95 on dev set 6 iterations      
+<li> Version 6: possible LM; 36000/59.55/43.95 on dev set 6 iterations; difference to 5 unclear
+<li> Version 7: LM seems to has a bug. 
+</ul>
+
+The best one seems to be version 6. 
+
+
+
+

@@ -1,0 +1,10 @@
+This project contain a statistical text generator. See some executables in the bin directory to start.
+
+The file structure:
+
+bin  some sample executables
+src  the source file directory
+lib  contains some libs
+classes the class files
+doc  the java documentation
+
