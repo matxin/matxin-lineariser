@@ -152,7 +152,9 @@ def main():
     treebank = []
 
     for sentence in Sentence.deserialise(stdin):
-        sentence.projectivise()
+        if arguments.projectivise:
+            sentence.projectivise()
+
         treebank.append(sentence)
 
     with open(arguments.ref_file, mode='w') as ref_file, \
