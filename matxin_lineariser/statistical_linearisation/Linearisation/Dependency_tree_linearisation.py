@@ -1,4 +1,6 @@
-import copy, random, operator
+import copy
+import operator
+import random
 
 class Dependency_tree_linearisation:
     """

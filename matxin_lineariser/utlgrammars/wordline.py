@@ -145,7 +145,7 @@ class WordLine:
 
     def deserialise_dependency_tree_node(self, dependency_tree_node):
         self.id_ = int(dependency_tree_node.fields['id'])
-        self.lemma = dependency_tree_node.fields['lemma']
+        self.form = dependency_tree_node.fields['form']
         self.word = Word(dependency_tree_node.fields['upostag'])
         self.get_word().feats = frozenset(dependency_tree_node.features.items(
         ))

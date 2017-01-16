@@ -1,4 +1,6 @@
-import DependencyTree, sys
+import matxin_lineariser.statistical_linearisation.DependencyTree as DependencyTree
+
+import sys
 
 class GreedyLinearisation:
     def __init__(self):

@@ -14,6 +14,9 @@ argument_parser.add_argument(
     '-1', '--1-best', action='store_const', const=1, default=0, dest='n')
 argument_parser.add_argument(
     '-v', '--verbose', action='store_true', dest='verbose')
+argument_parser.add_argument(
+    '-s', '--shuffle', action='store_true', dest='shuffle')
+argument_parser.add_argument('--projectivise', action='store_true')
 argument_parser.add_argument('xml')
 arguments = argument_parser.parse_args()
 lineariser = Lineariser()
@@ -37,7 +40,10 @@ def main():
         corpus_etree = etree.getroot()
 
         for sentence in Sentence.deserialise_matxin(corpus_etree):
-            sentence.linearise(lineariser, arguments.n)
+            if arguments.projectivise:
+                sentence.projectivise()
+
+            sentence.linearise(lineariser, arguments.n, arguments.shuffle)
             for ref, wordline in enumerate(
                     sentence.get_linearisations()[0], start=1):
                 wordline.node_etree.set('ord', str(ref))
@@ -48,13 +54,21 @@ def main():
         etree.write(stdout, encoding='unicode', xml_declaration=True)
         return
 
-    pretty_printer = PrettyPrinter()
+    if arguments.n != 1:
+        pretty_printer = PrettyPrinter()
 
     for sentence in Sentence.deserialise(stdin):
-        sentence.linearise(lineariser, arguments.n)
+        if arguments.projectivise:
+            sentence.projectivise()
+
+        sentence.linearise(lineariser, arguments.n, arguments.shuffle)
 
         if arguments.verbose:
             print_verbose(sentence)
+
+        if arguments.n == 1:
+            print(sentence.get_strings()[0], flush=True)
+            continue
 
         pretty_printer.pprint(sentence.get_strings())
         stdout.flush()

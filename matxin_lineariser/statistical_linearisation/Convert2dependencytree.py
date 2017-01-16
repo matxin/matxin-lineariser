@@ -1,4 +1,6 @@
-import DependencyTree, sys
+import matxin_lineariser.statistical_linearisation.DependencyTree as DependencyTree
+
+import sys
 
 class Convert2dependencytree:
     """

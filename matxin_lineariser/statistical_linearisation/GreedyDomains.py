@@ -1,4 +1,8 @@
-import GreedyLinearisation, copy, operator, random
+import matxin_lineariser.statistical_linearisation.GreedyLinearisation as GreedyLinearisation
+
+import copy
+import operator
+import random
 
 class GreedyDomains(GreedyLinearisation.GreedyLinearisation):
     """

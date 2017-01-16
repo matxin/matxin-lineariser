@@ -1,4 +1,6 @@
-import sys, DependencyTree
+import DependencyTree
+
+import sys
 
 order = ['0']
 tree = DependencyTree.DependencyTree()
