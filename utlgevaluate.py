@@ -25,7 +25,7 @@ def print_seg(id_, seg, file):
 
 def format_statistic(statistic):
     """Return a string of *statistic* to four decimal places."""
-    return '{0:.4f}'.format(statistic)
+    return '{:.4f}'.format(statistic)
 
 
 def print_statistics(list_):
@@ -51,15 +51,16 @@ def print_statistics(list_):
     print('standard deviation = ' + format_statistic(numpy.std(list_, ddof=1)))
 
 
-def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
+BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
+
+
+def get_sample_bleu_score(arguments, treebank, lineariser):
     """Linearise the corpus with the lineariser *lineariser* and score the
     linearisation with Moses SMT's MT evaluation scorer.
 
     *arguments* contain the command-line arguments passed to the program.
     *treebank* is a list of all the corpus' sentences, each as a Sentence
     object.
-    *BLEU_SCORE* is a regular expression that finds the BLEU score as a string
-    in the output of Moses-SMT's MT evaluation scorer.
 
     Returns the linearisation's BLEU score.
 
@@ -102,6 +103,14 @@ def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
                 file=stderr)
 
         raise
+
+
+def get_sample(format_str, sample, arguments, treebank, lineariser,
+               corpus_linearisation_bleu_scores, end_format_str):
+    print(format_str.format(sample), end='', file=stderr, flush=True)
+    bleu_score = get_sample_bleu_score(arguments, treebank, lineariser)
+    corpus_linearisation_bleu_scores.append(bleu_score)
+    print(end_format_str.format(bleu_score), file=stderr, flush=True)
 
 
 def main():
@@ -193,20 +202,12 @@ def main():
 
     n = '{:,}'.format(arguments.n)
     sample_format_str = '{:>' + str(len(n)) + ',}'
-    precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
-    percent_format_str = '{:>' + str(
-        len(('{:.' + precision + '%}').format(1))) + '.' + precision + '%}'
     format_str = 'Sample ' + sample_format_str + ' of ' + n + ': '
-    end_format_str = 'done, ' + percent_format_str
-
-    BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
+    end_format_str = 'done, BLEU score = {:.4f}'
+    corpus_linearisation_bleu_scores = []
     stdout.flush()
-    print(format_str.format(1), end='', file=stderr, flush=True)
-    corpus_linearisation_bleu_scores = [
-        get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
-    ]
-    print(
-        end_format_str.format(1 / float(arguments.n)), file=stderr, flush=True)
+    get_sample(format_str, 1, arguments, treebank, lineariser,
+               corpus_linearisation_bleu_scores, end_format_str)
     print(file=stderr)
     stderr.flush()
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
@@ -221,13 +222,8 @@ def main():
     stdout.flush()
 
     for sample in range(2, arguments.n + 1):
-        print(format_str.format(sample), end='', file=stderr, flush=True)
-        corpus_linearisation_bleu_scores.append(
-            get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE))
-        print(
-            end_format_str.format(sample / float(arguments.n)),
-            file=stderr,
-            flush=True)
+        get_sample(format_str, sample, arguments, treebank, lineariser,
+                   corpus_linearisation_bleu_scores, end_format_str)
 
     print(file=stderr)
     stderr.flush()
