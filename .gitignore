@@ -6,4 +6,9 @@
 
 # g++
 *.o
-/utlgrammars/test/GDBPrint
+
+/matxin_lineariser/utlgrammars/test/GDBPrint
+
+/tg/build/
+/tg/dist/
+/tg/doc/
