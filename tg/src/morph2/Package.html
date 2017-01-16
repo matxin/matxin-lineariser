@@ -1,0 +1,29 @@
+<H2>Morphologic Generator</H2>
+
+The morphologic generator has a classic machine learning architecture: <br>
+
+Decoder - does the work <br>
+Extractor - does extract the features <br>
+Parameters(Float) - the weight vector and methods <br>
+Main - coordinates everything <br>
+
+
+
+<br>
+java -Xmx1900M -classpath /Users/bohnet/Documents/workspace/tg/bin/:/Users/bohnet/Documents/workspace/analyse/classes:/Users/bohnet/Documents/workspace/analyse/lib/trove-2.0.4.jar:/Users/bohnet/gtc/classes/ 
+morph2.Main <br>
+-train corpora/CoNLL2009-ST-German-traindev/CoNLL2009-ST-German-train.txt <br>
+-test corpora/gold/CoNLL2009-ST-evaluation-German.txt  <br>
+-eval corpora/gold/CoNLL2009-ST-evaluation-German.txt  <br>
+-out results/mor-ger.txt  <br>
+-model models/m1.mdl <br>
+-i 6 <br> 
+-hsize 11591164 <br>
+<br>
+
+-train <train-file>  
+
+
+
+
+
