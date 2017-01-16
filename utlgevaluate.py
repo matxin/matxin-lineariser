@@ -83,25 +83,31 @@ def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
         print('</doc>', file=tst_file)
         print('</tstset>', file=tst_file)
 
-    completed_process = subprocess.run([
-        'perl', arguments.mteval, '-r', arguments.ref_file, '-s',
-        arguments.src_file, '-t', arguments.tst_file
-    ],
-                                       stdout=subprocess.PIPE)
-
     try:
-        completed_process.check_returncode()
-    except (subprocess.CalledProcessError):
-        stdout.flush()
-        stderr.flush()
-        print(completed_process.stdout, flush=True)
-        print(completed_process.stderr, file=stderr, flush=True)
-        raise
+        return float(
+            BLEU_SCORE.search(
+                subprocess.check_output(
+                    [
+                        'perl', arguments.mteval, '-r', arguments.ref_file,
+                        '-s', arguments.src_file, '-t', arguments.tst_file
+                    ],
+                    stderr=subprocess.STDOUT)).group(1))
+    except subprocess.CalledProcessError as called_process_error:
+        print(file=stderr)
 
-    return float(BLEU_SCORE.search(completed_process.stdout).group(1))
+        for line in called_process_error.output.split(b'\n'):
+            print(
+                '    [' + called_process_error.cmd[0] + '] ' +
+                line.decode('utf-8'),
+                file=stderr)
+
+        raise
 
 
 def main():
+    print()
+    print('Corpus Sentence Length Statistics')
+    print('=================================')
     argument_parser = ArgumentParser()
     argument_parser.add_argument(
         'data', help='the name of the data file to use for linearization')
@@ -133,6 +139,9 @@ def main():
         '--figure-2',
         help='the name of the file to write the corpus linearisation BLEU score frequency histogram to'
     )
+    argument_parser.add_argument(
+        '--projectivise',
+        help='projectivise each sentence before linearising it')
     arguments = argument_parser.parse_args()
     lineariser = Lineariser()
 
@@ -140,7 +149,11 @@ def main():
         lineariser.deserialise(data)
 
     corpus_sentence_lengths = []
-    treebank = [sentence for sentence in Sentence.deserialise(stdin)]
+    treebank = []
+
+    for sentence in Sentence.deserialise(stdin):
+        sentence.projectivise()
+        treebank.append(sentence)
 
     with open(arguments.ref_file, mode='w') as ref_file, \
          open(arguments.src_file, mode='w') as src_file:
@@ -165,28 +178,35 @@ def main():
         print('</doc>', file=ref_file)
         print('</refset>', file=ref_file)
 
-    print()
-    print('Corpus Sentence Length Statistics')
-    print('=================================')
     print_statistics(corpus_sentence_lengths)
+    print()
     pyplot.figure()
     pyplot.hist(corpus_sentence_lengths)
     pyplot.title('Corpus Sentence Length Frequency Histogram')
     pyplot.xlabel('Sentence Length (# of Words)')
     pyplot.ylabel('# of Sentences')
 
-    try:
+    if arguments.figure_1 is not None:
         pyplot.savefig(arguments.figure_1)
-    except (AttributeError):
-        pass
+
+    n = '{:,}'.format(arguments.n)
+    sample_format_str = '{:>' + str(len(n)) + ',}'
+    precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
+    percent_format_str = '{:>' + str(
+        len(('{:.' + precision + '%}').format(1))) + '.' + precision + '%}'
+    format_str = 'Sample ' + sample_format_str + ' of ' + n + ': '
+    end_format_str = 'done, ' + percent_format_str
 
     BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
+    print(format_str.format(1), end='', file=stderr, flush=True)
     corpus_linearisation_bleu_scores = [
         get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
     ]
-    print()
+    print(
+        end_format_str.format(1 / float(arguments.n)), file=stderr, flush=True)
+    print(file=stderr)
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
-    print(flush=True)
+    print()
 
     if arguments.n == 1:
         print('BLEU score = ' + format_statistic(
@@ -194,38 +214,28 @@ def main():
         print()
         return
 
-    n = '{:,}'.format(arguments.n)
-    sample_format_str = '{:>' + str(len(n)) + ',}'
-    precision = str(max(0, len(str(1.0 / arguments.n)) - 4))
-    percent_format_str = '{:>' + str(
-        len(('{:.' + precision + '%}').format(1))) + '.' + precision + '%}'
-    format_str = '\rsample ' + sample_format_str + ' of ' + n + ' (' + percent_format_str + ')'
-
     for sample in range(2, arguments.n + 1):
-        print(
-            format_str.format(sample, sample / float(arguments.n)),
-            end='',
-            file=stderr,
-            flush=True)
+        print(format_str.format(sample), end='', file=stderr, flush=True)
         corpus_linearisation_bleu_scores.append(
             get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE))
+        print(
+            end_format_str.format(sample / float(arguments.n)),
+            file=stderr,
+            flush=True)
 
-    print(end='\n\n', file=stderr)
+    print(file=stderr)
     print('Corpus Linearisation BLEU Score Statistics')
     print('==========================================')
     print_statistics(corpus_linearisation_bleu_scores)
+    print()
     pyplot.figure()
     pyplot.hist(corpus_linearisation_bleu_scores)
     pyplot.title('Corpus Linearisation BLEU Score Frequency Histogram')
     pyplot.xlabel('BLEU Score')
     pyplot.ylabel('# of Samples')
 
-    try:
+    if arguments.figure_2 is not None:
         pyplot.savefig(arguments.figure_2)
-    except (AttributeError):
-        pass
-
-    print()
 
 
 if __name__ == '__main__':

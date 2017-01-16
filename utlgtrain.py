@@ -196,20 +196,20 @@ for c, i in configs:
         print('<def-rule p="%.4f">' % (prob))
 
         if len(head) == 4:
-            print('  <NODE ord_="%s" si="%s" pos="%s" lem="%s">' %
+            print('  <NODE ord="%s" si="%s" pos="%s" lem="%s">' %
                   (head[0], head[2], head[1], head[3]))
         else:
-            print('  <NODE ord_="%s" si="%s" pos="%s">' %
+            print('  <NODE ord="%s" si="%s" pos="%s">' %
                   (head[0], head[2], head[1]))
 
         for dep in deps:
             deprow = dep.split('/')
 
             if len(deprow) == 4:
-                print('     <NODE ord_="%s" si="%s" pos="%s" lem="%s"/>' %
+                print('     <NODE ord="%s" si="%s" pos="%s" lem="%s"/>' %
                       (deprow[0], deprow[2], deprow[1], deprow[3]))
             else:
-                print('     <NODE ord_="%s" si="%s" pos="%s"/>' %
+                print('     <NODE ord="%s" si="%s" pos="%s"/>' %
                       (deprow[0], deprow[2], deprow[1]))
 
         print('  </NODE>')
