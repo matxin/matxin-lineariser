@@ -200,6 +200,7 @@ def main():
     end_format_str = 'done, ' + percent_format_str
 
     BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
+    stdout.flush()
     print(format_str.format(1), end='', file=stderr, flush=True)
     corpus_linearisation_bleu_scores = [
         get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
@@ -207,6 +208,7 @@ def main():
     print(
         end_format_str.format(1 / float(arguments.n)), file=stderr, flush=True)
     print(file=stderr)
+    stderr.flush()
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
     print()
 
@@ -215,6 +217,8 @@ def main():
             corpus_linearisation_bleu_scores[0]))
         print()
         return
+
+    stdout.flush()
 
     for sample in range(2, arguments.n + 1):
         print(format_str.format(sample), end='', file=stderr, flush=True)
@@ -226,6 +230,7 @@ def main():
             flush=True)
 
     print(file=stderr)
+    stderr.flush()
     print('Corpus Linearisation BLEU Score Statistics')
     print('==========================================')
     print_statistics(corpus_linearisation_bleu_scores)
