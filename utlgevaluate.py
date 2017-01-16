@@ -86,14 +86,20 @@ def get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE):
     try:
         return float(
             BLEU_SCORE.search(
-                subprocess.check_output([
-                    'perl', arguments.mteval, '-r', arguments.ref_file, '-s',
-                    arguments.src_file, '-t', arguments.tst_file
-                ])).group(1))
+                subprocess.check_output(
+                    [
+                        'perl', arguments.mteval, '-r', arguments.ref_file,
+                        '-s', arguments.src_file, '-t', arguments.tst_file
+                    ],
+                    stderr=subprocess.STDOUT)).group(1))
     except subprocess.CalledProcessError as called_process_error:
-        for line in '\n'.split(called_process_error.output):
+        print(file=stderr)
+
+        for line in called_process_error.output.split(b'\n'):
             print(
-                '    [' + called_process_error.cmd + '] ' + line, file=stderr)
+                '    [' + called_process_error.cmd[0] + '] ' +
+                line.decode('utf-8'),
+                file=stderr)
 
         raise
 
@@ -133,6 +139,9 @@ def main():
         '--figure-2',
         help='the name of the file to write the corpus linearisation BLEU score frequency histogram to'
     )
+    argument_parser.add_argument(
+        '--projectivise',
+        help='projectivise each sentence before linearising it')
     arguments = argument_parser.parse_args()
     lineariser = Lineariser()
 
@@ -140,7 +149,11 @@ def main():
         lineariser.deserialise(data)
 
     corpus_sentence_lengths = []
-    treebank = [sentence for sentence in Sentence.deserialise(stdin)]
+    treebank = []
+
+    for sentence in Sentence.deserialise(stdin):
+        sentence.projectivise()
+        treebank.append(sentence)
 
     with open(arguments.ref_file, mode='w') as ref_file, \
          open(arguments.src_file, mode='w') as src_file:
@@ -173,10 +186,8 @@ def main():
     pyplot.xlabel('Sentence Length (# of Words)')
     pyplot.ylabel('# of Sentences')
 
-    try:
+    if arguments.figure_1 is not None:
         pyplot.savefig(arguments.figure_1)
-    except (AttributeError):
-        pass
 
     n = '{:,}'.format(arguments.n)
     sample_format_str = '{:>' + str(len(n)) + ',}'
@@ -191,7 +202,8 @@ def main():
     corpus_linearisation_bleu_scores = [
         get_sample_bleu_score(arguments, treebank, lineariser, BLEU_SCORE)
     ]
-    print(end_format_str.format(1 / float(arguments.n)), file=stderr, flush=True)
+    print(
+        end_format_str.format(1 / float(arguments.n)), file=stderr, flush=True)
     print(file=stderr)
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
     print()
@@ -222,10 +234,8 @@ def main():
     pyplot.xlabel('BLEU Score')
     pyplot.ylabel('# of Samples')
 
-    try:
+    if arguments.figure_2 is not None:
         pyplot.savefig(arguments.figure_2)
-    except (AttributeError):
-        pass
 
 
 if __name__ == '__main__':
