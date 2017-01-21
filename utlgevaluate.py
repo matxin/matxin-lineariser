@@ -54,7 +54,8 @@ def print_statistics(list_):
 BLEU_SCORE = re.compile(b'BLEU score = ([01]\.\d{4,4})')
 
 
-def get_sample_bleu_score(arguments, treebank, lineariser):
+def get_sample_corpus_linearisation_bleu_score(arguments, treebank,
+                                               lineariser):
     """Linearise the corpus with the lineariser *lineariser* and score the
     linearisation with Moses SMT's MT evaluation scorer.
 
@@ -105,12 +106,19 @@ def get_sample_bleu_score(arguments, treebank, lineariser):
         raise
 
 
-def get_sample(format_str, sample, arguments, treebank, lineariser,
-               corpus_linearisation_bleu_scores, end_format_str):
+END_FORMAT_STR = 'corpus linearisation BLEU score = {:.4f}'
+
+
+def print_sample(format_str, sample, arguments, treebank, lineariser,
+                 corpus_linearisation_bleu_scores):
     print(format_str.format(sample), end='', file=stderr, flush=True)
-    bleu_score = get_sample_bleu_score(arguments, treebank, lineariser)
-    corpus_linearisation_bleu_scores.append(bleu_score)
-    print(end_format_str.format(bleu_score), file=stderr, flush=True)
+    corpus_linearisation_bleu_score = get_sample_corpus_linearisation_bleu_score(
+        arguments, treebank, lineariser)
+    corpus_linearisation_bleu_scores.append(corpus_linearisation_bleu_score)
+    print(
+        END_FORMAT_STR.format(corpus_linearisation_bleu_score),
+        file=stderr,
+        flush=True)
 
 
 def main():
@@ -150,6 +158,7 @@ def main():
     )
     argument_parser.add_argument(
         '--projectivise',
+        action='store_true',
         help='projectivise each sentence before linearising it')
     arguments = argument_parser.parse_args()
     lineariser = Lineariser()
@@ -203,11 +212,10 @@ def main():
     n = '{:,}'.format(arguments.n)
     sample_format_str = '{:>' + str(len(n)) + ',}'
     format_str = 'Sample ' + sample_format_str + ' of ' + n + ': '
-    end_format_str = 'done, BLEU score = {:.4f}'
     corpus_linearisation_bleu_scores = []
     stdout.flush()
-    get_sample(format_str, 1, arguments, treebank, lineariser,
-               corpus_linearisation_bleu_scores, end_format_str)
+    print_sample(format_str, 1, arguments, treebank, lineariser,
+                 corpus_linearisation_bleu_scores)
     print(file=stderr)
     stderr.flush()
     print('coverage = ' + format_statistic(hypothesis.coverage.get_coverage()))
@@ -222,8 +230,8 @@ def main():
     stdout.flush()
 
     for sample in range(2, arguments.n + 1):
-        get_sample(format_str, sample, arguments, treebank, lineariser,
-                   corpus_linearisation_bleu_scores, end_format_str)
+        print_sample(format_str, sample, arguments, treebank, lineariser,
+                     corpus_linearisation_bleu_scores)
 
     print(file=stderr)
     stderr.flush()
