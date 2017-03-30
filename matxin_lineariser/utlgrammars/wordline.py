@@ -1,5 +1,5 @@
 from .agenda import Agenda
-from .lconfiguration import LocalConfiguration
+from .klconfiguration import KeyLocalConfiguration
 from .printing import Printing
 from .word import Word
 
@@ -98,8 +98,8 @@ class WordLine:
         dependents = [(dependent.get_deprel(), dependent.get_word())
                       for dependent in self.get_dependents()]
         dependents.sort()
-        return LocalConfiguration(self.get_deprel(),
-                                  self.get_word(), tuple(dependents))
+        return KeyLocalConfiguration(self.get_deprel(),
+                                     self.get_word(), tuple(dependents))
 
     def get_deprel(self):
         return self.deprel
