@@ -1,9 +1,13 @@
 from .lconfiguration import LocalConfiguration
+from .word import word_eq
 
 
 class KeyLocalConfiguration(LocalConfiguration):
+    def __hash__(self):
+        return super().__hash__()
+
     def __eq__(self, other):
-        if not isinstance(other, LocalConfiguration)
+        if not isinstance(other, LocalConfiguration):
             return False
 
         if self.get_deprel() is not None and other.get_deprel() is not None:

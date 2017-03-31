@@ -27,7 +27,7 @@ class Word:
                 tuple(feat.split('=')) for feat in feats.split('|'))
 
     def __hash__(self):
-        return hash((self.get_upostag(), self.get_feats(), self.get_lemma()))
+        return hash((self.get_upostag(), ))
 
     def get_upostag(self):
         return self.upostag
@@ -36,7 +36,7 @@ class Word:
         return self.lemma
 
     def __eq__(self, other):
-        return type(self) is type(other) and self.get_upostag(
+        return isinstance(other, Word) and self.get_upostag(
         ) == other.get_upostag() and self.get_feats() == other.get_feats(
         ) and self.get_lemma() == other.get_lemma()
 
@@ -44,7 +44,7 @@ class Word:
         return self.feats
 
     def __lt__(self, other):
-        if type(other) is not type(self):
+        if not isinstance(other, Word):
             raise TypeError
 
         if self.get_upostag() != other.get_upostag():
@@ -69,7 +69,7 @@ class Word:
 
 
 def word_eq(a, b):
-    if type(a) is not type(b):
+    if not (isinstance(a, Word) and isinstance(b, Word)):
         return False
 
     if a.get_upostag() != b.get_upostag():

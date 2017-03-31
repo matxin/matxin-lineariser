@@ -1,5 +1,4 @@
 from .printing import Printing
-from .word import word_eq
 
 
 class LocalConfiguration:
@@ -18,7 +17,7 @@ class LocalConfiguration:
         return self.dependents
 
     def __eq__(self, other):
-        return type(self) is type(other) and self.get_deprel(
+        return isinstance(other, LocalConfiguration) and self.get_deprel(
         ) == other.get_deprel() and self.get_word() == other.get_word(
         ) and self.get_dependents() == other.get_dependents()
 
@@ -26,7 +25,7 @@ class LocalConfiguration:
         return self.deprel
 
     def __lt__(self, other):
-        if type(self) is not type(other):
+        if not isinstance(other, LocalConfiguration):
             raise TypeError
 
         if self.get_deprel() is not None and other.get_deprel() is not None:
