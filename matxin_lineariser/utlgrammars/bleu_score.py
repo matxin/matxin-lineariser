@@ -1,30 +1,15 @@
-from nltk.translate.bleu_score import Fraction, modified_precision, SmoothingFunction
+from nltk.translate.bleu_score import Fraction, modified_precision
 
 from collections import Counter
 
+import functools
 import math
-import sys.float_info
-
-smoothing_function = SmoothingFunction()
+import operator
+import sys
 
 
 def get_bleu_score(weight, ps):
-    return math.exp(
-        math.fsum((weight * math.log(p_i)
-                   for p_i in smoothing_function.method2(ps))))
-
-
-def method0(ps):
-    ps_new = []
-
-    for p_i in ps:
-        if p_i.numerator == 0:
-            ps_new.append(sys.float_info.min)
-            return ps_new
-
-        ps_new.append(p_i)
-
-    return ps_new
+    return math.pow(functools.reduce(operator.mul, ps, 1), weight)
 
 
 class SentenceBleuScore:
